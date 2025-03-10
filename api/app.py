@@ -3,6 +3,10 @@ from flask import Flask
 app = Flask(__name__)
 
 
+def a(b):
+    return b + 5
+
+
 @app.route('/')
 def hello_route():
     return "Hello, World!"
