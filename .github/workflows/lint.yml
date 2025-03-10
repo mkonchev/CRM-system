@@ -18,7 +18,7 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           level: warning
-	  fail_on_error: true
+          fail_on_error: true
           setup_method: install
           setup_command: 'pip install -r requirements.txt'
           mypy_flags: "--strict"
