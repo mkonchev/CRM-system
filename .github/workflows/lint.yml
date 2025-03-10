@@ -16,7 +16,6 @@ jobs:
         uses: tsuyoshicho/action-mypy@v4
         with:
           github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
           level: warning
           fail_on_error: true
           setup_method: install
