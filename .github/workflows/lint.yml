@@ -7,28 +7,26 @@ on:
 
 jobs:
   mypy:
+    name: mypy
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.13.2
-          architecture: x64
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install requirements
-        run: pip install -r requirements.txt
+        uses: actions/checkout@v4
       - name: Run mypy
-        uses: jpetrucciani/mypy-check@master
+        uses: tsuyoshicho/action-mypy@v4
         with:
-          path: '.'
-          mypy_flags: '--strict'
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          level: warning
+          setup_method: install
+          setup_command: 'pip install -r requirements.txt'
+          mypy_flags: "--strict"
   pep8:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: 'Run PEP8'
+        uses: actions/checkout@v4
+      - name: Run pep8
         uses: quentinguidee/pep8-action@v1
         with:
           arguments: '--max-line-length=120'
