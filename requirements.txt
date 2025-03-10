@@ -5,6 +5,9 @@ greenlet==3.1.1
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.2
+mypy==1.15.0
+mypy-extensions==1.0.0
+openapi-generator-cli==7.11.0.post0
 SQLAlchemy==2.0.38
 typing_extensions==4.12.2
 Werkzeug==3.1.3
