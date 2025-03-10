@@ -17,6 +17,7 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           level: warning
+	  reporter: github-check
           fail_on_error: true
           setup_method: install
           setup_command: 'pip install -r requirements.txt'
