@@ -1,4 +1,4 @@
-name: MyPyLint
+name: lint
 
 on:
   push:
@@ -23,3 +23,12 @@ jobs:
         with:
           path: '.'
           mypy_flags: '--strict'
+  pep8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: 'Run PEP8'
+        uses: quentinguidee/pep8-action@v1
+        with:
+          arguments: '--max-line-length=120'
