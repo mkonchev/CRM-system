@@ -3,12 +3,8 @@ from flask import Flask
 app = Flask(__name__)
 
 
-def a(b):
-    return b + 5
-
-
 @app.route('/')
-def hello_route():
+def hello_route() -> str:
     return "Hello, World!"
 
 
