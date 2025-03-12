@@ -30,6 +30,24 @@ paths:
 
 
   /cars:
+    post:
+      summary: Метод создания Car
+      tags:
+        - Cars
+      operationId: create_car
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        '200':
+          description: Машина успешно добавлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
   /orders:
 
 
@@ -66,3 +84,24 @@ components:
             - worker
             - user
           description: Роль в системе
+    Car:
+      description: Описание объекта Car
+      type: object
+      required:
+        - number
+        - model
+        - vin
+        - owner_id
+      properties:
+        number:
+          type: string
+          example: E251MB11 #буквы - латиницей
+        model:
+          type: string
+          example: Toyota Corolla
+        vin:
+          type: string
+          example: JTNKM28E900090600
+        owner_id:
+          type: string
+          example: 2
