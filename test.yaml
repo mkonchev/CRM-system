@@ -1,0 +1,120 @@
+#file: noinspection YAMLSchemaValidation
+openapi: 3.0.3
+info:
+  title: GarageFlow
+  description: CRM system
+  version: 0.0.3
+servers:
+  - url: 'http://localhost:8080/api'
+    description: Local server
+paths:
+  /cars:
+    post:
+      summary: Метод Создание Автомобиля
+      tags:
+        - Машины
+      operationId: createCar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cars"
+      responses:
+        '200':
+          description: Успешный ответ, автомобиль создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cars'
+        '404':
+          description: Автомобили не добавлены
+    get:
+      summary: Метод получения всех автомобилей
+      tags:
+        - Машины
+      operationId: getAllCars
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cars"
+        '404':
+          description: Автомобили не найдены
+  /cars/{owner_id}:
+    get:
+      summary: Метод получения автомобилей по идентификатору владельца
+      tags:
+        - Машины
+      operationId: getCarbyOwnerId
+      parameters:
+        - name: owner_id
+          in: path
+          required: true
+          description: Идентификатор владельца
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cars"
+        '404':
+          description: Автомобили не найдены
+  /cars/{car_id}:
+    delete:
+      summary: Удаление Авто
+      tags:
+        - Машины
+      operationId: deleteCarbyId
+      parameters:
+        - name: car_id
+          in: path
+          required: true
+          description: Идентификатор авто
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cars"
+        '404':
+          description: Автомобили не найдены
+
+
+components:
+  schemas:
+    Car:
+      description: Описание объекта машина
+      type: object
+      required:
+        - name
+        - status
+      properties:
+        car_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Mazda
+        owner_id:
+          type: integer
+          example: 2
+        status:
+          type: string
+          enum:
+            - done
+            - in progress
+            - waiting
+          description: Состояние автомобиля
+    Cars:
+      type: array
+      items:
+        $ref: "#/components/schemas/Car"
