@@ -19,14 +19,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Users'
+              $ref: '#/components/schemas/User'
       responses:
         '200':
           description: Пользователь успешно создан
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Users'
+                $ref: '#/components/schemas/User'
 
 
   /cars:
@@ -38,10 +38,9 @@ components:
     User:
       description: Описание объекта User
       type: object
+      required:
+        - role
       properties:
-        user_id:
-          type: integer
-          example: 1
         first_name:
           type: optional(string)
           example: Олег
@@ -64,7 +63,3 @@ components:
             - worker
             - user
           description: Роль в системе
-    Users:
-      type: array
-      items:
-        $ref: '#/components/schemas/User'
