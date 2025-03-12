@@ -3,11 +3,68 @@ openapi: 3.0.3
 info:
   title: GarageFlow
   description: CRM system
-  version: 0.0.3
+  version: 0.0.1
 servers:
   - url: 'http://localhost:8080/api'
     description: Local server
 paths:
   /users:
+    post:
+      summary: Метод создания User
+      tags:
+        - Users
+      operationId: create_user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+      responses:
+        '200':
+          description: Пользователь успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+
+
   /cars:
   /orders:
+
+
+components:
+  schemas:
+    User:
+      description: Описание объекта User
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        first_name:
+          type: optional(string)
+          example: Олег
+        second_name:
+          type: optional(string)
+          example: Скалисусов
+        phone_number:
+          type: optional(string)
+          example: 89125000000
+        email:
+          type: optional(string)
+          example: example@gmail.com
+        tg_login:
+          type: optional(string)
+          example: example
+        role:
+          type: string
+          enum:
+            - admin
+            - worker
+            - user
+          description: Роль в системе
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
