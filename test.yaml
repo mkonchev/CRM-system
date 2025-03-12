@@ -22,7 +22,7 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '200':
-          description: Пользователь успешно создан
+          description: Пользователь успешно добавлен
           content:
             application/json:
               schema:
@@ -39,22 +39,25 @@ components:
       description: Описание объекта User
       type: object
       required:
+        - first_name
+        - second_name
+        - phone_number
         - role
       properties:
         first_name:
-          type: optional(string)
+          type: string
           example: Олег
         second_name:
-          type: optional(string)
+          type: string
           example: Скалисусов
         phone_number:
-          type: optional(string)
+          type: string
           example: 89125000000
         email:
-          type: optional(string)
+          type: string
           example: example@gmail.com
         tg_login:
-          type: optional(string)
+          type: string
           example: example
         role:
           type: string
