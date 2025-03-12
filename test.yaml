@@ -49,6 +49,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Car'
   /orders:
+    post:
+      summary: Order creating method
+      tags:
+        - Orders
+      operationId: create_order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orders'
+      responses:
+        '200':
+          description: Car created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
 
 
 components:
@@ -105,3 +123,33 @@ components:
         owner_id:
           type: string
           example: 2
+    Order:
+      description: Description object Order
+      type: object
+      required:
+        - owner_id
+        - car_id
+        - services
+        - checkpoints
+        - worker_id
+      properties:
+        owner_id:
+          type: integer
+          example: 1
+        car_id:
+          type: integer
+          example: 1
+        services:
+          type: string
+          example: '????'
+        checkpoints:
+          type: string
+          example: '????'
+        worker_id:
+          type: integer
+          example: 1
+    Orders:
+      type: array
+      items:
+        $ref: '#/components/schemas/Order'
+
