@@ -1,4 +1,4 @@
-from app.extentions import db
+from ..extentions import db
 
 
 class Orders(db.Model):

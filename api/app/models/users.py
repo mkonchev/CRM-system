@@ -1,9 +1,9 @@
 from .cars import Cars
 from .orders import Orders
-from app.extentions import db
+from ..extentions import db
 
 
-class Users(db.Model):
+class Users(db.SQLAlchemy.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50))
     second_name = db.Column(db.String(50))

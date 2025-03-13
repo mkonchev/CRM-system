@@ -1,5 +1,5 @@
 from .orders import Orders
-from app.extentions import db
+from ..extentions import db
 
 
 class Cars(db.Model):
