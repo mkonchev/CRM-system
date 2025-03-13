@@ -1,9 +1,7 @@
 from .cars import Cars
 from .orders import Orders
-from ..extentions import db, DefaultMeta
+from ..extentions import db
 
-
-BaseModel: DefaultMeta = db.Model
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
