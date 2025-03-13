@@ -27,6 +27,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '400':
+          description: User creating failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+    get:
+      summary: Users getting method
+      tags:
+        - Users
+      operationId: get_users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type:
+                object
+              properties:
+                first_name:
+                  type: string
+                  example: Олег
+                second_name:
+                  type: string
+                  example: Скалисусов
+              additionalProperties: false
+      responses:
+        '200':
+          description: Users getting successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        '400':
+          description: Users getting failed
+
+
+
+
 
 
 #  /cars:
@@ -103,6 +142,11 @@ components:
             - worker
             - user
           description: Role in system
+
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
 #
 #    Car:
 #      description: Description object Car
