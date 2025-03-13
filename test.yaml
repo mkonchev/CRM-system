@@ -70,12 +70,12 @@ paths:
       tags:
         - Users
       parameters:
-        - user_id: id
+        - name: user_id
           in: path
           required: true
           description: User identifier needs to be updated
           schema:
-            type: string
+            type: integer
       requestBody:
         required: {}
         content:
