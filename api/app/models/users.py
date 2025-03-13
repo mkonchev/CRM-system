@@ -1,9 +1,11 @@
 from .cars import Cars
 from .orders import Orders
-from ..extentions import db
+from ..extentions import db, DefaultMeta
 
 
-class Users(db.SQLAlchemy.Model):
+BaseModel: DefaultMeta = db.Model
+
+class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50))
     second_name = db.Column(db.String(50))
