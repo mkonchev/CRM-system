@@ -10,7 +10,7 @@ class Users(db.Model):
     phone_number = db.Column(db.String(50))
     email = db.Column(db.String(50))
     tg_login = db.Column(db.String(50))
-    role = db.Column(db.String(50)) # add enum and change
+    role = db.Column(db.String(50))  # add enum and change
 
     orders_owner = db.relationship(Orders, backref='users')
     orders_worker = db.relationship(Orders, backref='users')
