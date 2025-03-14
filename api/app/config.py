@@ -1,0 +1,4 @@
+class Config(object):
+    SQLALCHEMY_DATABASE_URI = ''
+    SECRET_KEY = ''
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
