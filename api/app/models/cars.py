@@ -2,7 +2,7 @@ from .orders import Orders
 from ..extentions import db
 
 
-class Cars(db.Model):
+class Cars(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(50))
     model = db.Column(db.String(50))

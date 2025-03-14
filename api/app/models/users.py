@@ -3,7 +3,7 @@ from .orders import Orders
 from ..extentions import db
 
 
-class Users(db.Model):
+class Users(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50))
     second_name = db.Column(db.String(50))
