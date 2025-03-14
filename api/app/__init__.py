@@ -3,7 +3,7 @@ from .extentions import db, migrate
 from .config import Config
 
 
-def create_app(config_class=Config) -> Flask:
+def create_app(config_class=Config) -> object:
     app = Flask(__name__)
     app.config.from_object(config_class)
 
