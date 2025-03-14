@@ -35,24 +35,23 @@ paths:
                 $ref: '#/components/schemas/User'
 
     get:
-      summary: Users getting method
+      summary: Users getting method with filtering by firat_name && second_name
       tags:
         - Users
       operationId: get_users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type:
-                object
-              properties:
-                first_name:
-                  type: string
-                  example: Олег
-                second_name:
-                  type: string
-                  example: Скалисусов
-              additionalProperties: false
+      parameters:
+        - name: first_name
+          in: query
+          description: filter by first_name
+          required: false
+          schema:
+            type: string
+        - name: second_name
+          in: query
+          description: filter by second_name
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Users getting successfully
