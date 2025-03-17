@@ -124,7 +124,7 @@ paths:
         - Cars
       operationId: get_cars_by_owner_id
       parameters:
-        - name: user_id
+        - name: owner_id
           in: path
           required: true
           description: User identifier to find user cars
@@ -253,6 +253,11 @@ components:
         owner_id:
           type: integer
           example: 2
+    Cars:
+      type: array
+      items:
+        $ref: '#/components/schemas/Car'
+
 
 #    Order:
 #      description: Description object Order
