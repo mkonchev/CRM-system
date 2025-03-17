@@ -11,6 +11,7 @@ paths:
   /users:
     post:
       summary: User creating Method
+      description: 'role: admin, worker'
       tags:
         - Users
       operationId: create_user
@@ -35,7 +36,8 @@ paths:
                 $ref: '#/components/schemas/User'
 
     get:
-      summary: Users getting method with filtering by firat_name && second_name
+      summary: Users getting method with filtering by first_name & second_name
+      description: 'role: admin, worker'
       tags:
         - Users
       operationId: get_users
@@ -65,6 +67,7 @@ paths:
   /users/{user_id}:
     put:
       summary: User update method
+      description: 'role: admin, worker'
       operationId: update_user
       tags:
         - Users
@@ -93,29 +96,58 @@ paths:
 
 #      security:???
 #        -
+  /cars:
+    post:
+      summary: Car creating method
+      description: 'role: admin, worker, user'
+      tags:
+        - Cars
+      operationId: create_car
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        '200':
+          description: Car created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+
+  /cars/{car_id}:
+    put:
+      summary: Car update method
+      description: 'role: admin, worker'
+      operationId: update_car
+      tags:
+        - Cars
+      parameters:
+        - name: car_id
+          in: path
+          required: true
+          description: Car identifier needs to be updated
+          schema:
+            type: integer
+      requestBody:
+        required: { }
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        '200':
+          description: Car updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        '400':
+          description: Car updating failed
 
 
-
-
-#  /cars:
-#    post:
-#      summary: Car creating method
-#      tags:
-#        - Cars
-#      operationId: create_car
-#      requestBody:
-#        required: true
-#        content:
-#          application/json:
-#            schema:
-#              $ref: '#/components/schemas/Car'
-#      responses:
-#        '200':
-#          description: Car created successfully
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Car'
 #
 #  /orders:
 #    post:
@@ -176,29 +208,29 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/User'
-#
-#    Car:
-#      description: Description object Car
-#      type: object
-#      required:
-#        - number
-#        - model
-#        - vin
-#        - owner_id
-#      properties:
-#        number:
-#          type: string
-#          example: E251MB11 # latin letters
-#        model:
-#          type: string
-#          example: Toyota Corolla
-#        vin:
-#          type: string
-#          example: JTNKM28E900090600
-#        owner_id:
-#          type: string
-#          example: 2
-#
+
+    Car:
+      description: Description object Car
+      type: object
+      required:
+        - number
+        - model
+        - vin
+        - owner_id
+      properties:
+        number:
+          type: string
+          example: E251MB11 # latin letters
+        model:
+          type: string
+          example: Toyota Corolla
+        vin:
+          type: string
+          example: JTNKM28E900090600
+        owner_id:
+          type: integer
+          example: 2
+
 #    Order:
 #      description: Description object Order
 #      type: object
