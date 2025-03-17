@@ -116,6 +116,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Car'
+  /cars/{owner_id}:
+    get:
+      summary: Cars getting method by its owner_id
+      description: 'role: admin, worker'
+      tags:
+        - Cars
+      operationId: get_cars_by_owner_id
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User identifier to find user cars
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cars getting successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cars'
+        '400':
+          description: Cars getting failed
 
   /cars/{car_id}:
     put:
