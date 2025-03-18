@@ -1,4 +1,4 @@
-from ..extentions import db
+from app.extentions import db
 
 
 class Orders(db.Model):  # type: ignore

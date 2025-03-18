@@ -1,6 +1,6 @@
 from .cars import Cars
 from .orders import Orders
-from ..extentions import db
+from app.extentions import db
 
 
 class Users(db.Model):  # type: ignore
