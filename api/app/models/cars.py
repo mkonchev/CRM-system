@@ -1,5 +1,5 @@
 from .orders import Orders
-from app.extentions import db
+from api.app.extentions import db
 
 
 class Cars(db.Model):  # type: ignore
