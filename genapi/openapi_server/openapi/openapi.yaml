@@ -1,0 +1,264 @@
+openapi: 3.0.3
+info:
+  description: CRM system
+  title: GarageFlow
+  version: 1.0.0
+servers:
+- description: Local server
+  url: http://localhost:8080/api/v1
+paths:
+  /cars:
+    post:
+      description: "role: admin, worker, user"
+      operationId: create_car
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+          description: Car created successfully
+      summary: Car creating method
+      tags:
+      - Cars
+      x-openapi-router-controller: openapi_server.controllers.cars_controller
+  /cars/{car_id}:
+    put:
+      description: "role: admin, worker"
+      operationId: update_car
+      parameters:
+      - description: Car identifier needs to be updated
+        explode: false
+        in: path
+        name: car_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+          description: Car updated successfully
+        "400":
+          description: Car updating failed
+      summary: Car update method
+      tags:
+      - Cars
+      x-openapi-router-controller: openapi_server.controllers.cars_controller
+  /cars/{owner_id}:
+    get:
+      description: "role: admin, worker"
+      operationId: get_cars_by_owner_id
+      parameters:
+      - description: User identifier to find user cars
+        explode: false
+        in: path
+        name: owner_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cars'
+          description: Cars getting successfully
+        "400":
+          description: Cars getting failed
+      summary: Cars getting method by its owner_id
+      tags:
+      - Cars
+      x-openapi-router-controller: openapi_server.controllers.cars_controller
+  /users:
+    get:
+      description: "role: admin, worker"
+      operationId: get_users
+      parameters:
+      - description: filter by first_name
+        explode: true
+        in: query
+        name: first_name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: filter by second_name
+        explode: true
+        in: query
+        name: second_name
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: Users getting successfully
+        "400":
+          description: Users getting failed
+      summary: Users getting method with filtering by first_name & second_name
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+    post:
+      description: "role: admin, worker"
+      operationId: create_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: User created successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: User creating failed
+      summary: User creating Method
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+  /users/{user_id}:
+    put:
+      description: "role: admin, worker"
+      operationId: update_user
+      parameters:
+      - description: User identifier needs to be updated
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: User updated successfully
+        "400":
+          description: User updating failed
+      summary: User update method
+      tags:
+      - Users
+      x-openapi-router-controller: openapi_server.controllers.users_controller
+components:
+  schemas:
+    User:
+      description: Description object User
+      example:
+        tg_login: example
+        role: admin
+        second_name: Скалисусов
+        phone_number: "89125000000"
+        first_name: Олег
+        email: example@gmail.com
+      properties:
+        first_name:
+          example: Олег
+          title: first_name
+          type: string
+        second_name:
+          example: Скалисусов
+          title: second_name
+          type: string
+        phone_number:
+          example: "89125000000"
+          title: phone_number
+          type: string
+        email:
+          example: example@gmail.com
+          title: email
+          type: string
+        tg_login:
+          example: example
+          title: tg_login
+          type: string
+        role:
+          description: Role in system
+          enum:
+          - admin
+          - worker
+          - user
+          title: role
+          type: string
+      required:
+      - first_name
+      - phone_number
+      - role
+      - second_name
+      title: User
+      type: object
+    Users:
+      items:
+        $ref: '#/components/schemas/User'
+      type: array
+    Car:
+      description: Description object Car
+      example:
+        number: E251MB11
+        owner_id: 2
+        model: Toyota Corolla
+        vin: JTNKM28E900090600
+      properties:
+        number:
+          example: E251MB11
+          title: number
+          type: string
+        model:
+          example: Toyota Corolla
+          title: model
+          type: string
+        vin:
+          example: JTNKM28E900090600
+          title: vin
+          type: string
+        owner_id:
+          example: 2
+          title: owner_id
+          type: integer
+      required:
+      - model
+      - number
+      - owner_id
+      - vin
+      title: Car
+      type: object
+    Cars:
+      items:
+        $ref: '#/components/schemas/Car'
+      type: array

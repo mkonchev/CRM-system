@@ -12,6 +12,6 @@ class Users(db.Model):  # type: ignore
     tg_login = db.Column(db.String(50))
     role = db.Column(db.String(50))  # add enum and change
 
-    orders_owner = db.relationship(Orders, backref='users')
-    orders_worker = db.relationship(Orders, backref='users')
-    cars_owner = db.relationship(Cars, backref='users')
+    # orders_owner = db.relationship(Orders, backref='users')
+    # orders_worker = db.relationship(Orders, backref='users')
+    # cars_owner = db.relationship(Cars, backref='users')
