@@ -1,0 +1,292 @@
+#file: noinspection YAMLSchemaValidation
+openapi: 3.0.3
+info:
+  title: GarageFlow
+  description: CRM system
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080/api/v1'
+    description: Local server
+paths:
+  /users:
+    post:
+      summary: User creating Method
+      description: 'role: admin, worker'
+      tags:
+        - Users
+      operationId: create_user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: User creating failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+    get:
+      summary: Users getting method with filtering by first_name & second_name
+      description: 'role: admin, worker'
+      tags:
+        - Users
+      operationId: get_users
+      parameters:
+        - name: first_name
+          in: query
+          description: filter by first_name
+          required: false
+          schema:
+            type: string
+        - name: second_name
+          in: query
+          description: filter by second_name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Users getting successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        '400':
+          description: Users getting failed
+
+  /users/{user_id}:
+    put:
+      summary: User update method
+      description: 'role: admin, worker'
+      operationId: update_user
+      tags:
+        - Users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User identifier needs to be updated
+          schema:
+            type: integer
+      requestBody:
+        required: {}
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: User updating failed
+
+#      security:???
+#        -
+  /cars:
+    post:
+      summary: Car creating method
+      description: 'role: admin, worker, user'
+      tags:
+        - Cars
+      operationId: create_car
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        '200':
+          description: Car created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+  /cars/{owner_id}:
+    get:
+      summary: Cars getting method by its owner_id
+      description: 'role: admin, worker'
+      tags:
+        - Cars
+      operationId: get_cars_by_owner_id
+      parameters:
+        - name: owner_id
+          in: path
+          required: true
+          description: User identifier to find user cars
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cars getting successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cars'
+        '400':
+          description: Cars getting failed
+
+  /cars/{car_id}:
+    put:
+      summary: Car update method
+      description: 'role: admin, worker'
+      operationId: update_car
+      tags:
+        - Cars
+      parameters:
+        - name: car_id
+          in: path
+          required: true
+          description: Car identifier needs to be updated
+          schema:
+            type: integer
+      requestBody:
+        required: { }
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        '200':
+          description: Car updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        '400':
+          description: Car updating failed
+
+
+#
+#  /orders:
+#    post:
+#      summary: Order creating method
+#      tags:
+#        - Orders
+#      operationId: create_order
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/Orders'
+#      responses:
+#        '200':
+#          description: Car created successfully
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Orders'
+
+
+components:
+  schemas:
+    User:
+      description: Description object User
+      type: object
+      required:
+        - first_name
+        - second_name
+        - phone_number
+        - role
+      properties:
+        first_name:
+          type: string
+          example: Олег
+        second_name:
+          type: string
+          example: Скалисусов
+        phone_number:
+          type: string
+          example: 89125000000
+        email:
+          type: string
+          example: example@gmail.com
+        tg_login:
+          type: string
+          example: example
+        role:
+          type: string
+          enum:
+            - admin
+            - worker
+            - user
+          description: Role in system
+
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+
+    Car:
+      description: Description object Car
+      type: object
+      required:
+        - number
+        - model
+        - vin
+        - owner_id
+      properties:
+        number:
+          type: string
+          example: E251MB11 # latin letters
+        model:
+          type: string
+          example: Toyota Corolla
+        vin:
+          type: string
+          example: JTNKM28E900090600
+        owner_id:
+          type: integer
+          example: 2
+    Cars:
+      type: array
+      items:
+        $ref: '#/components/schemas/Car'
+
+
+#    Order:
+#      description: Description object Order
+#      type: object
+#      required:
+#        - owner_id
+#        - car_id
+#        - services
+#        - checkpoints
+#        - worker_id
+#      properties:
+#        owner_id:
+#          type: integer
+#          example: 1
+#        car_id:
+#          type: integer
+#          example: 1
+#        services:
+#          type: string
+#          example: '????'
+#        checkpoints:
+#          type: string
+#          example: '????'
+#        worker_id:
+#          type: integer
+#          example: 1
+#
+#    Orders:
+#      type: array
+#      items:
+#        $ref: '#/components/schemas/Order'
+#

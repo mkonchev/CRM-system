@@ -1,6 +1,9 @@
 from flask import Flask
 from .extentions import db, migrate
 from .config import Config
+from .models.users import Users
+from .models.cars import Cars
+from .models.orders import Orders
 
 
 def create_app(config_class=Config):  # type: ignore
