@@ -6,7 +6,12 @@ from apps.core.models.managers.UserManager import UserManager
 
 
 class User(AbstractUser):
-    username = models.CharField(_('username'), max_length=150, null=True, blank=True)
+    username = models.CharField(
+        _('username'),
+        max_length=150,
+        null=True,
+        blank=True
+    )
     email = models.EmailField(_('email address'), unique=True)
 
     USERNAME_FIELD = 'email'
