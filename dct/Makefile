@@ -4,6 +4,8 @@ build-prod: build-prod-balancer build-prod-main migrate collect-static
 build-prod-no-migrate-static: build-prod-balancer build-prod-main
 startapp:
 	cd apps; python ../manage.py startapp --template=../config/app_template $(name)
+startapp_:
+	cd apps && python ..\manage.py startapp --template=..\config\app_template $(name)
 restart-docker:
 	sudo systemctl restart docker
 build-prod-main:
