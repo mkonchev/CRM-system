@@ -21,11 +21,12 @@ class Workstatus(models.Model):
     status = models.PositiveIntegerField(
         verbose_name="Статус",
         choices=WorkStatusChoice.choices,
-        default=WorkStatusChoice.none)
+        default=WorkStatusChoice.none,
+        )
 
     class Meta:
         verbose_name = 'Статус работы'
         verbose_name_plural = 'Статусы работ'
 
     def __str__(self):
-        return f'{self.work} {self.status}'
+        return f'{self.work} ({self.get_status_display()})'
