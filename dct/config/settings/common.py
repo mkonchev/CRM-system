@@ -18,7 +18,9 @@ INSTALLED_APPS = [
 
     'apps.core.apps.CoreConfig',
     'apps.car.apps.CarConfig',
-    'apps.order.apps.OrderConfig'
+    'apps.order.apps.OrderConfig',
+    'apps.work.apps.WorkConfig',
+    'apps.workstatus.apps.WorkstatusConfig',
 ]
 
 MIDDLEWARE = [
