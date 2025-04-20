@@ -30,9 +30,9 @@ class Order(models.Model):
     works = models.ManyToManyField('work.Work',
                                    verbose_name='Работы',
                                    related_name='order_work',)
-    workstatuses = models.ManyToManyField('workstatus.Workstatus',
-                                          verbose_name='Статусы работ',
-                                          related_name='order_work_status')
+    workstatus = models.ManyToManyField('workstatus.Workstatus',
+                                        verbose_name='Статусы работ',
+                                        related_name='order_work_status')
 
     class Meta:
         verbose_name = 'Заявка'
