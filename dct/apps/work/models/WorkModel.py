@@ -19,10 +19,6 @@ class Work(models.Model):
                             related_name='car_works',
                             **NULLABLE)
     price = models.PositiveIntegerField(verbose_name='Цена услуги')
-    # status = models.PositiveIntegerField(
-    #     verbose_name="Статус",
-    #     choices=WorkStatusChoice.choices,
-    #     default=WorkStatusChoice.none)
 
     class Meta:
         verbose_name = 'Работа'
