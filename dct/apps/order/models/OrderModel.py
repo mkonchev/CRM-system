@@ -9,7 +9,7 @@ class Order(models.Model):
     owner = models.ForeignKey('core.User',
                               verbose_name='ID владельца',
                               on_delete=models.CASCADE,
-                              related_name='orders1',
+                              related_name='order_owner',
                               **NULLABLE)
     # Нужно поменять owner related_name
     car = models.ForeignKey('car.Car',
