@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:pk>', order_views.order_by_id),
     path('create', order_views.add_order),
     path('delete/<int:pk>', order_views.delete_order),
+    path('create', order_views.add_order),
 ]
