@@ -1,8 +1,8 @@
 from django.urls import path
 
-from apps.api.views.order_views import order_list_view, order_by_id
+from apps.api.views import order_views
 
 urlpatterns = [
-    path('', order_list_view),
-    path('<int:pk>', order_by_id),
+    path('', order_views.order_list_view),
+    path('<int:pk>', order_views.order_by_id),
 ]
