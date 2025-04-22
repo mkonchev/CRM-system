@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -18,3 +18,39 @@ def work_by_id(request, pk):
     work = Work.objects.get(pk=pk)
     serializer = Work(work)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_work(request):
+    work = WorkSerializer(data=request.data)
+
+    # if user.objects.filter(**request.data).exists():
+    #     raise serializers.ValidationError('This data already exists')
+
+    if work.is_valid():
+        work.save()
+        return Response(data=work.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+def update_work(request, pk):
+    work = Work.objects.get(pk=pk)
+    upd_work = WorkSerializer(instance=work, data=request.data)
+
+    if upd_work.is_valid():
+        upd_work.save()
+        return Response(data=upd_work.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['DELETE'])
+def delete_work(request, pk):
+    if Work.objects.filter(pk=pk).exists():
+        work = Work.objects.get(pk=pk)
+        work.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    else:
+        raise serializers.ValidationError('Not found this data')
