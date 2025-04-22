@@ -6,6 +6,6 @@ urlpatterns = [
     path('', car_views.car_list_view),
     path('<int:pk>', car_views.car_by_id),
     path('create', car_views.add_car),
-    path('update/<int:pk>', car_views.update_car),
-    path('delete/<int:pk>', car_views.delete_car),
+    path('<int:pk>/update', car_views.update_car),
+    path('<int:pk>/delete', car_views.delete_car),
 ]
