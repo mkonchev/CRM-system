@@ -8,5 +8,4 @@ urlpatterns = [
     path('create', order_views.add_order),
     path('<int:pk>/update', order_views.update_order),
     path('<int:pk>/delete', order_views.delete_order),
-    path('create', order_views.add_order),
 ]
