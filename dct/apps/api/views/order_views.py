@@ -28,3 +28,14 @@ def delete_order(request, pk):
         return Response(status=status.HTTP_202_ACCEPTED)
     else:
         raise serializers.ValidationError('Not found this data')
+
+
+@api_view(['POST'])
+def add_order(request):
+    order = OrderSerializer(data=request.data)
+
+    if order.is_valid():
+        order.save()
+        return Response(data=order.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
