@@ -51,11 +51,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
+# В ENV/env.dev прописать все конфиги для подключения к бд
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get('SQL_ENGINE',
+                                 default='django.db.backends.sqlite3'),
+        'NAME': os.environ.get('SQL_NAME', default=BASE_DIR / 'db.sqlite3'),
+        'USER': os.environ.get('SQL_USER'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD'),
+        'HOST': os.environ.get('SQL_HOST'),
+        'PORT': os.environ.get('SQL_PORT'),
+        'TIME_ZONE': os.environ.get('SQL_TIMEZONE', default='Europe/Moscow')
     }
 }
 
