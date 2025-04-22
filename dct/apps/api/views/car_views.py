@@ -32,3 +32,15 @@ def add_car(request):
         return Response(data=car.data, status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+def update_car(request, pk):
+    car = Car.objects.get(pk=pk)
+    upd_car = CarSerializer(instance=car, data=request.data)
+
+    if upd_car.is_valid():
+        upd_car.save()
+        return Response(data=upd_car.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
