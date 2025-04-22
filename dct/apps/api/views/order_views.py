@@ -34,6 +34,21 @@ def add_order(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['POST'])
+def update_order(request, pk):
+    order = Order.objects.get(pk=pk)
+    upd_order = OrderSerializer(instance=order, data=request.data)
+
+    # if Order.objects.filter(**request.data).exists():
+    #     raise serializers.ValidationError('This data already exists')
+
+    if upd_order.is_valid():
+        upd_order.save()
+        return Response(data=upd_order.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 @api_view(['DELETE'])
 def delete_order(request, pk):
     if Order.objects.filter(pk=pk).exists():
