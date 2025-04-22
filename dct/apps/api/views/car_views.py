@@ -15,9 +15,12 @@ def car_list_view(request):
 
 @api_view(['GET'])
 def car_by_id(request, pk):
-    car = Car.objects.get(pk=pk)
-    serializer = CarSerializer(car)
-    return Response(data=serializer.data, status=status.HTTP_200_OK)
+    if Car.objects.filter(pk=pk).exists():
+        car = Car.objects.get(pk=pk)
+        serializer = CarSerializer(car)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    else:
+        raise serializers.ValidationError('Not found this data')
 
 
 @api_view(['POST'])
@@ -44,3 +47,13 @@ def update_car(request, pk):
         return Response(data=upd_car.data, status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['DELETE'])
+def delete_car(request, pk):
+    if Car.objects.filter(pk=pk).exists():
+        car = Car.objects.get(pk=pk)
+        car.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    else:
+        raise serializers.ValidationError('Not found this data')
