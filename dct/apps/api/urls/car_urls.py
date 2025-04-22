@@ -1,9 +1,10 @@
 from django.urls import path
 
-from apps.api.views.car_views import car_list_view, car_by_id, add_car
+from apps.api.views import car_views
 
 urlpatterns = [
-    path('', car_list_view),
-    path('<int:pk>', car_by_id),
-    path('create', add_car),
+    path('', car_views.car_list_view),
+    path('<int:pk>', car_views.car_by_id),
+    path('create', car_views.add_car),
+    path('update/<int:pk>', car_views.update_car),
 ]
