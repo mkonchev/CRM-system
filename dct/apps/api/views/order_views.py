@@ -20,6 +20,20 @@ def order_by_id(request, pk):
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['POST'])
+def add_order(request):
+    order = OrderSerializer(data=request.data)
+
+    # if Order.objects.filter(**request.data).exists():
+    #     raise serializers.ValidationError('This data already exists')
+
+    if order.is_valid():
+        order.save()
+        return Response(data=order.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 @api_view(['DELETE'])
 def delete_order(request, pk):
     if Order.objects.filter(pk=pk).exists():
