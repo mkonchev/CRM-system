@@ -29,7 +29,7 @@ class Order(models.Model):
     end_date = models.DateTimeField(verbose_name='Окончание работ', **NULLABLE)
     works = models.ManyToManyField('work.Work',
                                    verbose_name='Работы',
-                                   related_name='order_work',)
+                                   related_name='order_work')
     workstatus = models.ManyToManyField('workstatus.Workstatus',
                                         verbose_name='Статусы работ',
                                         related_name='order_work_status')

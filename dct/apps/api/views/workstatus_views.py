@@ -16,7 +16,7 @@ def workstatus_list_view(request):
 @api_view(['GET'])
 def workstatus_by_id(request, pk):
     workstatus = Workstatus.objects.get(pk=pk)
-    serializer = Workstatus(workstatus)
+    serializer = WorkstatusSerializer(workstatus)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
