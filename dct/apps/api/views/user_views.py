@@ -14,14 +14,14 @@ def user_list_view(request):
 
 
 @api_view(['GET'])
-def user_by_id(request, pk):
+def user_by_id_view(request, pk):
     user = User.objects.get(pk=pk)
     serializer = UserSerializer(user)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
-def add_user(request):
+def add_user_view(request):
     user = UserSerializer(data=request.data)
 
     # if user.objects.filter(**request.data).exists():
@@ -35,7 +35,7 @@ def add_user(request):
 
 
 @api_view(['POST'])
-def update_user(request, pk):
+def update_user_view(request, pk):
     user = User.objects.get(pk=pk)
     upd_user = UserSerializer(instance=user, data=request.data)
 
@@ -47,7 +47,7 @@ def update_user(request, pk):
 
 
 @api_view(['DELETE'])
-def delete_user(request, pk):
+def delete_user_view(request, pk):
     if User.objects.filter(pk=pk).exists():
         user = User.objects.get(pk=pk)
         user.delete()

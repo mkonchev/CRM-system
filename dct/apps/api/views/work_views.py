@@ -14,14 +14,14 @@ def work_list_view(request):
 
 
 @api_view(['GET'])
-def work_by_id(request, pk):
+def work_by_id_view(request, pk):
     work = Work.objects.get(pk=pk)
     serializer = Work(work)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
-def add_work(request):
+def add_work_view(request):
     work = WorkSerializer(data=request.data)
 
     # if user.objects.filter(**request.data).exists():
@@ -35,7 +35,7 @@ def add_work(request):
 
 
 @api_view(['POST'])
-def update_work(request, pk):
+def update_work_view(request, pk):
     work = Work.objects.get(pk=pk)
     upd_work = WorkSerializer(instance=work, data=request.data)
 
@@ -47,7 +47,7 @@ def update_work(request, pk):
 
 
 @api_view(['DELETE'])
-def delete_work(request, pk):
+def delete_work_view(request, pk):
     if Work.objects.filter(pk=pk).exists():
         work = Work.objects.get(pk=pk)
         work.delete()

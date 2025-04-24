@@ -14,7 +14,7 @@ def car_list_view(request):
 
 
 @api_view(['GET'])
-def car_by_id(request, pk):
+def car_by_id_view(request, pk):
     if Car.objects.filter(pk=pk).exists():
         car = Car.objects.get(pk=pk)
         serializer = CarSerializer(car)
@@ -24,7 +24,7 @@ def car_by_id(request, pk):
 
 
 @api_view(['POST'])
-def add_car(request):
+def add_car_view(request):
     car = CarSerializer(data=request.data)
 
     if Car.objects.filter(**request.data).exists():
@@ -38,7 +38,7 @@ def add_car(request):
 
 
 @api_view(['POST'])
-def update_car(request, pk):
+def update_car_view(request, pk):
     car = Car.objects.get(pk=pk)
     upd_car = CarSerializer(instance=car, data=request.data)
 
@@ -50,7 +50,7 @@ def update_car(request, pk):
 
 
 @api_view(['DELETE'])
-def delete_car(request, pk):
+def delete_car_view(request, pk):
     if Car.objects.filter(pk=pk).exists():
         car = Car.objects.get(pk=pk)
         car.delete()

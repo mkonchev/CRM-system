@@ -14,14 +14,14 @@ def order_list_view(request):
 
 
 @api_view(['GET'])
-def order_by_id(request, pk):
+def order_by_id_view(request, pk):
     order = Order.objects.get(pk=pk)
     serializer = Order(order)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
-def add_order(request):
+def add_order_view(request):
     order = OrderSerializer(data=request.data)
 
     # if Order.objects.filter(**request.data).exists():
@@ -35,7 +35,7 @@ def add_order(request):
 
 
 @api_view(['POST'])
-def update_order(request, pk):
+def update_order_view(request, pk):
     order = Order.objects.get(pk=pk)
     upd_order = OrderSerializer(instance=order, data=request.data)
 
@@ -50,7 +50,7 @@ def update_order(request, pk):
 
 
 @api_view(['DELETE'])
-def delete_order(request, pk):
+def delete_order_view(request, pk):
     if Order.objects.filter(pk=pk).exists():
         order = Order.objects.get(pk=pk)
         order.delete()
