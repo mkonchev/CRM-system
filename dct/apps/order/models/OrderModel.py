@@ -27,22 +27,27 @@ class Order(models.Model):
     start_date = models.DateTimeField(verbose_name='Начало работ',
                                       auto_now=True)
     end_date = models.DateTimeField(verbose_name='Окончание работ', **NULLABLE)
-    works = models.ManyToManyField('work.Work',
-                                   verbose_name='Работы',
-                                   related_name='order_work')
-    workstatus = models.ManyToManyField('workstatus.Workstatus',
-                                        verbose_name='Статусы работ',
-                                        related_name='order_work_status')
+    is_completed = models.BooleanField(verbose_name='Готовность',
+                                       default=False)
+    # works = models.ManyToManyField('work.Work',
+    #                                verbose_name='Работы',
+    #                                related_name='order_work')
+    # workstatus = models.ManyToManyField('workstatus.Workstatus',
+    #                                     verbose_name='Статусы работ',
+    #                                     related_name='order_work_status')
 
     class Meta:
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
 
     def __str__(self):
-        return f'{self.owner} {self.car} {self.worker}'
+        return f'{self.car} {self.worker}'
 
-    def get_works(self):
-        return '\n'.join([str(p) for p in self.works.all()])
+    def total_price(self):
+        return sum(item.fix_price * item.amount for item in self.items.all())
+
+    # def get_works(self):
+    #     return '\n'.join([str(p) for p in self.works.all()])
 
     def get_status(self):
         statuses = []

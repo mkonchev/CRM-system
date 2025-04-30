@@ -25,4 +25,4 @@ class Work(models.Model):
         verbose_name_plural = 'Работы'
 
     def __str__(self):
-        return f'{self.name} {self.car}'
+        return f'{self.name} ({self.car})'
