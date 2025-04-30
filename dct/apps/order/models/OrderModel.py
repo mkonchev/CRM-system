@@ -25,7 +25,8 @@ class Order(models.Model):
                                limit_choices_to={'is_active': True,
                                                  'role': 1})
     start_date = models.DateTimeField(verbose_name='Начало работ',
-                                      auto_now=True)
+                                      auto_now_add=True,
+                                      )
     end_date = models.DateTimeField(verbose_name='Окончание работ', **NULLABLE)
     is_completed = models.BooleanField(verbose_name='Готовность',
                                        default=False)
