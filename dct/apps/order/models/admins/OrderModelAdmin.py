@@ -20,16 +20,15 @@ class OrderModelAdmin(admin.ModelAdmin):
     readonly_fields = ("start_date",
                        # "get_works",
                        "get_status",
-                       "is_completed",
                        "total_price",
                        )
     inlines = [WorkstatusInline]
     fields = ("owner",
               "car",
-              # "works",
               "worker",
               "start_date",
               "end_date",
               "get_status",
+              "is_completed",
               )
     search_fields = ("car", "owner")

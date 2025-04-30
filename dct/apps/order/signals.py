@@ -21,8 +21,22 @@ def auto_fill_owner_id(instance, sender, **kwargs):
 #             )
 #             for work in instance.works.all()
 #         ])
+# def update_order_completion_status(sender, instance, **kwargs):
+#     order = instance.order
+#     all_works = order.items.all()
+#     if not all_works.exists():
+#         order.is_completed = False
+#         order.save(update_fields=['is_completed'])
+#         return
+#     all_completed = not any(
+#         work.status != WorkStatusChoice.completed
+#         for work in all_works
+#     )
+#     if order.is_completed != all_completed:
+#         order.is_completed = all_completed
+#         order.save(update_fields=['is_completed'])
 
 
-# m2m_changed.connect(create_workstatuses_for_order_items,
-#                     sender=Order.works.through)
+# m2m_changed.connect(update_order_completion_status,
+#                     sender=Workstatus)
 pre_save.connect(auto_fill_owner_id, sender=Order)
