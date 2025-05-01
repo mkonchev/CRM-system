@@ -8,27 +8,32 @@ from config.constants import NULLABLE
 class Workstatus(models.Model):
     ModelAdmin = WorkstatusModelAdmin
 
-    work = models.ForeignKey('work.Work',
-                             verbose_name='Работа',
-                             on_delete=models.CASCADE,
-                             related_name='work_name',
-                             **NULLABLE)
-    order = models.ForeignKey('order.Order',
-                              verbose_name='Заявка',
-                              on_delete=models.CASCADE,
-                              related_name='items',
-                              **NULLABLE)
+    work = models.ForeignKey(
+        'work.Work',
+        verbose_name='Работа',
+        on_delete=models.CASCADE,
+        related_name='work_name',
+        **NULLABLE,
+    )
+    order = models.ForeignKey(
+        'order.Order',
+        verbose_name='Заявка',
+        on_delete=models.CASCADE,
+        related_name='items',
+        **NULLABLE,
+    )
     status = models.PositiveIntegerField(
         verbose_name="Статус",
         choices=WorkStatusChoice.choices,
         default=WorkStatusChoice.none,
-        )
+    )
     amount = models.PositiveIntegerField(
         verbose_name='Количество',
-        default=1)
+        default=1,
+    )
     fix_price = models.PositiveIntegerField(
         verbose_name='Цена',
-        )
+    )
 
     class Meta:
         verbose_name = 'Статус работы'

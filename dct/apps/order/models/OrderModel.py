@@ -6,30 +6,44 @@ from config.constants import NULLABLE
 class Order(models.Model):
     ModelAdmin = OrderModelAdmin
     # list_display = ["services"] добавить
-    owner = models.ForeignKey('core.User',
-                              verbose_name='Владелец',
-                              on_delete=models.SET_NULL,
-                              related_name='order_owner',
-                              help_text='Автозаполнение при выборе машины',
-                              **NULLABLE)
-    car = models.ForeignKey('car.Car',
-                            verbose_name='Машина',
-                            on_delete=models.SET_NULL,
-                            related_name='orders',
-                            **NULLABLE)
-    worker = models.ForeignKey('core.User',
-                               verbose_name='Работник',
-                               on_delete=models.SET_NULL,
-                               related_name='orders',
-                               **NULLABLE,
-                               limit_choices_to={'is_active': True,
-                                                 'role': 1})
-    start_date = models.DateTimeField(verbose_name='Начало работ',
-                                      auto_now_add=True,
-                                      )
-    end_date = models.DateTimeField(verbose_name='Окончание работ', **NULLABLE)
-    is_completed = models.BooleanField(verbose_name='Готовность',
-                                       default=False)
+    owner = models.ForeignKey(
+        'core.User',
+        verbose_name='Владелец',
+        on_delete=models.SET_NULL,
+        related_name='order_owner',
+        help_text='Автозаполнение при выборе машины',
+        **NULLABLE,
+    )
+    car = models.ForeignKey(
+        'car.Car',
+        verbose_name='Машина',
+        on_delete=models.SET_NULL,
+        related_name='orders',
+        **NULLABLE,
+    )
+    worker = models.ForeignKey(
+        'core.User',
+        verbose_name='Работник',
+        on_delete=models.SET_NULL,
+        related_name='orders',
+        **NULLABLE,
+        limit_choices_to={
+            'is_active': True,
+            'role': 1,
+        },
+    )
+    start_date = models.DateTimeField(
+        verbose_name='Начало работ',
+        auto_now_add=True,
+    )
+    end_date = models.DateTimeField(
+        verbose_name='Окончание работ',
+        **NULLABLE,
+    )
+    is_completed = models.BooleanField(
+        verbose_name='Готовность',
+        default=False,
+    )
     # works = models.ManyToManyField('work.Work',
     #                                verbose_name='Работы',
     #                                related_name='order_work')
