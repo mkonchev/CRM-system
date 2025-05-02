@@ -13,11 +13,25 @@ class UserModelAdmin(UserAdmin):
         ),
     )
 
-    list_display = ("email", "first_name", "last_name", "is_staff", "tg_login", "role", "phone_number")
+    list_display = (
+        "email",
+        "first_name",
+        "last_name",
+        "is_staff",
+        "tg_login",
+        "role",
+        "phone_number",
+    )
     ordering = ("email",)
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name", "tg_login", "role", "phone_number")}),
+        (_("Personal info"), {"fields": (
+            "first_name",
+            "last_name",
+            "tg_login",
+            "role",
+            "phone_number",
+        )}),
         (
             _("Permissions"),
             {
