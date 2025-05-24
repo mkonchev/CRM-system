@@ -44,12 +44,11 @@ class CarModelTestCase(TestCase):
         self.assertIn(car, self.owner.car_owner.all())
 
     def test_field_max_lengths(self):
-        """Тест максимальных длин полей"""
         with self.assertRaises(ValidationError):
             car = Car(
-                number='A'*11,  # Превышает max_length=10
-                mark='B'*51,    # Превышает max_length=50
-                model='C'*51,   # Превышает max_length=50
-                vin='D'*101      # Превышает max_length=100
+                number='A'*11,
+                mark='B'*51,
+                model='C'*51,
+                vin='D'*101
             )
             car.full_clean()
