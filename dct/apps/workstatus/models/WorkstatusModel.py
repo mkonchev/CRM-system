@@ -40,7 +40,7 @@ class Workstatus(models.Model):
         verbose_name_plural = 'Статусы работ'
 
     def __str__(self):
-        return f'{self.work} x{self.amount})'
+        return f'{self.work.name} x{self.amount}'
 
     def save(self, *args, **kwargs):
         if not self.fix_price:
