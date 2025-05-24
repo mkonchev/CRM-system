@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 from apps.car.models.CarModel import Car
 from apps.core.models.UserModel import User
 
@@ -41,3 +42,14 @@ class CarModelTestCase(TestCase):
         car = Car.objects.create(**self.car_data)
         self.assertEqual(car.owner, self.owner)
         self.assertIn(car, self.owner.car_owner.all())
+
+    def test_field_max_lengths(self):
+        """Тест максимальных длин полей"""
+        with self.assertRaises(ValidationError):
+            car = Car(
+                number='A'*11,  # Превышает max_length=10
+                mark='B'*51,    # Превышает max_length=50
+                model='C'*51,   # Превышает max_length=50
+                vin='D'*101      # Превышает max_length=100
+            )
+            car.full_clean()
