@@ -23,7 +23,7 @@ class WorkstatusModelTest(TestCase):
         }
 
     def test_workstatus_creation(self):
-        """Тест создания объекта Workstatus"""
+
         ws = Workstatus.objects.create(**self.workstatus_data)
 
         self.assertEqual(ws.work, self.work)
