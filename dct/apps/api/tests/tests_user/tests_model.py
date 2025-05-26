@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.hashers import make_password
-from .models.UserModel import User
+from apps.core.models.UserModel import User
 
 
 class UserModelTestCase(TestCase):

@@ -12,7 +12,7 @@ class CarModelTestCase(TestCase):
             first_name='Иван',
             last_name='Иванов'
         )
-        
+
         self.car_data = {
             'number': 'А123БВ77',
             'mark': 'Toyota',
@@ -24,7 +24,7 @@ class CarModelTestCase(TestCase):
 
     def test_car_create(self):
         car = Car.objects.create(**self.car_data)
-        
+
         self.assertEqual(car.number, 'А123БВ77')
         self.assertEqual(car.mark, 'Toyota')
         self.assertEqual(car.model, 'Camry')
