@@ -1,4 +1,3 @@
-# tests/test_car_views.py
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
@@ -8,7 +7,7 @@ from apps.order.models.OrderModel import Order
 from django.utils import timezone
 
 
-class CarViewsTest(TestCase):
+class OrderViewsTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
@@ -48,13 +47,13 @@ class CarViewsTest(TestCase):
         }
         self.order = Order.objects.create(**self.order_data)
 
-    def test_car_list_view(self):
+    def test_order_list_view(self):
         url = '/api/order/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
-    def test_car_by_id_view_success(self):
+    def test_order_by_id_view_success(self):
         url = f'/api/order/{self.order.pk}'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -62,12 +61,12 @@ class CarViewsTest(TestCase):
         self.assertEqual(response.data['worker'], self.worker.pk)
         self.assertEqual(response.data['car'], self.car.pk)
 
-    def test_car_by_id_view_not_found(self):
+    def test_order_by_id_view_not_found(self):
         url = '/api/car/99999'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_add_car_view_success(self):
+    def test_add_order_view_success(self):
         url = '/api/order/create'
         new_order_data = {
             'owner': self.owner.id,
@@ -80,7 +79,7 @@ class CarViewsTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Order.objects.count(), 2)
 
-    def test_update_car_view_success(self):
+    def test_update_order_view_success(self):
         url = f'/api/order/{self.order.pk}/update'
         update_data = {'is_completed': True,
                        'end_date': timezone.now().isoformat()}
@@ -92,7 +91,7 @@ class CarViewsTest(TestCase):
         self.assertTrue(self.order.is_completed)
         self.assertIsNotNone(self.order.end_date)
 
-    def test_delete_car_view_success(self):
+    def test_delete_order_view_success(self):
         url = f'/api/order/{self.order.pk}/delete'
         response = self.client.delete(url)
 

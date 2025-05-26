@@ -3,7 +3,7 @@ from django.test import TestCase
 from apps.api.views import order_views
 
 
-class CarUrlsTest(TestCase):
+class OrderUrlsTest(TestCase):
 
     def test_car_list_url(self):
         url = '/api/order/'
