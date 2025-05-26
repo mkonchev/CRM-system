@@ -38,7 +38,7 @@ class CarSerializerTest(TestCase):
         self.assertEqual(data['mark'], 'Toyota')
         self.assertEqual(data['model'], 'Camry')
         self.assertEqual(data['year'], 2020)
-        
+
     def test_create_serializer(self):
         new_car_data = {
             'number': 'B456CD',
@@ -54,7 +54,9 @@ class CarSerializerTest(TestCase):
 
     def test_update_serializer(self):
         update_data = {'mark': 'Updated Toyota'}
-        serializer = CarSerializer(instance=self.car, data=update_data, partial=True)
+        serializer = CarSerializer(instance=self.car,
+                                   data=update_data,
+                                   partial=True)
         self.assertTrue(serializer.is_valid())
         car = serializer.save()
         self.assertEqual(car.mark, 'Updated Toyota')

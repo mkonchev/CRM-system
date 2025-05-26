@@ -1,6 +1,5 @@
 # tests/test_car_views.py
 from django.test import TestCase
-from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 from apps.car.models.CarModel import Car
@@ -16,7 +15,7 @@ class CarViewsTest(TestCase):
             first_name='Иван',
             last_name='Иванов'
         )
-        
+
         self.car_data = {
             'number': 'А123БВ77',
             'mark': 'Toyota',
