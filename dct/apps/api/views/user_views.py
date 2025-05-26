@@ -25,6 +25,7 @@ def user_by_id_view(request, pk):
             status=status.HTTP_404_NOT_FOUND
         )
 
+
 @api_view(['POST'])
 def add_user_view(request):
     user = UserSerializer(data=request.data)

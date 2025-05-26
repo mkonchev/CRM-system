@@ -10,7 +10,6 @@ class CarViewsTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-
         self.user_data = {
             'email': 'exampe@worker.com',
             'first_name': 'Петров',
