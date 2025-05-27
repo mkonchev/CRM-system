@@ -5,6 +5,7 @@ from apps.order.models import Order
 from apps.workstatus.models.consts import WorkStatusChoice
 from apps.api.serializers.WorkstatusSerializer import WorkstatusSerializer
 
+
 class WorkstatusSerializerlTest(TestCase):
     def setUp(self):
         self.work = Work.objects.create(
