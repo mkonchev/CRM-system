@@ -50,7 +50,7 @@ class WorkViewsTest(TestCase):
         self.assertEqual(len(response.data), 1)
 
     def test__workstatus_by_id_view_success(self):
-        url = f'/api/workstatus/{self.work.pk}'
+        url = f'/api/workstatus/{self.workstatus.pk}'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['status'], WorkStatusChoice.in_progress)
