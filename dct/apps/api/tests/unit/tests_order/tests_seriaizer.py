@@ -7,7 +7,7 @@ from rest_framework.test import APIClient
 from django.utils import timezone
 
 
-class CarSerializerTest(TestCase):
+class OrderSerializerTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
