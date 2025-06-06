@@ -4,9 +4,11 @@ from django.contrib.auth import get_user_model
 from apps.car.models import Car
 from apps.order.models import Order
 from apps.work.models import Work
-from apps.workstatus.models import WorkStatus
+from apps.workstatus.models import Workstatus
 
 fake = Faker()
+
+
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -19,6 +21,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     phone_number = factory.LazyAttribute(lambda _: fake.phone_number())
     is_active = True
 
+
 class CarFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Car
@@ -28,26 +31,30 @@ class CarFactory(factory.django.DjangoModelFactory):
     year = factory.LazyAttribute(lambda _: fake.year())
     vin = factory.LazyAttribute(lambda _: fake.uuid4())
 
-class WorkStatusFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = WorkStatus
-
-    name = factory.LazyAttribute(lambda _: fake.word())
-    description = factory.LazyAttribute(lambda _: fake.text())
-
-class WorkFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Work
-
-    name = factory.LazyAttribute(lambda _: fake.word())
-    description = factory.LazyAttribute(lambda _: fake.text())
-    price = factory.LazyAttribute(lambda _: fake.random_int(min=100, max=10000))
 
 class OrderFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Order
 
+    owner = factory.SubFactory(UserFactory)
+    worker = factory.SubFactory(UserFactory)
     car = factory.SubFactory(CarFactory)
-    status = factory.SubFactory(WorkStatusFactory)
-    description = factory.LazyAttribute(lambda _: fake.text())
-    total_price = factory.LazyAttribute(lambda _: fake.random_int(min=1000, max=100000)) 
+    start_date = factory.LazyAttribute(lambda _: fake.past_date())
+
+
+class WorkStatusFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Workstatus
+
+    work = factory.LazyAttribute(lambda _: WorkFactory())
+    order = factory.SubFactory(OrderFactory)
+    fix_price = factory.LazyAttribute(lambda _: fake.random_int(min=100, max=10000))
+
+
+
+class WorkFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Work
+    name = factory.LazyAttribute(lambda _: fake.word())
+    description = factory.LazyAttribute(lambda _: fake.word())
+    price = factory.LazyAttribute(lambda _: fake.random_int(min=100, max=10000))

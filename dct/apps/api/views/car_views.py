@@ -39,9 +39,11 @@ def add_car_view(request):
 
 @api_view(['POST'])
 def update_car_view(request, pk):
-    car = Car.objects.get(pk=pk)
-    upd_car = CarSerializer(instance=car, data=request.data)
-
+    try:
+        car = Car.objects.get(pk=pk)
+        upd_car = CarSerializer(instance=car, data=request.data)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     if upd_car.is_valid():
         upd_car.save()
         return Response(data=upd_car.data, status=status.HTTP_200_OK)
