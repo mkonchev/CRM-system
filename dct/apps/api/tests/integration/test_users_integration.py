@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework import status
 from apps.core.models.UserModel import User
-from apps.api.tests.factories import UserFactory
+# from apps.api.tests.factories import UserFactorys
 
 
 class UserIntegrationTest(TestCase):

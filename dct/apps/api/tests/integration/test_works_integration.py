@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework import status
 from apps.work.models.WorkModel import Work
-from apps.api.tests.factories import WorkFactory, WorkStatusFactory
+from apps.api.tests.factories import WorkStatusFactory
 
 
 class WorkIntegrationTest(TestCase):
@@ -45,4 +45,4 @@ class WorkIntegrationTest(TestCase):
         invalid_data['status'] = 99999  # non-existent status
         response = self.client.post(create_url, **invalid_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(Work.objects.count(), 1) 
+        self.assertEqual(Work.objects.count(), 1)

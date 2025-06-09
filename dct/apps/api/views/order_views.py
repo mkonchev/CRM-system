@@ -32,6 +32,7 @@ def add_order_view(request):
         return Response(data=order.data, status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+        # return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
