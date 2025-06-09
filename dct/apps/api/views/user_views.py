@@ -15,9 +15,15 @@ def user_list_view(request):
 
 @api_view(['GET'])
 def user_by_id_view(request, pk):
-    user = User.objects.get(pk=pk)
-    serializer = UserSerializer(user)
-    return Response(data=serializer.data, status=status.HTTP_200_OK)
+    try:
+        user = User.objects.get(pk=pk)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response(
+            {"detail": "Пользователь не найден"},
+            status=status.HTTP_404_NOT_FOUND
+        )
 
 
 @api_view(['POST'])
@@ -36,9 +42,11 @@ def add_user_view(request):
 
 @api_view(['POST'])
 def update_user_view(request, pk):
-    user = User.objects.get(pk=pk)
-    upd_user = UserSerializer(instance=user, data=request.data)
-
+    try:
+        user = User.objects.get(pk=pk)
+        upd_user = UserSerializer(instance=user, data=request.data, partial=True)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     if upd_user.is_valid():
         upd_user.save()
         return Response(data=upd_user.data, status=status.HTTP_200_OK)

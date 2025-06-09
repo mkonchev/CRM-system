@@ -16,7 +16,7 @@ def order_list_view(request):
 @api_view(['GET'])
 def order_by_id_view(request, pk):
     order = Order.objects.get(pk=pk)
-    serializer = Order(order)
+    serializer = OrderSerializer(order)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
@@ -32,6 +32,7 @@ def add_order_view(request):
         return Response(data=order.data, status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+        # return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])

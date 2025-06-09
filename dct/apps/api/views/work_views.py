@@ -15,9 +15,15 @@ def work_list_view(request):
 
 @api_view(['GET'])
 def work_by_id_view(request, pk):
-    work = Work.objects.get(pk=pk)
-    serializer = Work(work)
-    return Response(data=serializer.data, status=status.HTTP_200_OK)
+    try:
+        work = Work.objects.get(pk=pk)
+        serializer = WorkSerializer(work)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    except Work.DoesNotExist:
+        return Response(
+            {"detail": "Работа не найдена"},
+            status=status.HTTP_404_NOT_FOUND
+        )
 
 
 @api_view(['POST'])
@@ -36,9 +42,11 @@ def add_work_view(request):
 
 @api_view(['POST'])
 def update_work_view(request, pk):
-    work = Work.objects.get(pk=pk)
-    upd_work = WorkSerializer(instance=work, data=request.data)
-
+    try:
+        work = Work.objects.get(pk=pk)
+        upd_work = WorkSerializer(instance=work, data=request.data, partial=True)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     if upd_work.is_valid():
         upd_work.save()
         return Response(data=upd_work.data, status=status.HTTP_200_OK)
