@@ -16,7 +16,7 @@ class User(AbstractUser):
     )
     phone_number = models.CharField(
         verbose_name='Phone Number',
-        max_length=12,
+        max_length=30,
         default='-',
     )
     tg_login = models.CharField(

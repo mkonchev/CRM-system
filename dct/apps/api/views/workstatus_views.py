@@ -42,11 +42,13 @@ def add_workstatus_view(request):
 
 @api_view(['POST'])
 def update_workstatus_view(request, pk):
-    workstatus = Workstatus.objects.get(pk=pk)
-    workstatus = WorkstatusSerializer(instance=workstatus,
-                                      data=request.data,
-                                      partial=True)
-
+    try:
+        workstatus = Workstatus.objects.get(pk=pk)
+        workstatus = WorkstatusSerializer(instance=workstatus,
+                                        data=request.data,
+                                        partial=True)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     if workstatus.is_valid():
         workstatus.save()
         return Response(data=workstatus.data, status=status.HTTP_200_OK)

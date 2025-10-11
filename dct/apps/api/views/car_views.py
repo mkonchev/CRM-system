@@ -78,41 +78,17 @@ class CarAddView(APIView):
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # @api_view(['POST'])
-    # def add_car_view(request):
-    #     car = CarSerializer(data=request.data)
 
-    #     if Car.objects.filter(**request.data).exists():
-    #         raise serializers.ValidationError('This data already exists')
+@api_view(['POST'])
+def update_car_view(request, pk):
+    car = Car.objects.get(pk=pk)
+    upd_car = CarSerializer(instance=car, data=request.data)
 
-    #     if car.is_valid():
-    #         car.save()
-    #         return Response(data=car.data, status=status.HTTP_200_OK)
-    #     else:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-# class CarUpdateView(APIView):
-#     name = 'car-view'
-#     queryset = Car.objects.all()
-#     serializer_class = CarSerializer
-
-#     # authentication_classes = [authentication.TokenAuthentication]
-#     permission_classes = [permissions.IsAdminUser]
-
-#     def get(self, request, pk, format=None):
-
-
-# @api_view(['POST'])
-# def update_car_view(request, pk):
-#     car = Car.objects.get(pk=pk)
-#     upd_car = CarSerializer(instance=car, data=request.data)
-
-#     if upd_car.is_valid():
-#         upd_car.save()
-#         return Response(data=upd_car.data, status=status.HTTP_200_OK)
-#     else:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
+    if upd_car.is_valid():
+        upd_car.save()
+        return Response(data=upd_car.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 # class CarDeleteView(APIView):
