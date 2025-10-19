@@ -1,25 +1,18 @@
 FROM python:3.12-slim as builder
 
-WORKDIR /app
+RUN pip install uv
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+COPY pyproject.toml uv.lock ./
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc
-
-COPY ./requirements/common.txt .
-COPY ./requirements/dev.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r dev.txt
+RUN uv sync --frozen --all-extras
 
 FROM python:3.12-slim
 
-WORKDIR /app
-
-COPY --from=builder /app/wheels /wheels
-COPY --from=builder /app/common.txt .
-COPY --from=builder /app/dev.txt .
-
-RUN pip install --no-cache /wheels/*
+COPY --from=builder /.venv /.venv
 
 COPY . .
+
+ENV PATH="/.venv/bin:$PATH"
+ENV PYTHONPATH="/app:$PYTHONPATH"
+
+WORKDIR /app
