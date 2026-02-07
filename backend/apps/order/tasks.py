@@ -32,3 +32,8 @@ def send_workstatus_complete_email_task(
 @shared_task
 def generate_report_task(a: int):
     report_generate(a)
+
+
+@shared_task
+def test_chrone_task():
+    print('complete')

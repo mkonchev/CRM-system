@@ -250,6 +250,7 @@ dependencies = [
     { name = "djangorestframework-simplejwt" },
     { name = "factory-boy" },
     { name = "flower" },
+    { name = "fpdf" },
     { name = "pillow" },
     { name = "psycopg" },
     { name = "psycopg2-binary" },
@@ -278,6 +279,7 @@ requires-dist = [
     { name = "djangorestframework-simplejwt", specifier = "==5.3.1" },
     { name = "factory-boy", specifier = "==3.3.0" },
     { name = "flower", specifier = "==2.0.1" },
+    { name = "fpdf", specifier = ">=1.7.2" },
     { name = "pillow", specifier = "==10.2.0" },
     { name = "psycopg", specifier = "==3.1.18" },
     { name = "psycopg2-binary", specifier = "==2.9.10" },
@@ -416,6 +418,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/09/a1/357f1b5d8946deafd
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a6/ff/ee2f67c0ff146ec98b5df1df637b2bc2d17beeb05df9f427a67bd7a7d79c/flower-2.0.1-py2.py3-none-any.whl", hash = "sha256:9db2c621eeefbc844c8dd88be64aef61e84e2deb29b271e02ab2b5b9f01068e2", size = 383553, upload-time = "2023-08-13T14:37:41.552Z" },
 ]
+
+[[package]]
+name = "fpdf"
+version = "1.7.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/37/c6/608a9e6c172bf9124aa687ec8b9f0e8e5d697d59a5f4fad0e2d5ec2a7556/fpdf-1.7.2.tar.gz", hash = "sha256:125840783289e7d12552b1e86ab692c37322e7a65b96a99e0ea86cca041b6779", size = 39504, upload-time = "2015-01-21T00:07:47.493Z" }
 
 [[package]]
 name = "humanize"
