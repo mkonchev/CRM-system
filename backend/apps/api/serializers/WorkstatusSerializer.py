@@ -1,15 +1,20 @@
 from rest_framework import serializers
-
-# from apps.api.serializers.CarSerializer import CarSerializer
-# from apps.api.serializers.OrderSerializer import OrderSerializer
 from apps.workstatus.models.WorkstatusModel import Workstatus
 
 
 class WorkstatusSerializer(serializers.ModelSerializer):
-
-    # car = CarSerializer()
-    # order = OrderSerializer()
+    """Workstatus Serializer"""
 
     class Meta:
         model = Workstatus
-        fields = '__all__'
+        fields = [
+            'id',
+            'work',
+            'order',
+            'status',
+            'amount',
+            'end_date',
+            'fix_price'
+        ]
+
+        read_only_fields = ['id']

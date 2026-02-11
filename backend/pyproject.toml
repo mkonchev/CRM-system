@@ -9,7 +9,7 @@ dependencies = [
     "django-redis==5.4.0",
     "django-robots==6.1",
     "djangorestframework==3.14.0",
-    "djangorestframework-simplejwt==5.3.1",
+    "djangorestframework-simplejwt[blacklist]==5.3.1",
     "flower==2.0.1",
     "Pillow==10.2.0",
     "psycopg==3.1.18",
@@ -22,6 +22,11 @@ dependencies = [
     "factory-boy==3.3.0",
     "django-debug-toolbar>=4.3.0",
     "fpdf>=1.7.2",
+    "django-filter>=25.1",
+    "coreapi>=2.3.3",
+    "coreschema>=0.0.4",
+    "django-cors-headers>=4.9.0",
+    "drf-yasg>=1.21.14",
 ]
 
 [project.optional-dependencies]

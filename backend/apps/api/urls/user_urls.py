@@ -1,11 +1,13 @@
 from django.urls import path
-
-from apps.api.views import user_views
+from apps.api.views.user_views import UserListView, UserDetailView
+from apps.api.views.user_views import UserDeactivateView
 
 urlpatterns = [
-    path('', user_views.user_list_view),
-    path('<int:pk>', user_views.user_by_id_view),
-    path('create', user_views.add_user_view),
-    path('<int:pk>/update', user_views.update_user_view),
-    path('<int:pk>/delete', user_views.delete_user_view),
+    path('', UserListView.as_view(), name='user-list'),
+    path('<int:pk>/', UserDetailView.as_view(), name='user-detail'),
+    path(
+        '<int:pk>/deactivate/',
+        UserDeactivateView.as_view(),
+        name='user-deactivate'
+    ),
 ]

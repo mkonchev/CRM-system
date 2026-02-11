@@ -7,9 +7,9 @@ from rest_framework.response import Response
 def api_overview(request):
     api_urls = {
         'all_items': '/model_name/',
-        'search_by_id': '/model_name/<int:pk>',
         'Add': '/model_name/create',
-        'Update': '/model_name/update',
-        'Delete': '/model_name/delete'
+        'GET': '/model_name/<int:pk>',
+        'Update': '/model_name/<int:pk>',
+        'Delete': '/model_name/<int:pk>'
     }
     return Response(api_urls, status=status.HTTP_200_OK)

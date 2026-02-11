@@ -1,12 +1,7 @@
 from django.urls import path
-
-from apps.api.views import work_views
-
+from apps.api.views.work_views import WorkListView, WorkDetailView
 
 urlpatterns = [
-    path('', work_views.work_list_view),
-    path('<int:pk>', work_views.work_by_id_view),
-    path('create', work_views.add_work_view),
-    path('<int:pk>/update', work_views.update_work_view),
-    path('<int:pk>/delete', work_views.delete_work_view),
+    path('', WorkListView.as_view(), name='work-list'),
+    path('<int:pk>/', WorkDetailView.as_view(), name='work-detail'),
 ]
