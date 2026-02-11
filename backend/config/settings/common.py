@@ -16,12 +16,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
 
     'apps.core.apps.CoreConfig',
     'apps.car.apps.CarConfig',
     'apps.order.apps.OrderConfig',
     'apps.work.apps.WorkConfig',
     'apps.workstatus.apps.WorkstatusConfig',
+    'apps.api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -113,6 +115,23 @@ CACHES = {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT аутентификация
+        'rest_framework.authentication.SessionAuthentication',         # Сессионная аутентификация для браузера
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',  # Разрешения по умолчанию
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',  # Фильтрация
+        'rest_framework.filters.SearchFilter',                # Поиск
+        'rest_framework.filters.OrderingFilter',              # Сортировка
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',  # Пагинация
+    'PAGE_SIZE': 10,  # Размер страницы
 }
 
 AUTH_USER_MODEL = 'core.User'
