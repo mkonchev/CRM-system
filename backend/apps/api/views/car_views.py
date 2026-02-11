@@ -12,7 +12,25 @@ class CarListView(generics.ListCreateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
 
-    permission_classes = [permissions.AllowAny]
+    def get_permissions(self):
+        """Права доступа для разных методов"""
+        if self.request.method == 'POST':
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    def get_queryset(self):
+        """Фильтрация машин по владельцу"""
+        queryset = Car.objects.all()
+        if self.request.user.is_authenticated:
+            if self.request.user.is_staff:
+                return queryset
+            return queryset.filter(owner=self.request.user)
+
+        return Car.objects.none()
+
+    def perform_create(self, serializer):
+        """Автоматически назначаем владельцем текущего пользователя"""
+        serializer.save(owner=self.request.user)
 
 
 class CarDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -26,4 +44,16 @@ class CarDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
 
-    permission_classes = [permissions.AllowAny]
+    def get_permissions(self):
+        """Права доступа для детального просмотра"""
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    def get_queryset(self):
+        """Проверка доступа к конкретной машине"""
+        if self.request.user.is_authenticated:
+            if self.request.user.is_staff:
+                return Car.objects.all()
+            return Car.objects.filter(owner=self.request.user)
+        return Car.objects.none()

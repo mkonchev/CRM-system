@@ -6,6 +6,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('', api_view.api_overview, name='api-overview'),
+    path('auth/', include('apps.api.urls.auth_urls')),
     path('users/', include('apps.api.urls.user_urls')),
     path('cars/', include('apps.api.urls.car_urls')),
     path('works/', include('apps.api.urls.work_urls')),
