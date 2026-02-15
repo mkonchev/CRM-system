@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from apps.workstatus.models.WorkstatusModel import Workstatus
 from apps.api.serializers.WorkstatusSerializer import WorkstatusSerializer
+from apps.core.models.consts import UserRoleChoice
 
 
 class WorkstatusListView(generics.ListCreateAPIView):
@@ -12,7 +13,20 @@ class WorkstatusListView(generics.ListCreateAPIView):
     queryset = Workstatus.objects.all()
     serializer_class = WorkstatusSerializer
 
-    permission_classes = [permissions.IsAuthenticated]
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            if user.is_staff:
+                return Workstatus.objects.all()
+            if user.role == UserRoleChoice.worker:
+                return Workstatus.objects.filter(order__worker=user)
+            return Workstatus.objects.filter(order__owner=user)
+        return Workstatus.objects.none()
 
 
 class WorkstatusDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -22,8 +36,20 @@ class WorkstatusDetailView(generics.RetrieveUpdateDestroyAPIView):
     PATCH /api/workstatuses/<id>/ - частично обновить статус
     DELETE /api/workstatuses/<id>/ - удалить статус
     """
-
     queryset = Workstatus.objects.all()
     serializer_class = WorkstatusSerializer
 
-    permission_classes = [permissions.IsAuthenticated]
+    def get_permissions(self):
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            if user.is_staff:
+                return Workstatus.objects.all()
+            if user.role == UserRoleChoice.worker:
+                return Workstatus.objects.filter(order__worker=user)
+            return Workstatus.objects.filter(order__owner=user)
+        return Workstatus.objects.none()

@@ -13,7 +13,6 @@ class WorkstatusSerializer(serializers.ModelSerializer):
             'order',
             'status',
             'amount',
-            'end_date',
             'fix_price'
         ]
 

@@ -17,4 +17,4 @@ class OrderSerializer(serializers.ModelSerializer):
             'is_completed'
         ]
 
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'start_date']
