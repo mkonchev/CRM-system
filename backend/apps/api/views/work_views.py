@@ -8,11 +8,13 @@ class WorkListView(generics.ListCreateAPIView):
     GET /api/works/ - получить список всех работ
     POST /api/works/ - создать новую работу
     """
-
     queryset = Work.objects.all()
     serializer_class = WorkSerializer
 
-    permission_classes = [permissions.IsAuthenticated]
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
 
 
 class WorkDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -22,8 +24,10 @@ class WorkDetailView(generics.RetrieveUpdateDestroyAPIView):
     PATCH /api/works/<id>/ - частично обновить работу
     DELETE /api/works/<id>/ - удалить работу
     """
-
     queryset = Work.objects.all()
     serializer_class = WorkSerializer
 
-    permission_classes = [permissions.IsAuthenticated]
+    def get_permissions(self):
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
