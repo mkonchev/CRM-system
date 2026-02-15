@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from apps.workstatus.models.WorkstatusModel import Workstatus
 from apps.workstatus.models.consts import WorkStatusChoice
 
@@ -18,3 +18,4 @@ post_save.connect(
     update_order_completion_status_signal,
     sender=Workstatus,
 )
+post_delete.connect(update_order_completion_status_signal, sender=Workstatus)
