@@ -36,3 +36,11 @@ export const deleteCar = async (token, carId) => {
   }
   return true;
 };
+export const fetchCarById = async (token, carId) => {
+  const res = await fetch(`/api/cars/${carId}/`, {
+    headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || 'Ошибка загрузки машины');
+  return data;
+};

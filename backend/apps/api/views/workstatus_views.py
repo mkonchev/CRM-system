@@ -28,6 +28,10 @@ class WorkstatusListView(generics.ListCreateAPIView):
             return Workstatus.objects.filter(order__owner=user)
         return Workstatus.objects.none()
 
+    def create(self, request, *args, **kwargs):
+        print("📦 Получены данные:", request.data)  # ← смотрим
+        return super().create(request, *args, **kwargs)
+
 
 class WorkstatusDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
