@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { fetchCars } from '../../api/cars';
 import { fetchWorks, createWork } from '../../api/works';
 import { createOrder } from '../../api/orders';
+import { fetchWorkers } from '../../api/users';
 
 export default function CreateOrderPage() {
   const { token } = useAuth();
@@ -19,15 +20,19 @@ export default function CreateOrderPage() {
   const [newWorkDescription, setNewWorkDescription] = useState('');
   const [newWorkForSelectedCar, setNewWorkForSelectedCar] = useState(false);
   const [newWorkCarId, setNewWorkCarId] = useState('');
+  const [workers, setWorkers] = useState([]);
+  const [selectedWorker, setSelectedWorker] = useState('');
 
   useEffect(() => {
     Promise.all([
       fetchCars(token),
-      fetchWorks(token)
+      fetchWorks(token),
+      fetchWorkers(token)
     ])
-      .then(([carsData, worksData]) => {
+      .then(([carsData, worksData, workersData]) => {
         setCars(carsData);
         setWorks(worksData);
+        setWorkers(workersData);
         setLoading(false);
       })
       .catch(err => {
@@ -107,6 +112,10 @@ export default function CreateOrderPage() {
       alert('Выберите машину');
       return;
     }
+    if (!selectedWorker) {
+      alert('Выберите работника');
+      return;
+    }
     if (Object.keys(selectedWorks).length === 0) {
       alert('Выберите хотя бы одну работу');
       return;
@@ -117,6 +126,7 @@ export default function CreateOrderPage() {
       // Создаём заказ
       const order = await createOrder(token, {
         car: parseInt(selectedCar),
+        worker: parseInt(selectedWorker)
       });
 
       // Добавляем работы в заказ (Workstatus)
@@ -144,6 +154,7 @@ export default function CreateOrderPage() {
       alert('Заказ создан!');
       // Очищаем форму
       setSelectedCar('');
+      setSelectedWorker('');
       setSelectedWorks({});
     } catch (err) {
       alert(err.message);
@@ -190,6 +201,27 @@ export default function CreateOrderPage() {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Выбор работника */}
+        <div style={{ marginBottom: '20px' }}>
+          <h3>Выберите работника</h3>
+          <select
+            value={selectedWorker}
+            onChange={(e) => setSelectedWorker(e.target.value)}
+            style={{ width: '100%', padding: '8px' }}
+            required
+          >
+            <option value="">-- Выберите работника --</option>
+            {workers.map(worker => (
+              <option key={worker.id} value={worker.id}>
+                {worker.first_name} {worker.last_name} ({worker.email})
+              </option>
+            ))}
+          </select>
+          {workers.length === 0 && (
+            <p style={{ color: 'orange' }}>⚠️ Нет доступных работников</p>
+          )}
         </div>
 
         {/* Выбор работ */}
@@ -355,7 +387,7 @@ export default function CreateOrderPage() {
         {/* Кнопка отправки */}
         <button
           type="submit"
-          disabled={submitting || !selectedCar || Object.keys(selectedWorks).length === 0}
+          disabled={submitting || !selectedCar || !selectedWorker || Object.keys(selectedWorks).length === 0}
           style={{
             padding: '10px 20px',
             background: '#28a745',

@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext';
 import LoginPage from './pages/Login';
 import CarsPage from './pages/Cars';
 import OrdersPage from './pages/Orders';
+import OrderDetailPage from './pages/OrderDetail';
 import ProfilePage from './pages/Profile';
 import WorksPage from './pages/Works';
 import CreateOrderPage from './pages/CreateOrder';
@@ -26,9 +27,9 @@ function App() {
             <h3>CRM</h3>
             <ul style={{ listStyle: 'none', padding: 0 }}>
               <li><Link to="/cars">Машины</Link></li>
-              <li><Link to="/orders">Заказы</Link></li>
               <li><Link to="/profile">Профиль</Link></li>
               <li><Link to="/works">Работы</Link></li>
+              <li><Link to="/orders">Заказы</Link></li>
               <li><Link to="/create-order">Создать заказ</Link></li>
               <li><button onClick={logout}>Выйти</button></li>
             </ul>
@@ -39,6 +40,8 @@ function App() {
             <Routes>
               <Route path="/cars" element={<CarsPage />} />
               <Route path="/orders" element={<OrdersPage />} />
+              <Route path="/orders/:id" element={<OrderDetailPage />} />
+              <Route path="/create-order" element={<CreateOrderPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/works" element={<WorksPage />} />
               <Route path="/create-order" element={<CreateOrderPage />} />
