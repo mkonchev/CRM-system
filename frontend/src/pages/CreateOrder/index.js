@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchCars } from '../../api/cars';
-import { fetchWorks } from '../../api/works';
+import { fetchWorks, createWork } from '../../api/works';
 import { createOrder } from '../../api/orders';
 
 export default function CreateOrderPage() {
@@ -9,10 +9,15 @@ export default function CreateOrderPage() {
   const [cars, setCars] = useState([]);
   const [works, setWorks] = useState([]);
   const [selectedCar, setSelectedCar] = useState('');
-  const [selectedWorks, setSelectedWorks] = useState([]);
+  const [selectedWorks, setSelectedWorks] = useState({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [showNewWorkForm, setShowNewWorkForm] = useState(false);
+  const [newWorkName, setNewWorkName] = useState('');
+  const [newWorkPrice, setNewWorkPrice] = useState('');
+  const [newWorkDescription, setNewWorkDescription] = useState('');
+  const [newWorkForSelectedCar, setNewWorkForSelectedCar] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -31,11 +36,31 @@ export default function CreateOrderPage() {
   }, [token]);
 
   const handleWorkToggle = (workId) => {
-    setSelectedWorks(prev =>
-      prev.includes(workId)
-        ? prev.filter(id => id !== workId)
-        : [...prev, workId]
-    );
+    setSelectedWorks(prev => {
+      const newSelected = { ...prev };
+      if (newSelected[workId]) {
+        delete newSelected[workId]; // убираем, если уже выбрано
+      } else {
+        newSelected[workId] = 1; // добавляем с количеством 1
+      }
+      return newSelected;
+    });
+  };
+
+  const handleQuantityChange = (workId, newQuantity) => {
+    if (newQuantity < 1) {
+      // если количество стало 0 — убираем работу
+      setSelectedWorks(prev => {
+        const newSelected = { ...prev };
+        delete newSelected[workId];
+        return newSelected;
+      });
+    } else {
+      setSelectedWorks(prev => ({
+        ...prev,
+        [workId]: newQuantity
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -44,7 +69,7 @@ export default function CreateOrderPage() {
       alert('Выберите машину');
       return;
     }
-    if (selectedWorks.length === 0) {
+    if (Object.keys(selectedWorks).length === 0) {
       alert('Выберите хотя бы одну работу');
       return;
     }
@@ -54,11 +79,10 @@ export default function CreateOrderPage() {
       // Создаём заказ
       const order = await createOrder(token, {
         car: parseInt(selectedCar),
-        // owner и worker пока не передаём — бэкенд сам подставит
       });
 
       // Добавляем работы в заказ (Workstatus)
-      await Promise.all(selectedWorks.map(async (workId) => {
+      await Promise.all(Object.entries(selectedWorks).map(async ([workId, quantity]) => {
         const response = await fetch('/api/workstatus/', {
           method: 'POST',
           headers: {
@@ -67,16 +91,14 @@ export default function CreateOrderPage() {
           },
           body: JSON.stringify({
             order: order.id,
-            work: workId,
-            amount: 1,
+            work: parseInt(workId),
+            amount: quantity,
             status: 0
           })
         });
-        
-        const data = await response.json();
-        console.log('Ответ сервера:', data); // ← смотрим, что в ответе
-        
+
         if (!response.ok) {
+          const data = await response.json();
           throw new Error(JSON.stringify(data));
         }
       }));
@@ -84,7 +106,7 @@ export default function CreateOrderPage() {
       alert('Заказ создан!');
       // Очищаем форму
       setSelectedCar('');
-      setSelectedWorks([]);
+      setSelectedWorks({});
     } catch (err) {
       alert(err.message);
     } finally {
@@ -95,9 +117,9 @@ export default function CreateOrderPage() {
   if (loading) return <div>Загрузка...</div>;
   if (error) return <div style={{ color: 'red' }}>Ошибка: {error}</div>;
 
-  const totalPrice = selectedWorks.reduce((sum, workId) => {
-    const work = works.find(w => w.id === workId);
-    return sum + (work?.price || 0);
+  const totalPrice = Object.entries(selectedWorks).reduce((sum, [workId, quantity]) => {
+    const work = works.find(w => w.id === parseInt(workId));
+    return sum + (work?.price || 0) * quantity;
   }, 0);
 
   return (
@@ -127,29 +149,49 @@ export default function CreateOrderPage() {
           <h3>Выберите работы</h3>
           <div style={{ display: 'grid', gap: '10px' }}>
             {works.map(work => (
-              <label key={work.id} style={{
-                display: 'block',
+              <div key={work.id} style={{
                 padding: '10px',
                 border: '1px solid #ccc',
                 borderRadius: '5px',
-                cursor: 'pointer',
-                background: selectedWorks.includes(work.id) ? '#e3f2fd' : 'white'
+                background: selectedWorks[work.id] ? '#e3f2fd' : 'white'
               }}>
-                <input
-                  type="checkbox"
-                  checked={selectedWorks.includes(work.id)}
-                  onChange={() => handleWorkToggle(work.id)}
-                  style={{ marginRight: '10px' }}
-                />
-                <strong>{work.name}</strong> — {work.price} ₽
-                {work.description && <div style={{ color: '#666', fontSize: '0.9em' }}>{work.description}</div>}
-              </label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <input
+                    type="checkbox"
+                    checked={!!selectedWorks[work.id]}
+                    onChange={() => handleWorkToggle(work.id)}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <strong>{work.name}</strong> — {work.price} ₽
+                    {work.description && <div style={{ color: '#666', fontSize: '0.9em' }}>{work.description}</div>}
+                  </div>
+                  
+                  {/* Поле для количества */}
+                  {selectedWorks[work.id] && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <button
+                        type="button"
+                        onClick={() => handleQuantityChange(work.id, selectedWorks[work.id] - 1)}
+                        style={{ width: '30px', height: '30px' }}
+                      >-</button>
+                      <span style={{ minWidth: '30px', textAlign: 'center' }}>
+                        {selectedWorks[work.id]}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleQuantityChange(work.id, selectedWorks[work.id] + 1)}
+                        style={{ width: '30px', height: '30px' }}
+                      >+</button>
+                    </div>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Итого */}
-        {selectedWorks.length > 0 && (
+        {Object.keys(selectedWorks).length > 0 && (
           <div style={{
             padding: '15px',
             background: '#f5f5f5',
@@ -163,7 +205,7 @@ export default function CreateOrderPage() {
         {/* Кнопка отправки */}
         <button
           type="submit"
-          disabled={submitting || !selectedCar || selectedWorks.length === 0}
+          disabled={submitting || !selectedCar || Object.keys(selectedWorks).length === 0}
           style={{
             padding: '10px 20px',
             background: '#28a745',
