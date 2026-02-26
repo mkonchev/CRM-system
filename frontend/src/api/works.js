@@ -11,3 +11,17 @@ export const fetchWorks = async (token, filters = {}) => {
   if (!res.ok) throw new Error(data.detail || 'Ошибка загрузки работ');
   return data.results || data;
 };
+
+export const createWork = async (token, workData) => {
+  const res = await fetch('/api/works/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(workData)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || 'Ошибка создания работы');
+  return data;
+};

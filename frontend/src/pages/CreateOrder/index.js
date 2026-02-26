@@ -18,6 +18,7 @@ export default function CreateOrderPage() {
   const [newWorkPrice, setNewWorkPrice] = useState('');
   const [newWorkDescription, setNewWorkDescription] = useState('');
   const [newWorkForSelectedCar, setNewWorkForSelectedCar] = useState(false);
+  const [newWorkCarId, setNewWorkCarId] = useState('');
 
   useEffect(() => {
     Promise.all([
@@ -34,6 +35,43 @@ export default function CreateOrderPage() {
         setLoading(false);
       });
   }, [token]);
+
+  const handleCreateWork = async (e) => {
+    e.preventDefault();
+    if (!newWorkName || !newWorkPrice) {
+      alert('Название и цена обязательны');
+      return;
+    }
+
+    try {
+      const workData = {
+        name: newWorkName,
+        price: parseInt(newWorkPrice),
+        description: newWorkDescription || undefined,
+        car: newWorkCarId ? parseInt(newWorkCarId) : null  // ← здесь выбираем машину
+      };
+
+      const newWork = await createWork(token, workData);
+      
+      // Обновляем список работ
+      setWorks(prev => [...prev, newWork]);
+      
+      // Автоматически выбираем созданную работу с количеством 1
+      setSelectedWorks(prev => ({
+        ...prev,
+        [newWork.id]: 1
+      }));
+
+      // Сбрасываем форму
+      setShowNewWorkForm(false);
+      setNewWorkName('');
+      setNewWorkPrice('');
+      setNewWorkDescription('');
+      setNewWorkCarId('');  // ← сбрасываем
+    } catch (err) {
+      alert('Ошибка при создании работы: ' + err.message);
+    }
+  };
 
   const handleWorkToggle = (workId) => {
     setSelectedWorks(prev => {
@@ -114,6 +152,16 @@ export default function CreateOrderPage() {
     }
   };
 
+  const getWorkDisplayName = (work) => {
+    if (!work.car) return work.name;
+    
+    const car = cars.find(c => c.id === work.car);
+    if (car) {
+      return `${work.name} (${car.mark} ${car.model} ${car.year})`;
+    }
+    return `${work.name} (для машины ID: ${work.car})`;
+  };
+
   if (loading) return <div>Загрузка...</div>;
   if (error) return <div style={{ color: 'red' }}>Ошибка: {error}</div>;
 
@@ -146,7 +194,110 @@ export default function CreateOrderPage() {
 
         {/* Выбор работ */}
         <div style={{ marginBottom: '20px' }}>
-          <h3>Выберите работы</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h3>Выберите работы</h3>
+            <button
+              type="button"
+              onClick={() => setShowNewWorkForm(true)}
+              style={{
+                padding: '5px 10px',
+                background: '#28a745',
+                color: 'white',
+                border: 'none',
+                borderRadius: '3px',
+                cursor: 'pointer'
+              }}
+            >
+              ➕ Новая работа
+            </button>
+          </div>
+
+          {/* Форма создания новой работы */}
+          {showNewWorkForm && (
+            <div style={{
+              marginBottom: '20px',
+              padding: '15px',
+              border: '2px solid #28a745',
+              borderRadius: '5px',
+              background: '#f9fff9'
+            }}>
+              <h4>Создание новой работы</h4>
+              <div style={{ display: 'grid', gap: '10px' }}>
+                <input
+                  type="text"
+                  placeholder="Название работы *"
+                  value={newWorkName}
+                  onChange={(e) => setNewWorkName(e.target.value)}
+                  style={{ padding: '8px' }}
+                />
+                <input
+                  type="number"
+                  placeholder="Цена *"
+                  value={newWorkPrice}
+                  onChange={(e) => setNewWorkPrice(e.target.value)}
+                  style={{ padding: '8px' }}
+                />
+                <textarea
+                  placeholder="Описание (необязательно)"
+                  value={newWorkDescription}
+                  onChange={(e) => setNewWorkDescription(e.target.value)}
+                  style={{ padding: '8px' }}
+                />
+                
+                {/* Выбор машины (необязательно) */}
+                <div>
+                  <label style={{ display: 'block', marginBottom: '5px' }}>
+                    Привязать к машине (необязательно):
+                  </label>
+                  <select
+                    value={newWorkCarId}
+                    onChange={(e) => setNewWorkCarId(e.target.value)}
+                    style={{ width: '100%', padding: '8px' }}
+                  >
+                    <option value="">-- Нет привязки (общая работа) --</option>
+                    {cars.map(car => (
+                      <option key={car.id} value={car.id}>
+                        {car.mark} {car.model} ({car.year}) - {car.number || 'без номера'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                  <button
+                    type="button"
+                    onClick={handleCreateWork}
+                    style={{
+                      padding: '8px 15px',
+                      background: '#28a745',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '3px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Создать
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowNewWorkForm(false)}
+                    style={{
+                      padding: '8px 15px',
+                      background: '#6c757d',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '3px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Отмена
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Список работ */}
           <div style={{ display: 'grid', gap: '10px' }}>
             {works.map(work => (
               <div key={work.id} style={{
@@ -162,11 +313,10 @@ export default function CreateOrderPage() {
                     onChange={() => handleWorkToggle(work.id)}
                   />
                   <div style={{ flex: 1 }}>
-                    <strong>{work.name}</strong> — {work.price} ₽
+                    <strong>{getWorkDisplayName(work)}</strong> — {work.price} ₽
                     {work.description && <div style={{ color: '#666', fontSize: '0.9em' }}>{work.description}</div>}
                   </div>
                   
-                  {/* Поле для количества */}
                   {selectedWorks[work.id] && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                       <button
