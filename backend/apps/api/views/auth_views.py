@@ -6,6 +6,8 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 # from apps.core.models import User
 from apps.api.serializers.UserSerializer import UserSerializer
 
@@ -39,6 +41,7 @@ class RegisterView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):
     """
     POST /api/auth/login/ - Авторизация пользователя

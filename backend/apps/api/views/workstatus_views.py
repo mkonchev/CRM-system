@@ -1,13 +1,15 @@
 from rest_framework import generics, permissions
+from rest_framework.response import Response
 from apps.workstatus.models.WorkstatusModel import Workstatus
 from apps.api.serializers.WorkstatusSerializer import WorkstatusSerializer
+from apps.api.serializers.OrderSerializer import OrderSerializer
 from apps.core.models.consts import UserRoleChoice
 
 
 class WorkstatusListView(generics.ListCreateAPIView):
     """
-    GET /api/workstatuses/ - получить список всех статусов
-    POST /api/workstatuses/ - создать новый статус
+    GET /api/workstatus/ - получить список всех статусов
+    POST /api/workstatus/ - создать новый статус
     """
 
     queryset = Workstatus.objects.all()
@@ -35,13 +37,20 @@ class WorkstatusListView(generics.ListCreateAPIView):
 
 class WorkstatusDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
-    GET /api/workstatuses/<id>/ - получить статус по ID
-    PUT /api/workstatuses/<id>/ - полностью обновить статус
-    PATCH /api/workstatuses/<id>/ - частично обновить статус
-    DELETE /api/workstatuses/<id>/ - удалить статус
+    GET /api/workstatus/<id>/ - получить статус по ID
+    PUT /api/workstatus/<id>/ - полностью обновить статус
+    PATCH /api/workstatus/<id>/ - частично обновить статус
+    DELETE /api/workstatus/<id>/ - удалить статус
     """
     queryset = Workstatus.objects.all()
     serializer_class = WorkstatusSerializer
+
+    def update(self, request, *args, **kwargs):
+            response = super().update(request, *args, **kwargs) # noqa
+            workstatus = self.get_object()
+            order = workstatus.order
+            serializer = OrderSerializer(order, context={'request': request})
+            return Response(serializer.data)
 
     def get_permissions(self):
         if self.request.method in ['PUT', 'PATCH', 'DELETE']:

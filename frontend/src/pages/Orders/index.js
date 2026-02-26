@@ -8,12 +8,13 @@ import { fetchUsers } from '../../api/users';
 export default function OrdersPage() {
   const { token, user } = useAuth();
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [cars, setCars] = useState({});
   const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const canCreateOrder = user?.role === 0 || user?.role === 1; // admin или worker
+  const canCreateOrder = user?.role === 0 || user?.role === 1;
 
   useEffect(() => {
     Promise.all([
@@ -23,17 +24,17 @@ export default function OrdersPage() {
     ])
       .then(([ordersData, carsData, usersData]) => {
         setOrders(ordersData);
-        
-        // Индексируем машины по ID
+
+        // Индексируем машины
         const carsMap = {};
         carsData.forEach(car => carsMap[car.id] = car);
         setCars(carsMap);
-        
-        // Индексируем пользователей по ID
+
+        // Индексируем пользователей
         const usersMap = {};
         usersData.forEach(u => usersMap[u.id] = u);
         setUsers(usersMap);
-        
+
         setLoading(false);
       })
       .catch(err => {
@@ -41,6 +42,17 @@ export default function OrdersPage() {
         setLoading(false);
       });
   }, [token]);
+
+  // Фильтруем заказы для воркера
+  useEffect(() => {
+    if (orders.length > 0 && user) {
+      if (user.role === 1) { // воркер
+        setFilteredOrders(orders.filter(order => order.worker === user.id));
+      } else {
+        setFilteredOrders(orders);
+      }
+    }
+  }, [orders, user]);
 
   if (loading) return <div>Загрузка...</div>;
   if (error) return <div style={{ color: 'red' }}>Ошибка: {error}</div>;
@@ -65,11 +77,11 @@ export default function OrdersPage() {
         )}
       </div>
 
-      {orders.length === 0 ? (
+      {filteredOrders.length === 0 ? (
         <p>Нет заказов</p>
       ) : (
         <div style={{ display: 'grid', gap: '15px', marginTop: '20px' }}>
-          {orders.map(order => {
+          {filteredOrders.map(order => {
             const car = cars[order.car];
             const owner = users[order.owner];
             const worker = users[order.worker];

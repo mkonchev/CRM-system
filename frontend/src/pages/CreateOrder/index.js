@@ -3,36 +3,37 @@ import { useAuth } from '../../context/AuthContext';
 import { fetchCars } from '../../api/cars';
 import { fetchWorks, createWork } from '../../api/works';
 import { createOrder } from '../../api/orders';
-import { fetchWorkers } from '../../api/users';
+import { fetchUsers } from '../../api/users';
 
 export default function CreateOrderPage() {
   const { token } = useAuth();
   const [cars, setCars] = useState([]);
   const [works, setWorks] = useState([]);
+  const [workers, setWorkers] = useState([]);
   const [selectedCar, setSelectedCar] = useState('');
+  const [selectedWorker, setSelectedWorker] = useState('');
   const [selectedWorks, setSelectedWorks] = useState({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  // Состояние для формы новой работы
   const [showNewWorkForm, setShowNewWorkForm] = useState(false);
   const [newWorkName, setNewWorkName] = useState('');
   const [newWorkPrice, setNewWorkPrice] = useState('');
   const [newWorkDescription, setNewWorkDescription] = useState('');
-  const [newWorkForSelectedCar, setNewWorkForSelectedCar] = useState(false);
   const [newWorkCarId, setNewWorkCarId] = useState('');
-  const [workers, setWorkers] = useState([]);
-  const [selectedWorker, setSelectedWorker] = useState('');
 
   useEffect(() => {
     Promise.all([
       fetchCars(token),
       fetchWorks(token),
-      fetchWorkers(token)
+      fetchUsers(token)
     ])
-      .then(([carsData, worksData, workersData]) => {
+      .then(([carsData, worksData, usersData]) => {
         setCars(carsData);
         setWorks(worksData);
-        setWorkers(workersData);
+        setWorkers(usersData.filter(u => u.role === 1));
         setLoading(false);
       })
       .catch(err => {
@@ -40,6 +41,33 @@ export default function CreateOrderPage() {
         setLoading(false);
       });
   }, [token]);
+
+  const handleWorkToggle = (workId) => {
+    setSelectedWorks(prev => {
+      const newSelected = { ...prev };
+      if (newSelected[workId]) {
+        delete newSelected[workId];
+      } else {
+        newSelected[workId] = 1;
+      }
+      return newSelected;
+    });
+  };
+
+  const handleQuantityChange = (workId, newQuantity) => {
+    if (newQuantity < 1) {
+      setSelectedWorks(prev => {
+        const newSelected = { ...prev };
+        delete newSelected[workId];
+        return newSelected;
+      });
+    } else {
+      setSelectedWorks(prev => ({
+        ...prev,
+        [workId]: newQuantity
+      }));
+    }
+  };
 
   const handleCreateWork = async (e) => {
     e.preventDefault();
@@ -53,56 +81,23 @@ export default function CreateOrderPage() {
         name: newWorkName,
         price: parseInt(newWorkPrice),
         description: newWorkDescription || undefined,
-        car: newWorkCarId ? parseInt(newWorkCarId) : null  // ← здесь выбираем машину
+        car: newWorkCarId ? parseInt(newWorkCarId) : null
       };
 
       const newWork = await createWork(token, workData);
-      
-      // Обновляем список работ
       setWorks(prev => [...prev, newWork]);
-      
-      // Автоматически выбираем созданную работу с количеством 1
       setSelectedWorks(prev => ({
         ...prev,
         [newWork.id]: 1
       }));
 
-      // Сбрасываем форму
       setShowNewWorkForm(false);
       setNewWorkName('');
       setNewWorkPrice('');
       setNewWorkDescription('');
-      setNewWorkCarId('');  // ← сбрасываем
+      setNewWorkCarId('');
     } catch (err) {
       alert('Ошибка при создании работы: ' + err.message);
-    }
-  };
-
-  const handleWorkToggle = (workId) => {
-    setSelectedWorks(prev => {
-      const newSelected = { ...prev };
-      if (newSelected[workId]) {
-        delete newSelected[workId]; // убираем, если уже выбрано
-      } else {
-        newSelected[workId] = 1; // добавляем с количеством 1
-      }
-      return newSelected;
-    });
-  };
-
-  const handleQuantityChange = (workId, newQuantity) => {
-    if (newQuantity < 1) {
-      // если количество стало 0 — убираем работу
-      setSelectedWorks(prev => {
-        const newSelected = { ...prev };
-        delete newSelected[workId];
-        return newSelected;
-      });
-    } else {
-      setSelectedWorks(prev => ({
-        ...prev,
-        [workId]: newQuantity
-      }));
     }
   };
 
@@ -123,13 +118,11 @@ export default function CreateOrderPage() {
 
     setSubmitting(true);
     try {
-      // Создаём заказ
       const order = await createOrder(token, {
         car: parseInt(selectedCar),
         worker: parseInt(selectedWorker)
       });
 
-      // Добавляем работы в заказ (Workstatus)
       await Promise.all(Object.entries(selectedWorks).map(async ([workId, quantity]) => {
         const response = await fetch('/api/workstatus/', {
           method: 'POST',
@@ -152,7 +145,6 @@ export default function CreateOrderPage() {
       }));
 
       alert('Заказ создан!');
-      // Очищаем форму
       setSelectedCar('');
       setSelectedWorker('');
       setSelectedWorks({});
@@ -163,16 +155,6 @@ export default function CreateOrderPage() {
     }
   };
 
-  const getWorkDisplayName = (work) => {
-    if (!work.car) return work.name;
-    
-    const car = cars.find(c => c.id === work.car);
-    if (car) {
-      return `${work.name} (${car.mark} ${car.model} ${car.year})`;
-    }
-    return `${work.name} (для машины ID: ${work.car})`;
-  };
-
   if (loading) return <div>Загрузка...</div>;
   if (error) return <div style={{ color: 'red' }}>Ошибка: {error}</div>;
 
@@ -181,12 +163,20 @@ export default function CreateOrderPage() {
     return sum + (work?.price || 0) * quantity;
   }, 0);
 
+  const getWorkDisplayName = (work) => {
+    if (!work.car) return work.name;
+    const car = cars.find(c => c.id === work.car);
+    if (car) {
+      return `${work.name} (${car.mark} ${car.model} ${car.year})`;
+    }
+    return `${work.name} (для машины ID: ${work.car})`;
+  };
+
   return (
     <div>
       <h1>Создание заказа</h1>
       
       <form onSubmit={handleSubmit}>
-        {/* Выбор машины */}
         <div style={{ marginBottom: '20px' }}>
           <h3>Выберите машину</h3>
           <select
@@ -203,14 +193,12 @@ export default function CreateOrderPage() {
           </select>
         </div>
 
-        {/* Выбор работника */}
         <div style={{ marginBottom: '20px' }}>
           <h3>Выберите работника</h3>
           <select
             value={selectedWorker}
             onChange={(e) => setSelectedWorker(e.target.value)}
             style={{ width: '100%', padding: '8px' }}
-            required
           >
             <option value="">-- Выберите работника --</option>
             {workers.map(worker => (
@@ -219,12 +207,8 @@ export default function CreateOrderPage() {
               </option>
             ))}
           </select>
-          {workers.length === 0 && (
-            <p style={{ color: 'orange' }}>⚠️ Нет доступных работников</p>
-          )}
         </div>
 
-        {/* Выбор работ */}
         <div style={{ marginBottom: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h3>Выберите работы</h3>
@@ -244,7 +228,6 @@ export default function CreateOrderPage() {
             </button>
           </div>
 
-          {/* Форма создания новой работы */}
           {showNewWorkForm && (
             <div style={{
               marginBottom: '20px',
@@ -276,7 +259,6 @@ export default function CreateOrderPage() {
                   style={{ padding: '8px' }}
                 />
                 
-                {/* Выбор машины (необязательно) */}
                 <div>
                   <label style={{ display: 'block', marginBottom: '5px' }}>
                     Привязать к машине (необязательно):
@@ -329,7 +311,6 @@ export default function CreateOrderPage() {
             </div>
           )}
 
-          {/* Список работ */}
           <div style={{ display: 'grid', gap: '10px' }}>
             {works.map(work => (
               <div key={work.id} style={{
@@ -372,7 +353,6 @@ export default function CreateOrderPage() {
           </div>
         </div>
 
-        {/* Итого */}
         {Object.keys(selectedWorks).length > 0 && (
           <div style={{
             padding: '15px',
@@ -384,7 +364,6 @@ export default function CreateOrderPage() {
           </div>
         )}
 
-        {/* Кнопка отправки */}
         <button
           type="submit"
           disabled={submitting || !selectedCar || !selectedWorker || Object.keys(selectedWorks).length === 0}

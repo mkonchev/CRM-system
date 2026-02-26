@@ -30,7 +30,7 @@ function App() {
               <li><Link to="/profile">Профиль</Link></li>
               <li><Link to="/works">Работы</Link></li>
               <li><Link to="/orders">Заказы</Link></li>
-              <li><Link to="/create-order">Создать заказ</Link></li>
+              {/* <li><Link to="/create-order">Создать заказ</Link></li> */}
               <li><button onClick={logout}>Выйти</button></li>
             </ul>
           </nav>
@@ -41,7 +41,6 @@ function App() {
               <Route path="/cars" element={<CarsPage />} />
               <Route path="/orders" element={<OrdersPage />} />
               <Route path="/orders/:id" element={<OrderDetailPage />} />
-              <Route path="/create-order" element={<CreateOrderPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/works" element={<WorksPage />} />
               <Route path="/create-order" element={<CreateOrderPage />} />
