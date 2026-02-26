@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from apps.car.models.CarModel import Car
 from apps.api.serializers.CarSerializer import CarSerializer
+from apps.core.models.consts import UserRoleChoice
 
 
 class CarListView(generics.ListCreateAPIView):
@@ -22,7 +23,7 @@ class CarListView(generics.ListCreateAPIView):
         """Фильтрация машин по владельцу"""
         queryset = Car.objects.all()
         if self.request.user.is_authenticated:
-            if self.request.user.is_staff:
+            if self.request.user.is_staff or self.request.user.role == UserRoleChoice.worker: # noqa
                 return queryset
             return queryset.filter(owner=self.request.user)
 
@@ -53,7 +54,7 @@ class CarDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         """Проверка доступа к конкретной машине"""
         if self.request.user.is_authenticated:
-            if self.request.user.is_staff:
+            if self.request.user.is_staff or self.request.user.role == UserRoleChoice.worker: # noqa
                 return Car.objects.all()
             return Car.objects.filter(owner=self.request.user)
         return Car.objects.none()

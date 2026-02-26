@@ -43,7 +43,7 @@ class Workstatus(models.Model):
         return f'{self.work.name} x{self.amount}'
 
     def save(self, *args, **kwargs):
-        if not self.fix_price:
+        if not self.fix_price and self.work:
             self.fix_price = self.work.price
         super().save(*args, **kwargs)
 
