@@ -7,6 +7,7 @@ import OrderDetailPage from './pages/OrderDetail';
 import ProfilePage from './pages/Profile';
 import WorksPage from './pages/Works';
 import CreateOrderPage from './pages/CreateOrder/CreateOrderPage';
+import RegisterPage from './pages/Register/RegisterPage';
 
 function App() {
   const { token, logout } = useAuth();
@@ -17,6 +18,7 @@ function App() {
         // Неавторизован — только логин
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       ) : (

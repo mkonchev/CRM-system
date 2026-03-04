@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { login } from '../../api/auth';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import styles from './LoginPage.module.css';
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login: authLogin } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +70,10 @@ export default function LoginPage() {
 
         <div className={styles.footer}>
           Нет аккаунта?{' '}
-          <span className={styles.link}>
+          <span 
+            className={styles.link}
+            onClick={() => navigate('/register')}
+          >
             Зарегистрироваться
           </span>
         </div>
