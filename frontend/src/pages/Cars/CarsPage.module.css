@@ -1,0 +1,54 @@
+.container {
+  padding: 20px;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.card {
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.cardTitle {
+  font-weight: bold;
+}
+
+.cardDetail {
+  margin: 5px 0;
+}
+
+.deleteButton {
+  margin-top: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
+.error {
+  color: red;
+}
+
+.loading {
+  padding: 20px;
+}
+
+.empty {
+  padding: 20px;
+  color: #666;
+}
