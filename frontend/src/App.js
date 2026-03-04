@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate, Link} from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import LoginPage from './pages/Login';
-import CarsPage from './pages/Cars';
-import OrdersPage from './pages/Orders';
-import OrderDetailPage from './pages/OrderDetail';
-import ProfilePage from './pages/Profile';
-import WorksPage from './pages/Works';
-import CreateOrderPage from './pages/CreateOrder';
+import LoginPage from './pages/Login/LoginPage';
+import CarsPage from './pages/Cars/CarsPage';
+import OrdersPage from './pages/Orders/OrdersPage';
+import OrderDetailPage from './pages/OrderDetail/OrderDetailPage';
+import ProfilePage from './pages/Profile/ProfilePage';
+import WorksPage from './pages/Works/WorksPage';
+import CreateOrderPage from './pages/CreateOrder/CreateOrderPage';
+import RegisterPage from './pages/Register/RegisterPage';
 
 function App() {
   const { token, logout } = useAuth();
@@ -17,6 +18,7 @@ function App() {
         // Неавторизован — только логин
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       ) : (

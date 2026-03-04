@@ -26,3 +26,16 @@ export const login = async (email, password) => {
   });
   return res.json();
 };
+
+export const register = async (userData) => {
+  const res = await fetch('/api/auth/register/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Ошибка регистрации');
+  return data;
+};

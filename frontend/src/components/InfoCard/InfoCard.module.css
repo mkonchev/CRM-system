@@ -1,0 +1,16 @@
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background: white;
+}
+
+.title {
+  margin: 0 0 15px 0;
+  color: #555;
+  font-size: 1.2rem;
+}
+
+.content {
+  color: #666;
+}

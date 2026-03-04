@@ -1,0 +1,41 @@
+.item {
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background: #fafafa;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.name {
+  font-weight: 600;
+  color: #333;
+  margin-right: 8px;
+}
+
+.price {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.details {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.total {
+  font-weight: 500;
+  color: #333;
+}
+
+.description {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #888;
+  font-style: italic;
+}

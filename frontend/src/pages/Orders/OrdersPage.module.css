@@ -1,0 +1,126 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  color: #333;
+  margin: 0;
+}
+
+.createButton {
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.2s;
+}
+
+.createButton:hover {
+  background: #218838;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.ordersGrid {
+  display: grid;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.orderLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.orderCard {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.1s;
+}
+
+.orderCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.orderContent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderInfo {
+  flex: 1;
+}
+
+.orderTitle {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.orderDetails {
+  margin-top: 5px;
+}
+
+.detailRow {
+  margin: 4px 0;
+  color: #666;
+}
+
+.detailIcon {
+  margin-right: 6px;
+}
+
+.orderMeta {
+  text-align: right;
+  min-width: 120px;
+}
+
+.orderDate {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.orderStatus {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.statusCompleted {
+  color: #28a745;
+}
+
+.statusInProgress {
+  color: #ffc107;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.error {
+  color: #dc3545;
+  text-align: center;
+  padding: 20px;
+}

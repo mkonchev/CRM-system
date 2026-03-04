@@ -1,0 +1,67 @@
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background: white;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.title {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #28a745;
+  background: #e8f5e9;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.description {
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.carInfo {
+  margin-top: 15px;
+  padding: 10px;
+  background: #e9f7fe;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.carLabel {
+  font-weight: 600;
+  color: #0056b3;
+  margin-right: 8px;
+}
+
+.carDetails {
+  color: #333;
+}
+
+.generalWork {
+  margin-top: 15px;
+  padding: 10px;
+  background: #f0f0f0;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  color: #666;
+  text-align: center;
+}

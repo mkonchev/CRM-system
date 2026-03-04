@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.label {
+  color: #555;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.input.error {
+  border-color: #dc3545;
+}
+
+.input.error:focus {
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+}
+
+.input::placeholder {
+  color: #aaa;
+}
