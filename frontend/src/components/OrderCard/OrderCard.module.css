@@ -1,0 +1,72 @@
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.1s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info {
+  flex: 1;
+}
+
+.title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.details {
+  margin-top: 5px;
+}
+
+.detailRow {
+  margin: 4px 0;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon {
+  font-size: 1.1rem;
+}
+
+.meta {
+  text-align: right;
+  min-width: 120px;
+}
+
+.date {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.status {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.completed {
+  color: #28a745;
+}
+
+.inProgress {
+  color: #ffc107;
+}
