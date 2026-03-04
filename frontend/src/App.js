@@ -4,7 +4,7 @@ import LoginPage from './pages/Login/LoginPage';
 import CarsPage from './pages/Cars/CarsPage';
 import OrdersPage from './pages/Orders/OrdersPage';
 import OrderDetailPage from './pages/OrderDetail/OrderDetailPage';
-import ProfilePage from './pages/Profile';
+import ProfilePage from './pages/Profile/ProfilePage';
 import WorksPage from './pages/Works';
 import CreateOrderPage from './pages/CreateOrder/CreateOrderPage';
 import RegisterPage from './pages/Register/RegisterPage';
