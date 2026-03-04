@@ -6,7 +6,7 @@ import OrdersPage from './pages/Orders';
 import OrderDetailPage from './pages/OrderDetail';
 import ProfilePage from './pages/Profile';
 import WorksPage from './pages/Works';
-import CreateOrderPage from './pages/CreateOrder';
+import CreateOrderPage from './pages/CreateOrder/CreateOrderPage';
 
 function App() {
   const { token, logout } = useAuth();
