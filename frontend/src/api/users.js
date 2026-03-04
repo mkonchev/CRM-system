@@ -20,12 +20,3 @@ export const fetchUserById = async (token, id) => {
   if (!res.ok) throw new Error(data.detail || 'Ошибка загрузки пользователя');
   return data;
 };
-
-export const fetchUserStats = async (token) => {
-  const res = await fetch('/api/users/stats/', {
-    headers: token ? { 'Authorization': `Bearer ${token}` } : {}
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.detail || 'Ошибка загрузки статистики');
-  return data;
-};

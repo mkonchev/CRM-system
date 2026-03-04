@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { fetchUserStats } from '../../api/users'; // создадим этот API позже
 import styles from './ProfilePage.module.css';
 
 // Функция для получения первой буквы имени или email
@@ -32,36 +30,7 @@ const getRoleDisplay = (role) => {
 };
 
 export default function ProfilePage() {
-  const { user, token } = useAuth();
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const loadStats = async () => {
-      if (!user) return;
-      
-      setLoading(true);
-      try {
-        // Здесь будет API для получения статистики пользователя
-        // const data = await fetchUserStats(token);
-        // setStats(data);
-        
-        // Пока используем тестовые данные
-        setStats({
-          ordersCount: 12,
-          carsCount: 3,
-          worksCount: 45
-        });
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadStats();
-  }, [user, token]);
+  const { user } = useAuth();
 
   if (!user) {
     return <div className={styles.error}>Пользователь не найден</div>;
@@ -106,32 +75,6 @@ export default function ProfilePage() {
                 <span className={styles.infoValue}>{user.tg_login || '—'}</span>
               </div>
             </div>
-          </div>
-
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Статистика</h2>
-            {loading ? (
-              <div className={styles.loading}>Загрузка статистики...</div>
-            ) : error ? (
-              <div className={styles.error}>{error}</div>
-            ) : stats ? (
-              <div className={styles.stats}>
-                <div className={styles.statCard}>
-                  <div className={styles.statValue}>{stats.ordersCount}</div>
-                  <div className={styles.statLabel}>Заказов</div>
-                </div>
-                <div className={styles.statCard}>
-                  <div className={styles.statValue}>{stats.carsCount}</div>
-                  <div className={styles.statLabel}>Машин</div>
-                </div>
-                <div className={styles.statCard}>
-                  <div className={styles.statValue}>{stats.worksCount}</div>
-                  <div className={styles.statLabel}>Работ</div>
-                </div>
-              </div>
-            ) : (
-              <p>Нет данных</p>
-            )}
           </div>
         </div>
       </div>
