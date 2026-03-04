@@ -1,0 +1,21 @@
+.select {
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.select option {
+  background: white;
+  color: black;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 3px;
+  color: white;
+  font-size: 0.9rem;
+  display: inline-block;
+}

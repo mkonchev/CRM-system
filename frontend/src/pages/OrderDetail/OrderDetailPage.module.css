@@ -1,0 +1,141 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.title {
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.grid {
+  display: grid;
+  gap: 20px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background: white;
+}
+
+.cardTitle {
+  margin: 0 0 15px 0;
+  color: #555;
+  font-size: 1.2rem;
+}
+
+.infoRow {
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.infoLabel {
+  font-weight: 600;
+  color: #333;
+  margin-right: 8px;
+}
+
+.worksList {
+  display: grid;
+  gap: 10px;
+}
+
+.workItem {
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background: #fafafa;
+}
+
+.workHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.workName {
+  font-weight: 600;
+  color: #333;
+}
+
+.workPrice {
+  color: #28a745;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.workDetails {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.workTotal {
+  font-weight: 500;
+}
+
+.statusSelect {
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.statusSelect option {
+  background: white;
+  color: black;
+}
+
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 3px;
+  color: white;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.orderStatus {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.orderStatus.completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.orderStatus.inProgress {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.error {
+  color: #dc3545;
+  text-align: center;
+  padding: 20px;
+}
