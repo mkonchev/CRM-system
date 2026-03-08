@@ -19,12 +19,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     # 'rest_framework.authtoken',
+    'channels',
 
     'apps.core.apps.CoreConfig',
     'apps.car.apps.CarConfig',
     'apps.order.apps.OrderConfig',
     'apps.work.apps.WorkConfig',
     'apps.workstatus.apps.WorkstatusConfig',
+    'apps.chat.apps.ChatConfig',
     'apps.api.apps.ApiConfig',
 ]
 
@@ -56,6 +58,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+ASGI_APPLICATION = 'config.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [
+                (os.environ.get('REDIS_HOST', 'redis'),
+                 int(os.getenv('REDIS_PORT', 6379)))
+            ],  # Адрес и порт Redis
+        },
+    },
+}
+
 # В ENV/env.dev прописать все конфиги для подключения к бд
 DATABASES = {
     'default': {
