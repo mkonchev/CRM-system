@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'apps.order.apps.OrderConfig',
     'apps.work.apps.WorkConfig',
     'apps.workstatus.apps.WorkstatusConfig',
-    'apps.chat.apps.ChatConfig',
+    'apps.chatmessage.apps.ChatMessageConfig',
     'apps.api.apps.ApiConfig',
 ]
 
@@ -35,6 +35,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -116,6 +117,8 @@ STATIC_ROOT = 'static'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'apps/static'),
 )
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'apps/media')
