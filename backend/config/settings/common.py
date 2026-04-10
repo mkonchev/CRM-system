@@ -64,13 +64,13 @@ ASGI_APPLICATION = 'config.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer', #core.RedisChannelLayer
-        # 'CONFIG': {
-        #     "hosts": [
-        #         (os.environ.get('REDIS_HOST', 'redis'),
-        #          int(os.getenv('REDIS_PORT', 6379)))
-        #     ],  # Адрес и порт Redis
-        # },
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [
+                (os.environ.get('REDIS_HOST', 'redis'),
+                 int(os.getenv('REDIS_PORT', 6379)))
+            ],  # Адрес и порт Redis
+        },
     },
 }
 
