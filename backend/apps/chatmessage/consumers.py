@@ -30,6 +30,9 @@ class OrderChatConsumer(AsyncWebsocketConsumer):
             'user': self.user.email
         }))
 
+        print("WS USER:", self.scope["user"], type(self.scope["user"]))
+        print("ORDER:", self.order_id, "USER:", self.user.id)
+
     async def disconnect(self, close_code):
         if hasattr(self, 'group_name'):
             await self.channel_layer.group_discard(
@@ -52,19 +55,17 @@ class OrderChatConsumer(AsyncWebsocketConsumer):
 
             saved_msg = await self.save_message(message)
 
-            message_data = {
-                'type': 'chat_message',
-                'id': saved_msg.id,
-                'message': message,
-                'sender': self.user.email,
-                'sender_id': self.user.id,
-                'timestamp': str(saved_msg.timestamp),
-                'is_read': False
-            }
-
             await self.channel_layer.group_send(
                 self.group_name,
-                message_data
+                {
+                    'type': 'chat_message',
+                    'id': saved_msg.id,
+                    'message': message,
+                    'sender_name': self.user.username or self.user.email,
+                    'sender_email': self.user.email,
+                    'sender_id': self.user.id,
+                    'timestamp': str(saved_msg.timestamp),
+                }
             )
 
         except json.JSONDecodeError:
@@ -73,9 +74,16 @@ class OrderChatConsumer(AsyncWebsocketConsumer):
             await self.send_error(f"Ошибка: {str(e)}")
 
     async def chat_message(self, event):
-        """Получение сообщения из группы"""
-        message_data = {k: v for k, v in event.items() if k != 'type'}
-        await self.send(text_data=json.dumps(message_data))
+        """Получение сообщения из группы и отправка клиенту"""
+        await self.send(text_data=json.dumps({
+            'type': 'chat_message',
+            'id': event['id'],
+            'message': event['message'],
+            'sender_name': event['sender_name'],
+            'sender_email': event['sender_email'],
+            'sender_id': event['sender_id'],
+            'timestamp': event['timestamp']
+        }))
 
     async def send_error(self, error_message):
         await self.send(text_data=json.dumps({
@@ -89,7 +97,9 @@ class OrderChatConsumer(AsyncWebsocketConsumer):
         from apps.order.models import Order
 
         try:
-            order = Order.objects.select_related('owner', 'worker').get(id=self.order_id) # noqa
+            order = Order.objects.select_related('owner', 'worker').get(
+                id=self.order_id
+            )
 
             owner_id = order.owner.id if order.owner else None
             worker_id = order.worker.id if order.worker else None

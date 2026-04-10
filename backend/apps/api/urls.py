@@ -12,4 +12,5 @@ urlpatterns = [
     path('works/', include('apps.api.urls.work_urls')),
     path('orders/', include('apps.api.urls.order_urls')),
     path('workstatus/', include('apps.api.urls.workstatus_urls')),
+    path('history/', include('apps.api.urls.chat_urls')),
 ]

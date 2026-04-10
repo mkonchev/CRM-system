@@ -64,13 +64,13 @@ ASGI_APPLICATION = 'config.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [
-                (os.environ.get('REDIS_HOST', 'redis'),
-                 int(os.getenv('REDIS_PORT', 6379)))
-            ],  # Адрес и порт Redis
-        },
+        'BACKEND': 'channels.layers.InMemoryChannelLayer', #core.RedisChannelLayer
+        # 'CONFIG': {
+        #     "hosts": [
+        #         (os.environ.get('REDIS_HOST', 'redis'),
+        #          int(os.getenv('REDIS_PORT', 6379)))
+        #     ],  # Адрес и порт Redis
+        # },
     },
 }
 
@@ -122,6 +122,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'apps/media')
+
+ROOT_URLCONF = 'config.urls.common'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
