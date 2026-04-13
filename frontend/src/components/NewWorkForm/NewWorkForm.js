@@ -18,7 +18,7 @@ export default function NewWorkForm({ cars, onSubmit, onCancel }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <div className={styles.formContainer}>
       <h4>Создание новой работы</h4>
       
       <div className={styles.formGroup}>
@@ -71,13 +71,13 @@ export default function NewWorkForm({ cars, onSubmit, onCancel }) {
       </div>
 
       <div className={styles.actions}>
-        <button type="submit" className={styles.createButton}>
+        <button type="button" onClick={handleSubmit} className={styles.createButton}>
           Создать
         </button>
         <button type="button" onClick={onCancel} className={styles.cancelButton}>
           Отмена
         </button>
       </div>
-    </form>
+    </div>
   );
 }
