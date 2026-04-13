@@ -27,6 +27,6 @@ prod-down-main:
 prod-down-balancer:
 	docker-compose -f docker-compose.loadbalancer.yml down --remove-orphans
 build-dev:
-	docker-compose -f docker-compose.dev.yml -p $(PROJECT_NAME) --env-file ENV/.env.docker.dev up -d --build
+	docker-compose -f docker-compose.dev.yml -p $(PROJECT_NAME) --env-file ENV/.env.docker.dev up --build
 dev-down:
 	docker-compose -f docker-compose.dev.yml 

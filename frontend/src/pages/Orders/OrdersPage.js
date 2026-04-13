@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { fetchOrders } from '../../api/orders';
-import { fetchCars } from '../../api/cars';
-import { fetchUsers } from '../../api/users';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import styles from './OrdersPage.module.css';
 
@@ -11,30 +9,16 @@ export default function OrdersPage() {
   const { token, user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const [cars, setCars] = useState({});
-  const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   const canCreateOrder = user?.role === 0 || user?.role === 1;
 
   useEffect(() => {
-    Promise.all([
-      fetchOrders(token),
-      fetchCars(token),
-      fetchUsers(token)
-    ])
-      .then(([ordersData, carsData, usersData]) => {
-        setOrders(ordersData);
-
-        const carsMap = {};
-        carsData.forEach(car => carsMap[car.id] = car);
-        setCars(carsMap);
-
-        const usersMap = {};
-        usersData.forEach(u => usersMap[u.id] = u);
-        setUsers(usersMap);
-
+    fetchOrders(token)
+      .then(ordersData => {
+        const ordersArray = Array.isArray(ordersData) ? ordersData : ordersData.results || [];
+        setOrders(ordersArray);
         setLoading(false);
       })
       .catch(err => {
@@ -43,7 +27,6 @@ export default function OrdersPage() {
       });
   }, [token]);
 
-  // Фильтруем заказы для воркера
   useEffect(() => {
     if (orders.length > 0 && user) {
       if (user.role === 1) {
@@ -78,9 +61,9 @@ export default function OrdersPage() {
             <OrderCard
               key={order.id}
               order={order}
-              car={cars[order.car]}
-              owner={users[order.owner]}
-              worker={users[order.worker]}
+              car={order.car_details}
+              owner={order.owner_details}
+              worker={order.worker_details}
             />
           ))}
         </div>
