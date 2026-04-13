@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { fetchOrderById, updateWorkStatus } from '../../api/orders';
-import { fetchCarById } from '../../api/cars';
-import { fetchUserById } from '../../api/users';
 import { fetchWorks } from '../../api/works';
 import InfoCard from '../../components/InfoCard/InfoCard';
 import OrderWorkItem from '../../components/OrderWorkItem/OrderWorkItem';
@@ -14,9 +12,6 @@ export default function OrderDetailPage() {
   const { id } = useParams();
   const { token, user } = useAuth();
   const [order, setOrder] = useState(null);
-  const [car, setCar] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const [worker, setWorker] = useState(null);
   const [works, setWorks] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -28,33 +23,6 @@ export default function OrderDetailPage() {
       try {
         const orderData = await fetchOrderById(token, id);
         setOrder(orderData);
-
-        if (orderData.car) {
-          try {
-            const carData = await fetchCarById(token, orderData.car);
-            setCar(carData);
-          } catch {
-            setCar(null);
-          }
-        }
-
-        if (orderData.owner) {
-          try {
-            const ownerData = await fetchUserById(token, orderData.owner);
-            setOwner(ownerData);
-          } catch {
-            setOwner(null);
-          }
-        }
-
-        if (orderData.worker) {
-          try {
-            const workerData = await fetchUserById(token, orderData.worker);
-            setWorker(workerData);
-          } catch {
-            setWorker(null);
-          }
-        }
 
         const worksData = await fetchWorks(token);
         const worksMap = {};
@@ -89,6 +57,10 @@ export default function OrderDetailPage() {
   if (error) return <div className={styles.error}>Ошибка: {error}</div>;
   if (!order) return <div className={styles.error}>Заказ не найден</div>;
 
+  const car = order.car_details;
+  const owner = order.owner_details;
+  const worker = order.worker_details;
+
   return (
     <div className={styles.container}>
       <Link to="/orders" className={styles.backLink}>
@@ -108,7 +80,7 @@ export default function OrderDetailPage() {
                 <span className={styles.infoLabel}>Телефон:</span> {owner.phone_number || '—'}
               </div>
               <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Имя:</span> {owner.first_name || '—'} {owner.last_name || ''}
+                <span className={styles.infoLabel}>Имя:</span> {owner.full_name || owner.email}
               </div>
             </>
           ) : (
@@ -125,6 +97,9 @@ export default function OrderDetailPage() {
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>Телефон:</span> {worker.phone_number || '—'}
               </div>
+              <div className={styles.infoRow}>
+                <span className={styles.infoLabel}>Имя:</span> {worker.full_name || worker.email}
+              </div>
             </>
           ) : (
             <p>Не назначен</p>
@@ -135,7 +110,7 @@ export default function OrderDetailPage() {
           {car ? (
             <>
               <div className={styles.infoRow}>
-                {car.mark} {car.model} ({car.year})
+                {car.mark} {car.model} ({car.year || '—'})
               </div>
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>Номер:</span> {car.number || '—'}
@@ -150,7 +125,7 @@ export default function OrderDetailPage() {
         </InfoCard>
 
         <InfoCard title="📋 Работы">
-          {order.items?.length === 0 ? (
+          {!order.items || order.items.length === 0 ? (
             <p>Нет работ</p>
           ) : (
             <div className={styles.worksList}>
