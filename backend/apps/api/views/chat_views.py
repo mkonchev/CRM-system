@@ -18,9 +18,11 @@ class OrderChatHistoryView(generics.ListAPIView):
         if user not in [order.owner, order.worker]:
             return ChatMessage.objects.none()
 
-        return ChatMessage.objects.filter(order_id=order_id).order_by(
-            'timestamp'
-        )
+        return ChatMessage.objects.filter(
+            order_id=order_id
+        ).select_related(
+            'sender'
+        ).order_by('timestamp')
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)

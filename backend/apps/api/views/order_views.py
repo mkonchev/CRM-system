@@ -2,6 +2,8 @@ from rest_framework import generics, permissions
 from apps.order.models.OrderModel import Order
 from apps.api.serializers.OrderSerializer import OrderSerializer
 from apps.core.models.consts import UserRoleChoice
+from apps.chatmessage.models import ChatMessage
+from django.db.models import Prefetch
 
 
 class OrderListView(generics.ListCreateAPIView):
@@ -56,7 +58,18 @@ class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
             'owner',
             'worker',
             'car'
-        ).prefetch_related('items')
+        ).prefetch_related(
+            'items',
+            'items__work',
+            Prefetch(
+                'chat_messages',
+                queryset=ChatMessage.objects.select_related(
+                    'sender'
+                ).order_by(
+                    'timestamp'
+                )
+            )
+        )
 
         if user.is_authenticated:
             if user.is_staff:

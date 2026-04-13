@@ -112,8 +112,12 @@ class OrderChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def save_message(self, message):
         from .models import ChatMessage
-        return ChatMessage.objects.create(
+        msg = ChatMessage.objects.create(
             order_id=self.order_id,
             sender=self.user,
             message=message
         )
+
+        msg.refresh_from_db()
+
+        return msg
