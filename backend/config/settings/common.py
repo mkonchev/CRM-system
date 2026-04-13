@@ -19,12 +19,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     # 'rest_framework.authtoken',
+    'channels',
 
     'apps.core.apps.CoreConfig',
     'apps.car.apps.CarConfig',
     'apps.order.apps.OrderConfig',
     'apps.work.apps.WorkConfig',
     'apps.workstatus.apps.WorkstatusConfig',
+    'apps.chatmessage.apps.ChatMessageConfig',
     'apps.api.apps.ApiConfig',
 ]
 
@@ -33,6 +35,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -56,6 +59,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+ASGI_APPLICATION = 'config.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [
+                (os.environ.get('REDIS_HOST', 'redis'),
+                 int(os.getenv('REDIS_PORT', 6379)))
+            ],  # Адрес и порт Redis
+        },
+    },
+}
+
 # В ENV/env.dev прописать все конфиги для подключения к бд
 DATABASES = {
     'default': {
@@ -100,8 +118,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'apps/static'),
 )
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'apps/media')
+
+ROOT_URLCONF = 'config.urls.common'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

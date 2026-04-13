@@ -7,6 +7,7 @@ import { fetchUserById } from '../../api/users';
 import { fetchWorks } from '../../api/works';
 import InfoCard from '../../components/InfoCard/InfoCard';
 import OrderWorkItem from '../../components/OrderWorkItem/OrderWorkItem';
+import OrderChat from '../../components/OrderChat/OrderChat';
 import styles from './OrderDetailPage.module.css';
 
 export default function OrderDetailPage() {
@@ -168,6 +169,9 @@ export default function OrderDetailPage() {
 
         <div className={`${styles.orderStatus} ${order.is_completed ? styles.completed : styles.inProgress}`}>
           {order.is_completed ? '✅ Заказ завершён' : '⏳ Заказ в работе'}
+        </div>
+        <div className={styles.chatSection}>
+          <OrderChat orderId={order.id} />
         </div>
       </div>
     </div>

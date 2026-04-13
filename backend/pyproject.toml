@@ -27,6 +27,10 @@ dependencies = [
     "coreschema>=0.0.4",
     "django-cors-headers>=4.9.0",
     "drf-yasg>=1.21.14",
+    "channels>=4.3.2",
+    "channels-redis>=4.3.0",
+    "daphne>=4.2.1",
+    "whitenoise>=6.12.0",
 ]
 
 [project.optional-dependencies]
