@@ -20,3 +20,31 @@ export const fetchUserById = async (token, id) => {
   if (!res.ok) throw new Error(data.detail || 'Ошибка загрузки пользователя');
   return data;
 };
+
+export const updateUserProfile = async (token, userId, userData) => {
+  const res = await fetch(`/api/users/${userId}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    },
+    body: JSON.stringify(userData)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || 'Ошибка обновления профиля');
+  return data;
+};
+
+export const updateUser = async (token, userId, userData) => {
+  const res = await fetch(`/api/users/${userId}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(userData)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || 'Ошибка обновления пользователя');
+  return data;
+};

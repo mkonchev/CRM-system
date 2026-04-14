@@ -30,7 +30,6 @@ class Car(models.Model):
         verbose_name='VIN/Номер кузова',
         max_length=100,
         default='',
-        **NULLABLE,
     )
     year = models.PositiveIntegerField(verbose_name='Год выпуска', **NULLABLE)
     owner = models.ForeignKey(

@@ -1,4 +1,5 @@
 import { useAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 import styles from './ProfilePage.module.css';
 
 // Функция для получения первой буквы имени или email
@@ -75,6 +76,11 @@ export default function ProfilePage() {
                 <span className={styles.infoValue}>{user.tg_login || '—'}</span>
               </div>
             </div>
+          </div>
+          <div className={styles.editButtonContainer}>
+            <Link to="/profile/edit" className={styles.editButton}>
+              ✏️ Редактировать профиль
+            </Link>
           </div>
         </div>
       </div>

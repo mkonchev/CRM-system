@@ -30,6 +30,13 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_object(self):
+        obj = super().get_object()
+        if self.request.user.is_staff or obj.id == self.request.user.id:
+            return obj
+        from rest_framework.exceptions import PermissionDenied
+        raise PermissionDenied("Нет доступа к этому пользователю")
+
 
 class UserDeactivateView(APIView):
     def post(self, request, pk):
