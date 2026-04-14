@@ -26,12 +26,17 @@ class CarListView(generics.ListCreateAPIView):
             if self.request.user.is_staff or self.request.user.role == UserRoleChoice.worker: # noqa
                 return queryset
             return queryset.filter(owner=self.request.user)
-
         return Car.objects.none()
 
     def perform_create(self, serializer):
-        """Автоматически назначаем владельцем текущего пользователя"""
-        serializer.save(owner=self.request.user)
+        """Автоматически назначаем владельцем текущего пользователя,
+          если роль-User"""
+        user = self.request.user
+        if user.is_staff or user.role == UserRoleChoice.worker:
+            owner_id = self.request.data.get('owner')
+            if owner_id:
+                serializer.save(owner_id=owner_id)
+        serializer.save(owner=user)
 
 
 class CarDetailView(generics.RetrieveUpdateDestroyAPIView):
