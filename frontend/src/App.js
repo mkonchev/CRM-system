@@ -6,12 +6,14 @@ import OrdersPage from './pages/Orders/OrdersPage';
 import OrderDetailPage from './pages/OrderDetail/OrderDetailPage';
 import ProfilePage from './pages/Profile/ProfilePage';
 import ProfileEdit from './pages/Profile/ProfileEdit';
+import UsersPage from './pages/Users/UsersPage';
+import UserEdit from './pages/Users/UserEdit';
 import WorksPage from './pages/Works/WorksPage';
 import CreateOrderPage from './pages/CreateOrder/CreateOrderPage';
 import RegisterPage from './pages/Register/RegisterPage';
 
 function App() {
-  const { token, logout } = useAuth();
+  const { token, logout, user } = useAuth();
 
   return (
     <BrowserRouter>
@@ -44,6 +46,9 @@ function App() {
               <li><Link to="/profile">Профиль</Link></li>
               <li><Link to="/works">Работы</Link></li>
               <li><Link to="/orders">Заказы</Link></li>
+              {(user?.role === 0 || user?.role === 1) && (
+                <li><Link to="/users">Пользователи</Link></li>
+              )}
               <li><button onClick={logout}>Выйти</button></li>
             </ul>
           </nav>
@@ -55,6 +60,8 @@ function App() {
               <Route path="/orders/:id" element={<OrderDetailPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/profile/edit" element={<ProfileEdit />} />
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="/users/:id/edit" element={<UserEdit />} />
               <Route path="/works" element={<WorksPage />} />
               <Route path="/create-order" element={<CreateOrderPage />} />
               <Route path="*" element={<Navigate to="/cars" replace />} />
