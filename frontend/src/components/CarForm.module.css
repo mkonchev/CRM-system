@@ -34,3 +34,14 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.inputError {
+  border-color: #dc3545 !important;
+  background-color: #fff8f8;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+}

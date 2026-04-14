@@ -8,5 +8,10 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ['id', 'number', 'mark', 'model', 'vin', 'year', 'owner']
-
         read_only_fields = ['id']
+
+        def validate_vin(self, value):
+            """Проверка VIN"""
+            if not value:
+                raise serializers.ValidationError("Поле VIN обязательно")
+            return value

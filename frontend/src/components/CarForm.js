@@ -13,6 +13,7 @@ export default function CarForm({ onCarCreated }) {
   const [ownerId, setOwnerId] = useState('');
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const isAdminOrWorker = user?.role === 0 || user?.role === 1;
 
@@ -22,17 +23,31 @@ export default function CarForm({ onCarCreated }) {
     }
   }, [isAdminOrWorker, token]);
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!vin.trim()) {
+      newErrors.vin = 'VIN обязателен для заполнения';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+    
     setLoading(true);
+    setErrors({});
+    
     try {
       const carData = {
         mark,
         model,
         year: year ? Number(year) : null,
         number,
-        vin: vin || null
+        vin: vin.trim()
       };
+      
       if (isAdminOrWorker && ownerId) {
         carData.owner = parseInt(ownerId);
       }
@@ -44,6 +59,13 @@ export default function CarForm({ onCarCreated }) {
       setNumber('');
       setVin('');
       setOwnerId('');
+      setErrors({});
+    } catch (err) {
+      if (err.response?.data) {
+        setErrors(err.response.data);
+      } else {
+        setErrors({ general: err.message || 'Ошибка при создании машины' });
+      }
     } finally {
       setLoading(false);
     }
@@ -78,12 +100,17 @@ export default function CarForm({ onCarCreated }) {
           onChange={(e) => setNumber(e.target.value)}
           className={styles.input}
         />
-        <input
-          placeholder="VIN (если ввести, марка/модель/год заполнятся автоматически)"
-          value={vin}
-          onChange={(e) => setVin(e.target.value)}
-          className={styles.input}
-        />
+        
+        <div>
+          <input
+            placeholder="VIN * (обязательно, минимум 17 символов)"
+            value={vin}
+            onChange={(e) => setVin(e.target.value)}
+            className={`${styles.input} ${errors.vin ? styles.inputError : ''}`}
+          />
+          {errors.vin && <div className={styles.errorText}>{errors.vin}</div>}
+        </div>
+        
         {isAdminOrWorker && users.length > 0 && (
           <select
             value={ownerId}
@@ -98,6 +125,8 @@ export default function CarForm({ onCarCreated }) {
             ))}
           </select>
         )}
+        
+        {errors.general && <div className={styles.errorText}>{errors.general}</div>}
         
         <button type="submit" disabled={loading} className={styles.button}>
           {loading ? 'Сохранение...' : 'Добавить'}

@@ -32,6 +32,11 @@ class CarListView(generics.ListCreateAPIView):
         """Автоматически назначаем владельцем текущего пользователя,
           если роль-User"""
         user = self.request.user
+
+        if not self.request.data.get('vin'):
+            from rest_framework.exceptions import ValidationError
+            raise ValidationError({"vin": "VIN обязателен для заполнения"})
+
         if user.is_staff or user.role == UserRoleChoice.worker:
             owner_id = self.request.data.get('owner')
             if owner_id:
