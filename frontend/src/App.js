@@ -5,6 +5,7 @@ import CarsPage from './pages/Cars/CarsPage';
 import OrdersPage from './pages/Orders/OrdersPage';
 import OrderDetailPage from './pages/OrderDetail/OrderDetailPage';
 import ProfilePage from './pages/Profile/ProfilePage';
+import ProfileEdit from './pages/Profile/ProfileEdit';
 import WorksPage from './pages/Works/WorksPage';
 import CreateOrderPage from './pages/CreateOrder/CreateOrderPage';
 import RegisterPage from './pages/Register/RegisterPage';
@@ -53,6 +54,7 @@ function App() {
               <Route path="/orders" element={<OrdersPage />} />
               <Route path="/orders/:id" element={<OrderDetailPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/edit" element={<ProfileEdit />} />
               <Route path="/works" element={<WorksPage />} />
               <Route path="/create-order" element={<CreateOrderPage />} />
               <Route path="*" element={<Navigate to="/cars" replace />} />
