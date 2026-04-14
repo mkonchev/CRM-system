@@ -27,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'username', 'phone_number', 'tg_login', 'email', 'role',
-            'password', 'password_confirm'
+            'first_name', 'last_name', 'password', 'password_confirm'
         ]
 
         read_only_fields = ['id']

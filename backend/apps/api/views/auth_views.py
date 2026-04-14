@@ -32,6 +32,8 @@ class RegisterView(APIView):
                 'user': {
                     'id': user.id,
                     'email': user.email,
+                    'phone_number': user.phone_number,
+                    'tg_login': user.tg_login,
                     'first_name': user.first_name,
                     'last_name': user.last_name,
                     'role': user.role,
@@ -70,6 +72,8 @@ class LoginView(APIView):
                 'user': {
                     'id': user.id,
                     'email': user.email,
+                    'phone_number': user.phone_number,
+                    'tg_login': user.tg_login,
                     'first_name': user.first_name,
                     'last_name': user.last_name,
                     'role': user.role,
