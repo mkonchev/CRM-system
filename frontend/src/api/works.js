@@ -25,3 +25,12 @@ export const createWork = async (token, workData) => {
   if (!res.ok) throw new Error(data.detail || 'Ошибка создания работы');
   return data;
 };
+
+export const fetchGroupedWorks = async (token) => {
+  const res = await fetch('/api/works/grouped/', {
+    headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || 'Ошибка загрузки работ');
+  return data;
+};
