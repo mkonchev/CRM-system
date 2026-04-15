@@ -1,7 +1,9 @@
+import os
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Min, Max
+from django.core.cache import cache
 from apps.work.models.WorkModel import Work
 from apps.api.serializers.WorkSerializer import WorkSerializer
 
@@ -40,9 +42,14 @@ class GroupedWorksView(APIView):
     """
     GET /api/works/grouped/ - получить сгруппированные работы с диапазоном цен
     """
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        permission_classes = [permissions.AllowAny]
+        cache_key = 'grouped_works'
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            return Response(cached_data)
 
         grouped = Work.objects.values('name').annotate(
             min_price=Min('price'),
@@ -62,5 +69,11 @@ class GroupedWorksView(APIView):
                 'max_price': item['max_price'],
                 'price_range': price_range
             })
+
+        cache.set(
+            cache_key,
+            result,
+            timeout=int(os.environ.get('CACHE_TTL', 3600))
+        )
 
         return Response(result)

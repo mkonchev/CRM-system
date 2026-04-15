@@ -3,9 +3,9 @@ include ENV/.env.common
 build-prod: build-prod-balancer build-prod-main migrate collect-static
 build-prod-no-migrate-static: build-prod-balancer build-prod-main
 build-unit-test:
-	docker exec backend python manage.py test apps.api.tests.unit
+	docker exec backend2 python manage.py test apps.api.tests.unit
 build-integration-test:
-	docker exec backend python manage.py test apps.api.tests.integration
+	docker exec backend2 python manage.py test apps.api.tests.integration
 startapp:
 	cd apps; python ../manage.py startapp --template=../config/app_template $(name)
 startapp_:

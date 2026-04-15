@@ -31,6 +31,7 @@ dependencies = [
     "channels-redis>=4.3.0",
     "daphne>=4.2.1",
     "whitenoise>=6.12.0",
+    "django-redis-cache>=1.8.0",
 ]
 
 [project.optional-dependencies]
