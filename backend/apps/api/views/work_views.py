@@ -13,7 +13,7 @@ class WorkListView(generics.ListCreateAPIView):
     GET /api/works/ - получить список всех работ
     POST /api/works/ - создать новую работу
     """
-    queryset = Work.objects.all()
+    queryset = Work.objects.all().order_by('id')
     serializer_class = WorkSerializer
 
     def get_permissions(self):

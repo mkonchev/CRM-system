@@ -11,7 +11,7 @@ class OrderViewsTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.owner = User.objects.create(
+        self.owner = User.objects.create_user(
             email='owner@example.com',
             first_name='Иван',
             last_name='Иванов',
@@ -22,6 +22,9 @@ class OrderViewsTest(TestCase):
             last_name='Петрович',
             role=1
         )
+
+        self.client.force_authenticate(user=self.owner)
+
         self.car = Car.objects.create(
             number='A123BC',
             mark='Toyota',
@@ -48,13 +51,13 @@ class OrderViewsTest(TestCase):
         self.order = Order.objects.create(**self.order_data)
 
     def test_order_list_view(self):
-        url = '/api/order/'
+        url = '/api/orders/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data['count'], 1)
 
     def test_order_by_id_view_success(self):
-        url = f'/api/order/{self.order.pk}'
+        url = f'/api/orders/{self.order.pk}/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['owner'], self.owner.pk)
@@ -62,12 +65,12 @@ class OrderViewsTest(TestCase):
         self.assertEqual(response.data['car'], self.car.pk)
 
     def test_order_by_id_view_not_found(self):
-        url = '/api/car/99999'
+        url = '/api/orders/99999/'
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_add_order_view_success(self):
-        url = '/api/order/create'
+        url = '/api/orders/'
         new_order_data = {
             'owner': self.owner.id,
             'car': self.new_car.id,
@@ -76,15 +79,15 @@ class OrderViewsTest(TestCase):
             'is_completed': False
         }
         response = self.client.post(url, new_order_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Order.objects.count(), 2)
 
     def test_update_order_view_success(self):
-        url = f'/api/order/{self.order.pk}/update'
+        url = f'/api/orders/{self.order.pk}/'
         update_data = {'is_completed': True,
                        'end_date': timezone.now().isoformat()}
 
-        response = self.client.post(url, update_data, format='json')
+        response = self.client.patch(url, update_data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.order.refresh_from_db()
@@ -92,8 +95,8 @@ class OrderViewsTest(TestCase):
         self.assertIsNotNone(self.order.end_date)
 
     def test_delete_order_view_success(self):
-        url = f'/api/order/{self.order.pk}/delete'
+        url = f'/api/orders/{self.order.pk}/'
         response = self.client.delete(url)
 
-        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Order.objects.count(), 0)

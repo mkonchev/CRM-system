@@ -30,8 +30,8 @@ class OrderChatConsumer(AsyncWebsocketConsumer):
             'user': self.user.email
         }))
 
-        print("WS USER:", self.scope["user"], type(self.scope["user"]))
-        print("ORDER:", self.order_id, "USER:", self.user.id)
+        # print("WS USER:", self.scope["user"], type(self.scope["user"]))
+        # print("ORDER:", self.order_id, "USER:", self.user.id)
 
     async def disconnect(self, close_code):
         if hasattr(self, 'group_name'):

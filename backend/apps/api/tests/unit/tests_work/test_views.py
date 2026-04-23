@@ -30,27 +30,28 @@ class WorkViewsTest(TestCase):
             'car': self.car,
             'price': 5000
         }
+        self.client.force_authenticate(user=self.owner)
         self.work = Work.objects.create(**self.work_data)
 
     def test_work_list_view(self):
-        url = '/api/work/'
+        url = '/api/works/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data['count'], 1)
 
     def test_car_by_id_view_success(self):
-        url = f'/api/work/{self.work.pk}'
+        url = f'/api/works/{self.work.pk}/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Замена масла')
 
     def test_work_by_id_view_not_found(self):
-        url = '/api/work/99999'
+        url = '/api/works/99999/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_add_car_view_success(self):
-        url = '/api/work/create'
+        url = '/api/works/'
         new_work_data = {
             'name': 'Переприсовка гильз',
             'description': 'Полный разбор двигателя',
@@ -58,24 +59,24 @@ class WorkViewsTest(TestCase):
             'price': 25000
         }
         response = self.client.post(url, new_work_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Work.objects.count(), 2)
 
     def test_add_work_view_duplicate(self):
-        url = '/api/work/create'
+        url = '/api/works/'
         response = self.client.post(url, **self.work_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_update_work_view_success(self):
-        url = f'/api/work/{self.work.pk}/update'
+        url = f'/api/works/{self.work.pk}/'
         update_data = {'description': 'Полный кап ремонт двигателя'}
-        response = self.client.post(url, update_data, format='json')
+        response = self.client.patch(url, update_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.work.refresh_from_db()
         self.assertEqual(self.work.description, 'Полный кап ремонт двигателя')
 
     def test_delete_work_view_success(self):
-        url = f'/api/work/{self.work.pk}/delete'
+        url = f'/api/works/{self.work.pk}/'
         response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Work.objects.count(), 0)

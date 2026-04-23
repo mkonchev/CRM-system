@@ -20,8 +20,6 @@ class WorkstatusSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
     def create(self, validated_data):
-        print("🔥🔥🔥 CREATE ВЫЗВАН!")
-        print("📦 validated_data:", validated_data)
         # Если fix_price не передан — берём из работы
         if 'fix_price' not in validated_data:
             work = validated_data['work']

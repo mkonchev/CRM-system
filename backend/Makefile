@@ -3,7 +3,7 @@ include ENV/.env.common
 build-prod: build-prod-balancer build-prod-main migrate collect-static
 build-prod-no-migrate-static: build-prod-balancer build-prod-main
 build-unit-test:
-	docker exec backend2 python manage.py test apps.api.tests.unit
+	docker exec backend2 python manage.py test apps.api.tests.unit --failfast --noinput
 build-integration-test:
 	docker exec backend2 python manage.py test apps.api.tests.integration
 startapp:

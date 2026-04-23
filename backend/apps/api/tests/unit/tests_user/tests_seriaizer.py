@@ -15,7 +15,7 @@ class UserSerializerTest(TestCase):
             'password': 'testpass123',
             'role': UserRoleChoice.user
         }
-        self.user = User.objects.create(**self.user_data)
+        self.user = User.objects.create_user(**self.user_data)
         self.serializer = UserSerializer(instance=self.user)
 
     def test_user_serialization(self):
@@ -41,6 +41,7 @@ class UserSerializerTest(TestCase):
             'last_name': 'Петрович',
             'phone_number': '+79521111611',
             'password': 'testpass123',
+            'password_confirm': 'testpass123',
             'role': UserRoleChoice.worker
         }
         serializer = UserSerializer(data=new_user_data)

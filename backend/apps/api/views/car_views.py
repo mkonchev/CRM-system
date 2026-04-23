@@ -9,8 +9,6 @@ class CarListView(generics.ListCreateAPIView):
     GET /api/cars/ - получить список всех машин
     POST /api/cars/ - создать новую машину
     """
-
-    queryset = Car.objects.all()
     serializer_class = CarSerializer
 
     def get_permissions(self):
@@ -21,16 +19,18 @@ class CarListView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         """Фильтрация машин по владельцу"""
-        queryset = Car.objects.all()
-        if self.request.user.is_authenticated:
-            if self.request.user.is_staff or self.request.user.role == UserRoleChoice.worker: # noqa
-                return queryset
-            return queryset.filter(owner=self.request.user)
-        return Car.objects.none()
+        user = self.request.user
+
+        if not user.is_authenticated:
+            return Car.objects.none()
+
+        if user.is_staff or user.role == UserRoleChoice.worker:
+            return Car.objects.all().order_by('id')
+
+        return Car.objects.filter(owner=user).order_by('id')
 
     def perform_create(self, serializer):
-        """Автоматически назначаем владельцем текущего пользователя,
-          если роль-User"""
+        """Назначаем владельца"""
         user = self.request.user
 
         if not self.request.data.get('vin'):
@@ -41,6 +41,7 @@ class CarListView(generics.ListCreateAPIView):
             owner_id = self.request.data.get('owner')
             if owner_id:
                 serializer.save(owner_id=owner_id)
+                return
         serializer.save(owner=user)
 
 
@@ -51,8 +52,6 @@ class CarDetailView(generics.RetrieveUpdateDestroyAPIView):
     PATCH /api/cars/<id>/ - частично обновить машину
     DELETE /api/cars/<id>/ - удалить машину
     """
-
-    queryset = Car.objects.all()
     serializer_class = CarSerializer
 
     def get_permissions(self):
@@ -63,8 +62,12 @@ class CarDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         """Проверка доступа к конкретной машине"""
-        if self.request.user.is_authenticated:
-            if self.request.user.is_staff or self.request.user.role == UserRoleChoice.worker: # noqa
-                return Car.objects.all()
-            return Car.objects.filter(owner=self.request.user)
-        return Car.objects.none()
+        user = self.request.user
+
+        if not user.is_authenticated:
+            return Car.objects.none()
+
+        if user.is_staff or user.role == UserRoleChoice.worker or user.role == UserRoleChoice.admin: # noqa
+            return Car.objects.all()
+
+        return Car.objects.filter(owner=user)

@@ -10,12 +10,13 @@ def auto_fill_owner_id(instance, sender, **kwargs):
 
 
 def send_email_if_is_complete(instance, sender, **kwargs):
-    if instance.is_completed:
-        send_workstatus_complete_email_task.delay(
-            instance.owner.email,
-            str(instance.car),
-            str(instance.total_price())
-        )
+    if instance.owner and instance.owner.email:
+        if instance.is_completed:
+            send_workstatus_complete_email_task.delay(
+                instance.owner.email,
+                str(instance.car),
+                str(instance.total_price())
+            )
 
 
 pre_save.connect(auto_fill_owner_id, sender=Order)
