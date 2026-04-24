@@ -3,6 +3,8 @@ from apps.car.models.CarModel import Car
 from apps.core.models.UserModel import User
 from apps.api.serializers.OrderSerializer import OrderSerializer
 from apps.order.models.OrderModel import Order
+from apps.workstatus.models import Workstatus
+from apps.work.models import Work
 from rest_framework.test import APIClient
 from django.utils import timezone
 
@@ -96,3 +98,17 @@ class OrderSerializerTest(TestCase):
         self.assertTrue(serializer.is_valid())
         order = serializer.save()
         self.assertIsNone(order.end_date)
+
+    def test_serializer_with_items(self):
+        work = Work.objects.create(name="Test", price=1000)
+
+        Workstatus.objects.create(
+            order=self.order,
+            work=work,
+            amount=1,
+            fix_price=1000
+        )
+
+        serializer = OrderSerializer(instance=self.order)
+
+        self.assertEqual(len(serializer.data['items']), 1)
