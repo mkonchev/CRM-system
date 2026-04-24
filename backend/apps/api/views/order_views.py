@@ -28,7 +28,7 @@ class OrderListView(generics.ListCreateAPIView):
         ).prefetch_related(
             'items',
             'items__work'
-        )
+        ).order_by('id')
 
         if user.is_authenticated:
             if user.is_staff or user.role == UserRoleChoice.worker:

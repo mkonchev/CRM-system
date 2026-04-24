@@ -135,12 +135,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://redis-caches:6379/',
+        'LOCATION': 'redis://redis-caches:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
 }
+
+CACHE_TTL = os.environ.get('CACHE_TTL', 3600)
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

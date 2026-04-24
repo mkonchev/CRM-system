@@ -12,7 +12,7 @@ class WorkstatusListView(generics.ListCreateAPIView):
     POST /api/workstatus/ - создать новый статус
     """
 
-    queryset = Workstatus.objects.all()
+    queryset = Workstatus.objects.all().order_by('id')
     serializer_class = WorkstatusSerializer
 
     def get_permissions(self):
@@ -24,14 +24,13 @@ class WorkstatusListView(generics.ListCreateAPIView):
         user = self.request.user
         if user.is_authenticated:
             if user.is_staff:
-                return Workstatus.objects.all()
+                return Workstatus.objects.all().order_by('id')
             if user.role == UserRoleChoice.worker:
-                return Workstatus.objects.filter(order__worker=user)
-            return Workstatus.objects.filter(order__owner=user)
+                return Workstatus.objects.filter(order__worker=user).order_by('id') # noqa
+            return Workstatus.objects.filter(order__owner=user).order_by('id')
         return Workstatus.objects.none()
 
     def create(self, request, *args, **kwargs):
-        print("📦 Получены данные:", request.data)  # ← смотрим
         return super().create(request, *args, **kwargs)
 
 
@@ -42,7 +41,7 @@ class WorkstatusDetailView(generics.RetrieveUpdateDestroyAPIView):
     PATCH /api/workstatus/<id>/ - частично обновить статус
     DELETE /api/workstatus/<id>/ - удалить статус
     """
-    queryset = Workstatus.objects.all()
+    queryset = Workstatus.objects.all().order_by('id')
     serializer_class = WorkstatusSerializer
 
     def update(self, request, *args, **kwargs):
@@ -61,8 +60,8 @@ class WorkstatusDetailView(generics.RetrieveUpdateDestroyAPIView):
         user = self.request.user
         if user.is_authenticated:
             if user.is_staff:
-                return Workstatus.objects.all()
+                return Workstatus.objects.all().order_by('id')
             if user.role == UserRoleChoice.worker:
-                return Workstatus.objects.filter(order__worker=user)
-            return Workstatus.objects.filter(order__owner=user)
+                return Workstatus.objects.filter(order__worker=user).order_by('id') # noqa
+            return Workstatus.objects.filter(order__owner=user).order_by('id')
         return Workstatus.objects.none()

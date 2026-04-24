@@ -50,8 +50,17 @@ class OrderSerializerTest(TestCase):
     def test_order_serializer_data(self):
 
         expected_fields = [
-            'id', 'owner', 'car', 'worker',
-            'start_date', 'end_date', 'is_completed'
+            'id',
+            'owner',
+            'owner_details',
+            'car',
+            'car_details',
+            'worker',
+            'worker_details',
+            'start_date',
+            'end_date',
+            'is_completed',
+            'items'
         ]
         self.assertCountEqual(self.serializer.data.keys(), expected_fields)
         self.assertEqual(self.serializer.data['owner'], self.owner.id)

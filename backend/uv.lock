@@ -512,6 +512,7 @@ dependencies = [
     { name = "django-debug-toolbar" },
     { name = "django-filter" },
     { name = "django-redis" },
+    { name = "django-redis-cache" },
     { name = "django-robots" },
     { name = "django-storages" },
     { name = "djangorestframework" },
@@ -550,6 +551,7 @@ requires-dist = [
     { name = "django-debug-toolbar", marker = "extra == 'dev'", specifier = ">=4.3.0" },
     { name = "django-filter", specifier = ">=25.1" },
     { name = "django-redis", specifier = "==5.4.0" },
+    { name = "django-redis-cache", specifier = ">=1.8.0" },
     { name = "django-robots", specifier = "==6.1" },
     { name = "django-storages", specifier = "==1.14.2" },
     { name = "djangorestframework", specifier = "==3.14.0" },
@@ -634,6 +636,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/83/9d/2272742fdd9d0a9f0
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/f1/63caad7c9222c26a62082f4f777de26389233b7574629996098bf6d25a4d/django_redis-5.4.0-py3-none-any.whl", hash = "sha256:ebc88df7da810732e2af9987f7f426c96204bf89319df4c6da6ca9a2942edd5b", size = 31119, upload-time = "2023-10-01T20:21:33.009Z" },
 ]
+
+[[package]]
+name = "django-redis-cache"
+version = "1.8.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "redis" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c5/6e/d328fa601fce8791868a08ce9b982202a53b1dc069c7fbc47a6d0d0aa665/django-redis-cache-1.8.0.tar.gz", hash = "sha256:572c6b0a7c0f454a227082342aeb2ac49abd318ac651e9148484cc7185dd9f26", size = 13503, upload-time = "2018-11-05T17:39:05.665Z" }
 
 [[package]]
 name = "django-robots"

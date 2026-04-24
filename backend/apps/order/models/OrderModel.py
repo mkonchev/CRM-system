@@ -66,7 +66,7 @@ class Order(models.Model):
 
     def get_status(self):
         statuses = []
-        for ws in self.order_works.all():
+        for ws in self.items.all():
             status_display = ws.get_status_display()
             statuses.append(f"{ws.work}: {status_display}")
         return '\n'.join(statuses) if statuses else "Нет статусов"
