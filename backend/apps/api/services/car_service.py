@@ -1,21 +1,19 @@
 from typing import Optional, Dict, Any
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
 from apps.car.models.CarModel import Car
 from apps.api.serializers.CarSerializer import CarSerializer
 
 
 class CarService:
-
     @staticmethod
     def get_cars(filters: Optional[dict] = None) -> list[Car]:
         """Get car list with 'mark' and 'year' filters"""
         queryset = Car.objects.all()
 
         if filters:
-            if mark := filters.get('mark'):
+            if mark := filters.get("mark"):
                 queryset = queryset.filter(mark__icontains=mark)
-            if year := filters.get('year'):
+            if year := filters.get("year"):
                 queryset = queryset.filter(year=year)
 
         return queryset

@@ -6,27 +6,49 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('car', '0012_alter_car_owner'),
-        ('order', '0008_order_works'),
+        ("car", "0012_alter_car_owner"),
+        ("order", "0008_order_works"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='car',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='orders', to='car.car', verbose_name='Машина'),
+            model_name="order",
+            name="car",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="orders",
+                to="car.car",
+                verbose_name="Машина",
+            ),
         ),
         migrations.AlterField(
-            model_name='order',
-            name='owner',
-            field=models.ForeignKey(blank=True, help_text='Автозаполнение при выборе машины', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='order_owner', to=settings.AUTH_USER_MODEL, verbose_name='Владелец'),
+            model_name="order",
+            name="owner",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Автозаполнение при выборе машины",
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="order_owner",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Владелец",
+            ),
         ),
         migrations.AlterField(
-            model_name='order',
-            name='worker',
-            field=models.ForeignKey(blank=True, limit_choices_to={'is_active': True, 'role': 1}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='orders', to=settings.AUTH_USER_MODEL, verbose_name='Работник'),
+            model_name="order",
+            name="worker",
+            field=models.ForeignKey(
+                blank=True,
+                limit_choices_to={"is_active": True, "role": 1},
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="orders",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Работник",
+            ),
         ),
     ]

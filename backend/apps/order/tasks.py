@@ -5,15 +5,12 @@ from apps.order.services.ReportGenerator import report_generate
 
 
 @shared_task
-def send_workstatus_complete_email_task(
-    user_email,
-    car=None,
-    total_price=None
-):
+def send_workstatus_complete_email_task(user_email, car=None, total_price=None):
     name = "Пользователь"
-    subject = f'Изменение статуса работы для {name}!'
-    message = f'Здравствуйте, {name}! Ваша машина {car} готова.'\
-        f'Сумма к оплате: {total_price}'
+    subject = f"Изменение статуса работы для {name}!"
+    message = (
+        f"Здравствуйте, {name}! Ваша машина {car} готова.Сумма к оплате: {total_price}"
+    )
 
     try:
         generate_report_task.delay(5)
@@ -36,4 +33,4 @@ def generate_report_task(a: int):
 
 @shared_task
 def test_chrone_task():
-    print('complete')
+    print("complete")

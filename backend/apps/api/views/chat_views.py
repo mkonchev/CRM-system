@@ -9,26 +9,27 @@ class OrderChatHistoryView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        order_id = self.kwargs['order_id']
+        order_id = self.kwargs["order_id"]
         user = self.request.user
 
         from apps.order.models import Order
+
         order = get_object_or_404(Order, id=order_id)
 
         if user not in [order.owner, order.worker]:
             return ChatMessage.objects.none()
 
-        return ChatMessage.objects.filter(
-            order_id=order_id
-        ).select_related(
-            'sender'
-        ).order_by('timestamp')
+        return (
+            ChatMessage.objects.filter(order_id=order_id)
+            .select_related("sender")
+            .order_by("timestamp")
+        )
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
 
-        ChatMessage.objects.filter(
-            order_id=self.kwargs['order_id']
-        ).exclude(sender=request.user).update(is_read=True)
+        ChatMessage.objects.filter(order_id=self.kwargs["order_id"]).exclude(
+            sender=request.user
+        ).update(is_read=True)
 
         return response

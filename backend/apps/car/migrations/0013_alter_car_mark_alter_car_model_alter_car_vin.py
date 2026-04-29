@@ -4,25 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('car', '0012_alter_car_owner'),
+        ("car", "0012_alter_car_owner"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='car',
-            name='mark',
-            field=models.CharField(blank=True, default='', max_length=50, null=True, verbose_name='Марка'),
+            model_name="car",
+            name="mark",
+            field=models.CharField(
+                blank=True, default="", max_length=50, null=True, verbose_name="Марка"
+            ),
         ),
         migrations.AlterField(
-            model_name='car',
-            name='model',
-            field=models.CharField(blank=True, default='', max_length=50, null=True, verbose_name='Модель'),
+            model_name="car",
+            name="model",
+            field=models.CharField(
+                blank=True, default="", max_length=50, null=True, verbose_name="Модель"
+            ),
         ),
         migrations.AlterField(
-            model_name='car',
-            name='vin',
-            field=models.CharField(blank=True, default='', max_length=100, null=True, verbose_name='VIN/Номер кузова'),
+            model_name="car",
+            name="vin",
+            field=models.CharField(
+                blank=True,
+                default="",
+                max_length=100,
+                null=True,
+                verbose_name="VIN/Номер кузова",
+            ),
         ),
     ]

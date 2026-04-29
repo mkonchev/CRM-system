@@ -8,30 +8,90 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('order', '0018_alter_order_start_date'),
+        ("order", "0018_alter_order_start_date"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ChatMessage',
+            name="ChatMessage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('message', models.TextField(help_text='Текст сообщения (максимум 5000 символов)', validators=[django.core.validators.MinLengthValidator(1, "Text can't be empty"), django.core.validators.MaxLengthValidator(5000, 'Text too long')], verbose_name='Сообщение')),
-                ('timestamp', models.DateTimeField(db_index=True, default=django.utils.timezone.now, verbose_name='Время отправки сообщения')),
-                ('is_read', models.BooleanField(db_index=True, default=False, verbose_name='Прочитано')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chat_messages', to='order.order', verbose_name='Заказ')),
-                ('sender', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='sent_messages', to=settings.AUTH_USER_MODEL, verbose_name='Отправитель')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "message",
+                    models.TextField(
+                        help_text="Текст сообщения (максимум 5000 символов)",
+                        validators=[
+                            django.core.validators.MinLengthValidator(
+                                1, "Text can't be empty"
+                            ),
+                            django.core.validators.MaxLengthValidator(
+                                5000, "Text too long"
+                            ),
+                        ],
+                        verbose_name="Сообщение",
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        db_index=True,
+                        default=django.utils.timezone.now,
+                        verbose_name="Время отправки сообщения",
+                    ),
+                ),
+                (
+                    "is_read",
+                    models.BooleanField(
+                        db_index=True, default=False, verbose_name="Прочитано"
+                    ),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="chat_messages",
+                        to="order.order",
+                        verbose_name="Заказ",
+                    ),
+                ),
+                (
+                    "sender",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="sent_messages",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Отправитель",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Сообщение',
-                'verbose_name_plural': 'Сообщения',
-                'ordering': ['timestamp'],
-                'indexes': [models.Index(fields=['order', 'timestamp'], name='chatmessage_order_i_588c2a_idx'), models.Index(fields=['order', 'is_read', 'timestamp'], name='chatmessage_order_i_fe0dfc_idx')],
+                "verbose_name": "Сообщение",
+                "verbose_name_plural": "Сообщения",
+                "ordering": ["timestamp"],
+                "indexes": [
+                    models.Index(
+                        fields=["order", "timestamp"],
+                        name="chatmessage_order_i_588c2a_idx",
+                    ),
+                    models.Index(
+                        fields=["order", "is_read", "timestamp"],
+                        name="chatmessage_order_i_fe0dfc_idx",
+                    ),
+                ],
             },
         ),
     ]

@@ -4,15 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('car', '0006_alter_car_year'),
+        ("car", "0006_alter_car_year"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='car',
-            name='year',
-            field=models.CharField(blank=True, default='', max_length=5, null=True, verbose_name='Год выпуска'),
+            model_name="car",
+            name="year",
+            field=models.CharField(
+                blank=True,
+                default="",
+                max_length=5,
+                null=True,
+                verbose_name="Год выпуска",
+            ),
         ),
     ]

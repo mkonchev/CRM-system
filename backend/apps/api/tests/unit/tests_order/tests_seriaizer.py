@@ -10,41 +10,37 @@ from django.utils import timezone
 
 
 class OrderSerializerTest(TestCase):
-
     def setUp(self):
         self.client = APIClient()
         self.owner = User.objects.create(
-            email='owner@example.com',
-            first_name='Иван',
-            last_name='Иванов',
+            email="owner@example.com",
+            first_name="Иван",
+            last_name="Иванов",
         )
         self.worker = User.objects.create(
-            email='worker@work.com',
-            first_name='Петр',
-            last_name='Петрович',
-            role=1
+            email="worker@work.com", first_name="Петр", last_name="Петрович", role=1
         )
         self.car = Car.objects.create(
-            number='A123BC',
-            mark='Toyota',
-            model='Camry',
-            vin='1234567890ABCDEFG',
+            number="A123BC",
+            mark="Toyota",
+            model="Camry",
+            vin="1234567890ABCDEFG",
             year=2020,
-            owner=self.owner
+            owner=self.owner,
         )
         self.order_data = {
-            'owner': self.owner,
-            'car': self.car,
-            'worker': self.worker,
-            'start_date': timezone.now(),
-            'is_completed': False
+            "owner": self.owner,
+            "car": self.car,
+            "worker": self.worker,
+            "start_date": timezone.now(),
+            "is_completed": False,
         }
         self.order_data_for_setialize = {
-            'owner': self.owner.id,
-            'car': self.car.id,
-            'worker': self.worker.id,
-            'start_date': timezone.now(),
-            'is_completed': False
+            "owner": self.owner.id,
+            "car": self.car.id,
+            "worker": self.worker.id,
+            "start_date": timezone.now(),
+            "is_completed": False,
         }
         self.order = Order.objects.create(**self.order_data)
         self.serializer = OrderSerializer(instance=self.order)
@@ -52,40 +48,36 @@ class OrderSerializerTest(TestCase):
     def test_order_serializer_data(self):
 
         expected_fields = [
-            'id',
-            'owner',
-            'owner_details',
-            'car',
-            'car_details',
-            'worker',
-            'worker_details',
-            'start_date',
-            'end_date',
-            'is_completed',
-            'items'
+            "id",
+            "owner",
+            "owner_details",
+            "car",
+            "car_details",
+            "worker",
+            "worker_details",
+            "start_date",
+            "end_date",
+            "is_completed",
+            "items",
         ]
         self.assertCountEqual(self.serializer.data.keys(), expected_fields)
-        self.assertEqual(self.serializer.data['owner'], self.owner.id)
-        self.assertEqual(self.serializer.data['worker'], self.worker.id)
-        self.assertEqual(self.serializer.data['car'], self.car.id)
-        self.assertEqual(self.serializer.data['is_completed'], False)
+        self.assertEqual(self.serializer.data["owner"], self.owner.id)
+        self.assertEqual(self.serializer.data["worker"], self.worker.id)
+        self.assertEqual(self.serializer.data["car"], self.car.id)
+        self.assertEqual(self.serializer.data["is_completed"], False)
 
     def test_order_deserializer_invalid_data(self):
-        invalid_data = {
-            'owner': 999,
-            'car': 999,
-            'worker': self.owner.id
-        }
+        invalid_data = {"owner": 999, "car": 999, "worker": self.owner.id}
         serializer = OrderSerializer(data=invalid_data)
         self.assertFalse(serializer.is_valid())
 
-        self.assertIn('owner', serializer.errors)
-        self.assertIn('car', serializer.errors)
-        self.assertIn('worker', serializer.errors)
+        self.assertIn("owner", serializer.errors)
+        self.assertIn("car", serializer.errors)
+        self.assertIn("worker", serializer.errors)
 
     def test_read_only_fields(self):
         data = self.order_data_for_setialize.copy()
-        data['id'] = 100
+        data["id"] = 100
         serializer = OrderSerializer(data=data)
         self.assertTrue(serializer.is_valid())
         order = serializer.save()
@@ -93,7 +85,7 @@ class OrderSerializerTest(TestCase):
 
     def test_nullable_fields(self):
         data = self.order_data_for_setialize.copy()
-        data.pop('end_date', None)
+        data.pop("end_date", None)
         serializer = OrderSerializer(data=data)
         self.assertTrue(serializer.is_valid())
         order = serializer.save()
@@ -102,13 +94,8 @@ class OrderSerializerTest(TestCase):
     def test_serializer_with_items(self):
         work = Work.objects.create(name="Test", price=1000)
 
-        Workstatus.objects.create(
-            order=self.order,
-            work=work,
-            amount=1,
-            fix_price=1000
-        )
+        Workstatus.objects.create(order=self.order, work=work, amount=1, fix_price=1000)
 
         serializer = OrderSerializer(instance=self.order)
 
-        self.assertEqual(len(serializer.data['items']), 1)
+        self.assertEqual(len(serializer.data["items"]), 1)

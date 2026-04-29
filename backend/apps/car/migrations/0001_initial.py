@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,18 +14,48 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Car',
+            name="Car",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number', models.CharField(default='', max_length=10, verbose_name='Номер')),
-                ('mark', models.CharField(default='', max_length=50, verbose_name='Марка')),
-                ('model', models.CharField(default='', max_length=50, verbose_name='Модель')),
-                ('vin', models.CharField(default='', max_length=100, verbose_name='VIN/Номер кузова')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cars', to=settings.AUTH_USER_MODEL, verbose_name='ID владельца')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "number",
+                    models.CharField(default="", max_length=10, verbose_name="Номер"),
+                ),
+                (
+                    "mark",
+                    models.CharField(default="", max_length=50, verbose_name="Марка"),
+                ),
+                (
+                    "model",
+                    models.CharField(default="", max_length=50, verbose_name="Модель"),
+                ),
+                (
+                    "vin",
+                    models.CharField(
+                        default="", max_length=100, verbose_name="VIN/Номер кузова"
+                    ),
+                ),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="cars",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="ID владельца",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Машина',
-                'verbose_name_plural': 'Машины',
+                "verbose_name": "Машина",
+                "verbose_name_plural": "Машины",
             },
         ),
     ]

@@ -10,29 +10,24 @@ class OrderModelTestCase(TestCase):
     def setUp(self):
 
         self.owner = User.objects.create(
-            email='owner@example.com',
-            first_name='Иван',
-            last_name='Иванов'
+            email="owner@example.com", first_name="Иван", last_name="Иванов"
         )
         self.worker = User.objects.create(
-            email='worker@example.com',
-            first_name='Петр',
-            last_name='Петров',
-            role=1
+            email="worker@example.com", first_name="Петр", last_name="Петров", role=1
         )
         self.car = Car.objects.create(
-            mark='Toyota',
-            model='Camry',
+            mark="Toyota",
+            model="Camry",
             year=2020,
-            vin='XTA21099734455321',
-            owner=self.owner
+            vin="XTA21099734455321",
+            owner=self.owner,
         )
 
         self.order_data = {
-            'owner': self.owner,
-            'car': self.car,
-            'worker': self.worker,
-            'end_date': timezone.now() + timezone.timedelta(days=1)
+            "owner": self.owner,
+            "car": self.car,
+            "worker": self.worker,
+            "end_date": timezone.now() + timezone.timedelta(days=1),
         }
 
     def test_order_creation(self):
@@ -49,7 +44,7 @@ class OrderModelTestCase(TestCase):
     def test_str_representation(self):
         """Тест строкового представления"""
         order = Order.objects.create(**self.order_data)
-        self.assertEqual(str(order), f'{self.car} {self.worker}')
+        self.assertEqual(str(order), f"{self.car} {self.worker}")
 
     def test_relations(self):
         """Тест связей между моделями"""
@@ -66,7 +61,7 @@ class OrderModelTestCase(TestCase):
 
     def test_worker_limit_choices(self):
 
-        non_worker = User.objects.create(email='nonworker@example.com', role=2)
+        non_worker = User.objects.create(email="nonworker@example.com", role=2)
 
         with self.assertRaises(ValidationError):
             order = Order(car=self.car, worker=non_worker)
@@ -80,19 +75,9 @@ class OrderModelTestCase(TestCase):
 
         work = Work.objects.create(name="Замена масла", price=1000)
 
-        Workstatus.objects.create(
-            order=order,
-            work=work,
-            amount=2,
-            fix_price=1500
-        )
+        Workstatus.objects.create(order=order, work=work, amount=2, fix_price=1500)
 
-        Workstatus.objects.create(
-            order=order,
-            work=work,
-            amount=1,
-            fix_price=2000
-        )
+        Workstatus.objects.create(order=order, work=work, amount=1, fix_price=2000)
 
         self.assertEqual(order.total_price(), 5000)
 
@@ -104,12 +89,8 @@ class OrderModelTestCase(TestCase):
 
         work = Work.objects.create(name="Замена масла", price=1000)
 
-        ws = Workstatus.objects.create( # noqa
-            order=order,
-            work=work,
-            status=1,
-            amount=1,
-            fix_price=1000
+        ws = Workstatus.objects.create(  # noqa
+            order=order, work=work, status=1, amount=1, fix_price=1000
         )
 
         result = order.get_status()

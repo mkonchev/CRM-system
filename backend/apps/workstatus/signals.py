@@ -8,10 +8,9 @@ def update_order_completion_status_signal(sender, instance, **kwargs):
     all_works = order.items.all()
 
     order.is_completed = all_works.exists() and all(
-        work.status == WorkStatusChoice.done
-        for work in all_works
+        work.status == WorkStatusChoice.done for work in all_works
     )
-    order.save(update_fields=['is_completed'])
+    order.save(update_fields=["is_completed"])
 
 
 post_save.connect(

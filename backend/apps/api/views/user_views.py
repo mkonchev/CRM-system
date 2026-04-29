@@ -12,7 +12,7 @@ class UserListView(generics.ListCreateAPIView):
     POST /api/users/ - создать пользователя
     """
 
-    queryset = User.objects.all().order_by('id')
+    queryset = User.objects.all().order_by("id")
     serializer_class = UserSerializer
 
     permission_classes = [permissions.IsAuthenticated]
@@ -35,6 +35,7 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
         if self.request.user.is_staff or obj.id == self.request.user.id:
             return obj
         from rest_framework.exceptions import PermissionDenied
+
         raise PermissionDenied("Нет доступа к этому пользователю")
 
 
@@ -43,4 +44,4 @@ class UserDeactivateView(APIView):
         user = get_object_or_404(User, pk=pk)
         user.is_active = False
         user.save()
-        return Response({'message': 'User deactivated'})
+        return Response({"message": "User deactivated"})

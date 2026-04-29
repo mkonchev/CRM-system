@@ -11,24 +11,22 @@ class OrderListView(generics.ListCreateAPIView):
     GET /api/orders/ - получить список всех заказов
     POST /api/orders/ - создать новый заказ
     """
+
     serializer_class = OrderSerializer
 
     def get_permissions(self):
-        if self.request.method == 'POST':
+        if self.request.method == "POST":
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
 
     def get_queryset(self):
         user = self.request.user
 
-        queryset = Order.objects.select_related(
-            'owner',
-            'worker',
-            'car'
-        ).prefetch_related(
-            'items',
-            'items__work'
-        ).order_by('id')
+        queryset = (
+            Order.objects.select_related("owner", "worker", "car")
+            .prefetch_related("items", "items__work")
+            .order_by("id")
+        )
 
         if user.is_authenticated:
             if user.is_staff or user.role == UserRoleChoice.worker:
@@ -44,10 +42,11 @@ class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     PATCH /api/orders/<id>/ - частично обновить заказ
     DELETE /api/orders/<id>/ - удалить заказ
     """
+
     serializer_class = OrderSerializer
 
     def get_permissions(self):
-        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+        if self.request.method in ["PUT", "PATCH", "DELETE"]:
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
 
@@ -55,20 +54,16 @@ class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
         user = self.request.user
 
         queryset = Order.objects.select_related(
-            'owner',
-            'worker',
-            'car'
+            "owner", "worker", "car"
         ).prefetch_related(
-            'items',
-            'items__work',
+            "items",
+            "items__work",
             Prefetch(
-                'chat_messages',
-                queryset=ChatMessage.objects.select_related(
-                    'sender'
-                ).order_by(
-                    'timestamp'
-                )
-            )
+                "chat_messages",
+                queryset=ChatMessage.objects.select_related("sender").order_by(
+                    "timestamp"
+                ),
+            ),
         )
 
         if user.is_authenticated:

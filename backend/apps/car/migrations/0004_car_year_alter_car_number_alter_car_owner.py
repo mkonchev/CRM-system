@@ -6,26 +6,38 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('car', '0003_alter_car_owner'),
+        ("car", "0003_alter_car_owner"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='car',
-            name='year',
-            field=models.PositiveIntegerField(blank=True, default=0, max_length=5, null=True, verbose_name='Год выпуска'),
+            model_name="car",
+            name="year",
+            field=models.PositiveIntegerField(
+                blank=True,
+                default=0,
+                max_length=5,
+                null=True,
+                verbose_name="Год выпуска",
+            ),
         ),
         migrations.AlterField(
-            model_name='car',
-            name='number',
-            field=models.CharField(blank=True, default='', max_length=10, null=True, verbose_name='Номер'),
+            model_name="car",
+            name="number",
+            field=models.CharField(
+                blank=True, default="", max_length=10, null=True, verbose_name="Номер"
+            ),
         ),
         migrations.AlterField(
-            model_name='car',
-            name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='car_owner', to=settings.AUTH_USER_MODEL, verbose_name='ID владельца'),
+            model_name="car",
+            name="owner",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="car_owner",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="ID владельца",
+            ),
         ),
     ]

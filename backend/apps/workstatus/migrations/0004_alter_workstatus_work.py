@@ -5,16 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('order', '0013_remove_order_workstatus'),
-        ('workstatus', '0003_alter_workstatus_options'),
+        ("order", "0013_remove_order_workstatus"),
+        ("workstatus", "0003_alter_workstatus_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='workstatus',
-            name='work',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='work_name', to='order.order', verbose_name='Работа'),
+            model_name="workstatus",
+            name="work",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="work_name",
+                to="order.order",
+                verbose_name="Работа",
+            ),
         ),
     ]
