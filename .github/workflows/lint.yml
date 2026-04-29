@@ -55,7 +55,7 @@ jobs:
       - name: Run ruff formatter check
         run: ruff format . --check
 
-  django-cheks:
+  django-cheсks:
     name: Django checks
     runs-on: ubuntu-latest
     defaults:
