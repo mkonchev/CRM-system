@@ -4,16 +4,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('order', '0011_order_workstatus_alter_order_works'),
-        ('workstatus', '0003_alter_workstatus_options'),
+        ("order", "0011_order_workstatus_alter_order_works"),
+        ("workstatus", "0003_alter_workstatus_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='workstatus',
-            field=models.ManyToManyField(auto_created=True, blank=True, null=True, related_name='order_work', to='workstatus.workstatus', verbose_name='Статусы работ'),
+            model_name="order",
+            name="workstatus",
+            field=models.ManyToManyField(
+                auto_created=True,
+                blank=True,
+                null=True,
+                related_name="order_work",
+                to="workstatus.workstatus",
+                verbose_name="Статусы работ",
+            ),
         ),
     ]

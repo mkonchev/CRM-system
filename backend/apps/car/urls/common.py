@@ -1,7 +1,7 @@
-from django.urls import path, include # noqa
+from django.urls import path, include  # noqa
 
 
-app_name = 'car'
+app_name = "car"
 
 urlpatterns = [
     #  path('some/', include('apps.car.urls.some_urls')),

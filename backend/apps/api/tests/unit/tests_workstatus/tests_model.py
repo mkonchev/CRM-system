@@ -8,18 +8,16 @@ from apps.workstatus.models.consts import WorkStatusChoice
 class WorkstatusModelTest(TestCase):
     def setUp(self):
         self.work = Work.objects.create(
-            name="Замена масла",
-            price=2000,
-            description="Полная замена моторного масла"
+            name="Замена масла", price=2000, description="Полная замена моторного масла"
         )
         self.order = Order.objects.create()
 
         self.workstatus_data = {
-            'work': self.work,
-            'order': self.order,
-            'status': WorkStatusChoice.in_progress,
-            'amount': 2,
-            'fix_price': 2500
+            "work": self.work,
+            "order": self.order,
+            "status": WorkStatusChoice.in_progress,
+            "amount": 2,
+            "fix_price": 2500,
         }
 
     def test_workstatus_creation(self):

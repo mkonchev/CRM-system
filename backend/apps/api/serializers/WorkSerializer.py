@@ -7,6 +7,6 @@ class WorkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Work
-        fields = ['id', 'name', 'description', 'car', 'price']
+        fields = ["id", "name", "description", "car", "price"]
 
-        read_only_fields = ['id']
+        read_only_fields = ["id"]

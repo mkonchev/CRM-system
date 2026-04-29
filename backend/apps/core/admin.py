@@ -12,5 +12,5 @@ for model in Models:
     admin.site.register(model.value, model.value.ModelAdmin)
 
 admin.site.site_title = settings.PROJECT_NAME
-admin.site.site_header = f'Администрирование {settings.PROJECT_NAME}'
-admin.site.index_title = 'Панель администрирования'
+admin.site.site_header = f"Администрирование {settings.PROJECT_NAME}"
+admin.site.index_title = "Панель администрирования"

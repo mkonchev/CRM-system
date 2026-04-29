@@ -9,13 +9,12 @@ from apps.workstatus.models import Workstatus
 fake = Faker()
 
 
-
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = get_user_model()
 
-    email = factory.Sequence(lambda n: f'user{n}@example.com')
-    password = factory.PostGenerationMethodCall('set_password', 'testpass123')
+    email = factory.Sequence(lambda n: f"user{n}@example.com")
+    password = factory.PostGenerationMethodCall("set_password", "testpass123")
     first_name = factory.LazyAttribute(lambda _: fake.first_name())
     last_name = factory.LazyAttribute(lambda _: fake.last_name())
     phone_number = factory.LazyAttribute(lambda _: fake.phone_number())
@@ -51,10 +50,10 @@ class WorkStatusFactory(factory.django.DjangoModelFactory):
     fix_price = factory.LazyAttribute(lambda _: fake.random_int(min=100, max=10000))
 
 
-
 class WorkFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Work
+
     name = factory.LazyAttribute(lambda _: fake.word())
     description = factory.LazyAttribute(lambda _: fake.word())
     price = factory.LazyAttribute(lambda _: fake.random_int(min=100, max=10000))

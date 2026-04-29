@@ -1,6 +1,5 @@
 from django.db import models
-from apps.workstatus.models.admins.WorkstatusModelAdmin import (
-    WorkstatusModelAdmin)
+from apps.workstatus.models.admins.WorkstatusModelAdmin import WorkstatusModelAdmin
 from apps.workstatus.models.consts import WorkStatusChoice
 from config.constants import NULLABLE
 
@@ -9,17 +8,17 @@ class Workstatus(models.Model):
     ModelAdmin = WorkstatusModelAdmin
 
     work = models.ForeignKey(
-        'work.Work',
-        verbose_name='Работа',
+        "work.Work",
+        verbose_name="Работа",
         on_delete=models.CASCADE,
-        related_name='work_name',
+        related_name="work_name",
         **NULLABLE,
     )
     order = models.ForeignKey(
-        'order.Order',
-        verbose_name='Заявка',
+        "order.Order",
+        verbose_name="Заявка",
         on_delete=models.CASCADE,
-        related_name='items',
+        related_name="items",
         **NULLABLE,
     )
     status = models.PositiveIntegerField(
@@ -28,19 +27,19 @@ class Workstatus(models.Model):
         default=WorkStatusChoice.none,
     )
     amount = models.PositiveIntegerField(
-        verbose_name='Количество',
+        verbose_name="Количество",
         default=1,
     )
     fix_price = models.PositiveIntegerField(
-        verbose_name='Цена',
+        verbose_name="Цена",
     )
 
     class Meta:
-        verbose_name = 'Статус работы'
-        verbose_name_plural = 'Статусы работ'
+        verbose_name = "Статус работы"
+        verbose_name_plural = "Статусы работ"
 
     def __str__(self):
-        return f'{self.work.name} x{self.amount}'
+        return f"{self.work.name} x{self.amount}"
 
     def save(self, *args, **kwargs):
         if not self.fix_price and self.work:

@@ -4,7 +4,7 @@ from apps.work.models.WorkModel import Work
 
 
 def clear_cache(sender, **kwargs):
-    cache.delete('grouped_works')
+    cache.delete("grouped_works")
 
 
 post_delete.connect(clear_cache, sender=Work)

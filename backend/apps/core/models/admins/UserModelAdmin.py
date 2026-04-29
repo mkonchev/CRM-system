@@ -25,13 +25,18 @@ class UserModelAdmin(UserAdmin):
     ordering = ("email",)
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("Personal info"), {"fields": (
-            "first_name",
-            "last_name",
-            "tg_login",
-            "role",
-            "phone_number",
-        )}),
+        (
+            _("Personal info"),
+            {
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "tg_login",
+                    "role",
+                    "phone_number",
+                )
+            },
+        ),
         (
             _("Permissions"),
             {

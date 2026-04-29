@@ -6,27 +6,45 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('car', '0011_car_year'),
-        ('order', '0006_alter_order_owner_alter_order_worker'),
+        ("car", "0011_car_year"),
+        ("order", "0006_alter_order_owner_alter_order_worker"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='car',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='car.car', verbose_name='Машина'),
+            model_name="order",
+            name="car",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="orders",
+                to="car.car",
+                verbose_name="Машина",
+            ),
         ),
         migrations.AlterField(
-            model_name='order',
-            name='owner',
-            field=models.ForeignKey(blank=True, help_text='Автозаполнение при выборе машины', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='order_owner', to=settings.AUTH_USER_MODEL, verbose_name='Владелец'),
+            model_name="order",
+            name="owner",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Автозаполнение при выборе машины",
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="order_owner",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Владелец",
+            ),
         ),
         migrations.AlterField(
-            model_name='order',
-            name='worker',
-            field=models.ForeignKey(limit_choices_to={'is_active': True, 'role': 1}, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to=settings.AUTH_USER_MODEL, verbose_name='Работник'),
+            model_name="order",
+            name="worker",
+            field=models.ForeignKey(
+                limit_choices_to={"is_active": True, "role": 1},
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="orders",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Работник",
+            ),
         ),
     ]

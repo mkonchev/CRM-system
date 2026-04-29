@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('car', '0010_remove_car_year'),
+        ("car", "0010_remove_car_year"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='car',
-            name='year',
-            field=models.PositiveIntegerField(blank=True, null=True, verbose_name='Год выпуска'),
+            model_name="car",
+            name="year",
+            field=models.PositiveIntegerField(
+                blank=True, null=True, verbose_name="Год выпуска"
+            ),
         ),
     ]

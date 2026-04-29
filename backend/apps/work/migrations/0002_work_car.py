@@ -5,16 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('car', '0011_car_year'),
-        ('work', '0001_initial'),
+        ("car", "0011_car_year"),
+        ("work", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='work',
-            name='car',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='car_works', to='car.car', verbose_name='Машина'),
+            model_name="work",
+            name="car",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="car_works",
+                to="car.car",
+                verbose_name="Машина",
+            ),
         ),
     ]

@@ -8,20 +8,37 @@ class OrderLoadTest(HttpUser):
 
     def on_start(self):
         self.created_orders = []
-        self.first_names = ["Иван", "Петр", "Алексей", "Дмитрий", "Сергей",
-                            "Андрей", "Михаил"]
-        self.last_names = ["Иванов", "Петров", "Сидоров", "Смирнов",
-                           "Кузнецов", "Попов", "Васильев"]
-        self.middle_names = ["Иванович", "Петрович", "Алексеевич",
-                             "Дмитриевич", "Сергеевич"]
-        self.car_brands = ["Toyota", "Honda", "BMW", "Mercedes", "Audi",
-                           "Volkswagen"]
+        self.first_names = [
+            "Иван",
+            "Петр",
+            "Алексей",
+            "Дмитрий",
+            "Сергей",
+            "Андрей",
+            "Михаил",
+        ]
+        self.last_names = [
+            "Иванов",
+            "Петров",
+            "Сидоров",
+            "Смирнов",
+            "Кузнецов",
+            "Попов",
+            "Васильев",
+        ]
+        self.middle_names = [
+            "Иванович",
+            "Петрович",
+            "Алексеевич",
+            "Дмитриевич",
+            "Сергеевич",
+        ]
+        self.car_brands = ["Toyota", "Honda", "BMW", "Mercedes", "Audi", "Volkswagen"]
         self.car_models = ["Camry", "Accord", "X5", "E-Class", "A4", "Passat"]
 
     def generate_random_email(self):
         domains = ["gmail.com", "yahoo.com", "mail.ru", "yandex.ru"]
-        name = ''.join(random.choices(string.ascii_lowercase,
-                                      k=random.randint(5, 10)))
+        name = "".join(random.choices(string.ascii_lowercase, k=random.randint(5, 10)))
         return f"{name}@{random.choice(domains)}"
 
     def generate_random_phone(self):
@@ -29,21 +46,19 @@ class OrderLoadTest(HttpUser):
 
     def generate_random_password(self):
         chars = string.ascii_letters + string.digits
-        return ''.join(random.choices(chars, k=random.randint(8, 12)))
+        return "".join(random.choices(chars, k=random.randint(8, 12)))
 
     @task(2)
     def create_user(self):
         data = {
-            'email': self.generate_random_email(),
-            'first_name': random.choice(self.first_names),
-            'last_name': random.choice(self.last_names),
-            'phone_number': self.generate_random_phone(),
-            'password': self.generate_random_password(),
+            "email": self.generate_random_email(),
+            "first_name": random.choice(self.first_names),
+            "last_name": random.choice(self.last_names),
+            "phone_number": self.generate_random_phone(),
+            "password": self.generate_random_password(),
         }
         response = self.client.post(
-            "/api/user/create", 
-            json=data,
-            headers={"Content-Type": "application/json"}
+            "/api/user/create", json=data, headers={"Content-Type": "application/json"}
         )
 
         if response.status_code == 200:
@@ -70,14 +85,14 @@ class OrderLoadTest(HttpUser):
         if self.created_orders:
             user_id = random.choice(self.created_orders)
             data = {
-                'last_name': random.choice(self.last_names),
-                'first_name': random.choice(self.first_names),
-                'phone_number': self.generate_random_phone(),
+                "last_name": random.choice(self.last_names),
+                "first_name": random.choice(self.first_names),
+                "phone_number": self.generate_random_phone(),
             }
             self.client.patch(
-                f"/api/user/{user_id}/update", 
+                f"/api/user/{user_id}/update",
                 json=data,
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
             )
 
     @task(1)

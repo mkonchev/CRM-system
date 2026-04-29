@@ -4,14 +4,16 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('workstatus', '0002_alter_workstatus_order'),
+        ("workstatus", "0002_alter_workstatus_order"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='workstatus',
-            options={'verbose_name': 'Статус работы', 'verbose_name_plural': 'Статусы работ'},
+            name="workstatus",
+            options={
+                "verbose_name": "Статус работы",
+                "verbose_name_plural": "Статусы работ",
+            },
         ),
     ]
