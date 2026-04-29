@@ -29,7 +29,7 @@ jobs:
         run: uv run mypy . --strict
       - name: Run mypy with annotation
         run: |
-          uv run mypy . --strict --output=github
+          uv run mypy . --output=github
 
   ruff:
     name: ruff
