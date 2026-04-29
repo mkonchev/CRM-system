@@ -83,7 +83,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    needs: ruff, django-cheks
+    needs: [ruff, django-checks]
     defaults:
       run:
         working-directory: backend
