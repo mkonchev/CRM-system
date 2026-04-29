@@ -55,6 +55,31 @@ jobs:
       - name: Run ruff formatter check
         run: ruff format . --check
 
+  django-cheks:
+    name: Django checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Check for missing migrations
+        run: |
+          uv run python manage.py makemigrations --check --dry-run
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.ci
+      - name: Run system checks
+        run: |
+          uv run python manage.py check
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.ci
+
   test:
     name: Test
     runs-on: ubuntu-latest

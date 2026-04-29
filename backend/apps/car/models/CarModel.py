@@ -28,7 +28,7 @@ class Car(models.Model):
     )
     vin = models.CharField(
         verbose_name="VIN/Номер кузова",
-        max_length=100,
+        max_length=101,
         default="",
     )
     year = models.PositiveIntegerField(verbose_name="Год выпуска", **NULLABLE)
