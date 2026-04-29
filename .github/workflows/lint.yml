@@ -56,7 +56,7 @@ jobs:
         run: ruff format . --check
 
   django-checks:
-    name: Django checks
+    name: django checks
     runs-on: ubuntu-latest
     defaults:
       run:
