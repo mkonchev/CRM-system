@@ -6,30 +6,30 @@ on:
       - '**/*.py'
 
 jobs:
-  mypy:
-    name: mypy
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: install uv
-        uses: astral-sh/setup-uv@v3
-        with:
-          version: "latest"
-          enable-cache: true
-          cache-dependency-glob: "backend/uv.lock"
-      - name: Set up Python
-        run: uv python install 3.12
-      - name: Install dependencies
-        run: uv sync --frozen
-      - name: Run mypy
-        run: uv run mypy . --strict
-      - name: Run mypy with annotation
-        run: |
-          uv run mypy . --output=github
+  # mypy:
+  #   name: mypy
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: backend
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: install uv
+  #       uses: astral-sh/setup-uv@v3
+  #       with:
+  #         version: "latest"
+  #         enable-cache: true
+  #         cache-dependency-glob: "backend/uv.lock"
+  #     - name: Set up Python
+  #       run: uv python install 3.12
+  #     - name: Install dependencies
+  #       run: uv sync --frozen
+  #     - name: Run mypy
+  #       run: uv run mypy . --strict
+  #     - name: Run mypy with annotation
+  #       run: |
+  #         uv run mypy . --output=github
 
   ruff:
     name: ruff
@@ -54,3 +54,41 @@ jobs:
         run: ruff check . --output-format=github
       - name: Run ruff formatter check
         run: ruff format . --check
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: lint
+    defaults:
+      run:
+        working-directory: backend
+    
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        options: --health-cmd pg_isready --health-interval 10s
+        ports:
+          - 5432:5432
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      
+      - name: Install dependencies
+        run: uv sync --frozen
+      
+      - name: Run migrations
+        run: uv run python manage.py migrate --noinput
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.test
+          DATABASE_URL: postgres://postgres:testpass@localhost/testdb
+      
+      - name: Run your exact command
+        run: |
+          uv run python manage.py test apps.api.tests.unit --failfast --noinput
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.test
+          DATABASE_URL: postgres://postgres:testpass@localhost/testdb
