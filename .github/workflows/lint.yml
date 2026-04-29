@@ -98,6 +98,11 @@ jobs:
           uv run python manage.py test apps.api.tests.unit --failfast --noinput
         env:
           DJANGO_SETTINGS_MODULE: config.settings.common
-          REDIS_URL: redis://localhost:6379
-          CELERY_BROKER_URL: redis://localhost:6379
+          CELERY_TASK_ALWAYS_EAGER: "true"
+          CELERY_TASK_EAGER_PROPAGATES: "true"
+          CELERY_BROKER_URL: "memory://"
+          CELERY_RESULT_BACKEND: "memory://"
+          REDIS_URL: ""
+          CACHES: "dummy://"
+          EMAIL_BACKEND: "django.core.mail.backends.dummy.EmailBackend"
           DATABASE_URL: postgres://postgres:testpass@localhost/testdb
