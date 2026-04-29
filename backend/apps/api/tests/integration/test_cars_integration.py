@@ -1,7 +1,6 @@
 from django.test import TestCase
 from rest_framework import status
 from apps.car.models.CarModel import Car
-from apps.api.tests.factories import CarFactory
 
 
 class CarIntegrationTest(TestCase):

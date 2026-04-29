@@ -1,6 +1,5 @@
 from typing import Optional, Dict, Any
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
 from apps.car.models.CarModel import Car
 from apps.api.serializers.CarSerializer import CarSerializer
 
