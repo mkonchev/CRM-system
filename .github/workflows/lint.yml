@@ -83,12 +83,12 @@ jobs:
       - name: Run migrations
         run: uv run python manage.py migrate --noinput
         env:
-          DJANGO_SETTINGS_MODULE: config.settings.test
+          DJANGO_SETTINGS_MODULE: config.settings.common
           DATABASE_URL: postgres://postgres:testpass@localhost/testdb
       
       - name: Run your exact command
         run: |
           uv run python manage.py test apps.api.tests.unit --failfast --noinput
         env:
-          DJANGO_SETTINGS_MODULE: config.settings.test
+          DJANGO_SETTINGS_MODULE: config.settings.common
           DATABASE_URL: postgres://postgres:testpass@localhost/testdb
