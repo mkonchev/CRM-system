@@ -4,7 +4,7 @@ except ImportError as e:
     print(f"Import error {e}")
 
 DEBUG = False
-SECRET_KEY = "django-insecure-ci-key"
+SECRET_KEY = "django-ci-key"
 
 STATICFILES_DIRS = []
 
@@ -17,8 +17,8 @@ DATABASES = {
 
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
-CELERY_BROKER_URL = "memory://"
-CELERY_RESULT_BACKEND = "memory://"
+CELERY_BROKER_URL = None
+CELERY_RESULT_BACKEND = None
 
 REDIS_URL = None
 
