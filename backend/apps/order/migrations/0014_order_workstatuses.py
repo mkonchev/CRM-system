@@ -4,16 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('order', '0013_remove_order_workstatus'),
-        ('workstatus', '0005_alter_workstatus_work'),
+        ("order", "0013_remove_order_workstatus"),
+        ("workstatus", "0005_alter_workstatus_work"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='workstatuses',
-            field=models.ManyToManyField(related_name='order_work_status', to='workstatus.workstatus', verbose_name='Статусы работ'),
+            model_name="order",
+            name="workstatuses",
+            field=models.ManyToManyField(
+                related_name="order_work_status",
+                to="workstatus.workstatus",
+                verbose_name="Статусы работ",
+            ),
         ),
     ]

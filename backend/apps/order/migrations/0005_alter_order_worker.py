@@ -6,16 +6,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('order', '0004_order_end_date_order_start_date'),
+        ("order", "0004_order_end_date_order_start_date"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='worker',
-            field=models.ForeignKey(limit_choices_to={'is_active': True, 'role': 'worker'}, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to=settings.AUTH_USER_MODEL, verbose_name='ID работника'),
+            model_name="order",
+            name="worker",
+            field=models.ForeignKey(
+                limit_choices_to={"is_active": True, "role": "worker"},
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="orders",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="ID работника",
+            ),
         ),
     ]

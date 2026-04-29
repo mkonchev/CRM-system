@@ -4,20 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('order', '0003_alter_order_owner'),
+        ("order", "0003_alter_order_owner"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='end_date',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Окончание работ'),
+            model_name="order",
+            name="end_date",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Окончание работ"
+            ),
         ),
         migrations.AddField(
-            model_name='order',
-            name='start_date',
-            field=models.DateTimeField(auto_now=True, verbose_name='Начало работ'),
+            model_name="order",
+            name="start_date",
+            field=models.DateTimeField(auto_now=True, verbose_name="Начало работ"),
         ),
     ]

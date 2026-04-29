@@ -6,21 +6,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('order', '0005_alter_order_worker'),
+        ("order", "0005_alter_order_worker"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='owner',
-            field=models.ForeignKey(blank=True, default='Заполнится автоматически', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='order_owner', to=settings.AUTH_USER_MODEL, verbose_name='ID владельца'),
+            model_name="order",
+            name="owner",
+            field=models.ForeignKey(
+                blank=True,
+                default="Заполнится автоматически",
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="order_owner",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="ID владельца",
+            ),
         ),
         migrations.AlterField(
-            model_name='order',
-            name='worker',
-            field=models.ForeignKey(limit_choices_to={'is_active': True, 'role': 1}, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to=settings.AUTH_USER_MODEL, verbose_name='ID работника'),
+            model_name="order",
+            name="worker",
+            field=models.ForeignKey(
+                limit_choices_to={"is_active": True, "role": 1},
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="orders",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="ID работника",
+            ),
         ),
     ]

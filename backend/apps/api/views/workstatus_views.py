@@ -12,11 +12,11 @@ class WorkstatusListView(generics.ListCreateAPIView):
     POST /api/workstatus/ - создать новый статус
     """
 
-    queryset = Workstatus.objects.all().order_by('id')
+    queryset = Workstatus.objects.all().order_by("id")
     serializer_class = WorkstatusSerializer
 
     def get_permissions(self):
-        if self.request.method == 'POST':
+        if self.request.method == "POST":
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
 
@@ -24,10 +24,10 @@ class WorkstatusListView(generics.ListCreateAPIView):
         user = self.request.user
         if user.is_authenticated:
             if user.is_staff:
-                return Workstatus.objects.all().order_by('id')
+                return Workstatus.objects.all().order_by("id")
             if user.role == UserRoleChoice.worker:
-                return Workstatus.objects.filter(order__worker=user).order_by('id') # noqa
-            return Workstatus.objects.filter(order__owner=user).order_by('id')
+                return Workstatus.objects.filter(order__worker=user).order_by("id")  # noqa
+            return Workstatus.objects.filter(order__owner=user).order_by("id")
         return Workstatus.objects.none()
 
     def create(self, request, *args, **kwargs):
@@ -41,18 +41,19 @@ class WorkstatusDetailView(generics.RetrieveUpdateDestroyAPIView):
     PATCH /api/workstatus/<id>/ - частично обновить статус
     DELETE /api/workstatus/<id>/ - удалить статус
     """
-    queryset = Workstatus.objects.all().order_by('id')
+
+    queryset = Workstatus.objects.all().order_by("id")
     serializer_class = WorkstatusSerializer
 
     def update(self, request, *args, **kwargs):
-            response = super().update(request, *args, **kwargs) # noqa
-            workstatus = self.get_object()
-            order = workstatus.order
-            serializer = OrderSerializer(order, context={'request': request})
-            return Response(serializer.data)
+        response = super().update(request, *args, **kwargs)  # noqa
+        workstatus = self.get_object()
+        order = workstatus.order
+        serializer = OrderSerializer(order, context={"request": request})
+        return Response(serializer.data)
 
     def get_permissions(self):
-        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+        if self.request.method in ["PUT", "PATCH", "DELETE"]:
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
 
@@ -60,8 +61,8 @@ class WorkstatusDetailView(generics.RetrieveUpdateDestroyAPIView):
         user = self.request.user
         if user.is_authenticated:
             if user.is_staff:
-                return Workstatus.objects.all().order_by('id')
+                return Workstatus.objects.all().order_by("id")
             if user.role == UserRoleChoice.worker:
-                return Workstatus.objects.filter(order__worker=user).order_by('id') # noqa
-            return Workstatus.objects.filter(order__owner=user).order_by('id')
+                return Workstatus.objects.filter(order__worker=user).order_by("id")  # noqa
+            return Workstatus.objects.filter(order__owner=user).order_by("id")
         return Workstatus.objects.none()

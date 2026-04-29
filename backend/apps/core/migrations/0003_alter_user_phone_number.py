@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0002_user_phone_number_user_role_user_tg_login'),
+        ("core", "0002_user_phone_number_user_role_user_tg_login"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='phone_number',
-            field=models.CharField(default='-', max_length=15, verbose_name='Phone Number'),
+            model_name="user",
+            name="phone_number",
+            field=models.CharField(
+                default="-", max_length=15, verbose_name="Phone Number"
+            ),
         ),
     ]

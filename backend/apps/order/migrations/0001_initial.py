@@ -6,26 +6,57 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('car', '0003_alter_car_owner'),
+        ("car", "0003_alter_car_owner"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('car', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='car.car', verbose_name='ID машины')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders1', to=settings.AUTH_USER_MODEL, verbose_name='ID владельца')),
-                ('worker', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to=settings.AUTH_USER_MODEL, verbose_name='ID работника')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "car",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="orders",
+                        to="car.car",
+                        verbose_name="ID машины",
+                    ),
+                ),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="orders1",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="ID владельца",
+                    ),
+                ),
+                (
+                    "worker",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="orders",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="ID работника",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Заявка',
-                'verbose_name_plural': 'Заявки',
+                "verbose_name": "Заявка",
+                "verbose_name_plural": "Заявки",
             },
         ),
     ]

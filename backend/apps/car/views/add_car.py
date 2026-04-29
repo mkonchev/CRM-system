@@ -6,10 +6,10 @@ from apps.car.services.VINDecoder import VINDecoder
 class CarForm(forms.ModelForm):
     class Meta:
         model = Car
-        fields = ['vin', 'number', 'owner']
+        fields = ["vin", "number", "owner"]
 
     def clean_vin(self):
-        vin = self.cleaned_data['vin'].upper()
+        vin = self.cleaned_data["vin"].upper()
         if not VINDecoder.is_valid_vin(vin):
             raise forms.ValidationError(
                 "Неверный формат VIN номера. "

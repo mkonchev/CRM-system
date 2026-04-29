@@ -11,66 +11,61 @@ from apps.workstatus.models.consts import WorkStatusChoice
 
 
 class WorkViewsTest(TestCase):
-
     def setUp(self):
         self.client = APIClient()
         self.owner = User.objects.create(
-            email='owner@example.com',
-            first_name='Иван',
-            last_name='Иванов'
+            email="owner@example.com", first_name="Иван", last_name="Иванов"
         )
         self.car = Car.objects.create(
-            number='А123БВ77',
-            mark='Toyota',
-            model='Camry',
-            vin='XTA21099734455321',
+            number="А123БВ77",
+            mark="Toyota",
+            model="Camry",
+            vin="XTA21099734455321",
             year=2020,
-            owner=self.owner
+            owner=self.owner,
         )
         self.work = Work.objects.create(
-            name="Замена масла",
-            price=2000,
-            description="Полная замена моторного масла"
+            name="Замена масла", price=2000, description="Полная замена моторного масла"
         )
         self.order = Order.objects.create(owner=self.owner)
 
         self.workstatus_data = {
-            'work': self.work,
-            'order': self.order,
-            'status': WorkStatusChoice.in_progress,
-            'amount': 2,
-            'fix_price': 2500
+            "work": self.work,
+            "order": self.order,
+            "status": WorkStatusChoice.in_progress,
+            "amount": 2,
+            "fix_price": 2500,
         }
         self.client.force_authenticate(user=self.owner)
         self.workstatus = Workstatus.objects.create(**self.workstatus_data)
 
     def test_workstatus_list_view(self):
-        url = '/api/workstatus/'
+        url = "/api/workstatus/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data["count"], 1)
 
     def test_workstatus_by_id_view_success(self):
-        url = f'/api/workstatus/{self.workstatus.pk}/'
+        url = f"/api/workstatus/{self.workstatus.pk}/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['status'], WorkStatusChoice.in_progress)
+        self.assertEqual(response.data["status"], WorkStatusChoice.in_progress)
 
     def test_work_by_id_view_not_found(self):
-        url = '/api/workstatus/99999/'
+        url = "/api/workstatus/99999/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_add_car_view_success(self):
-        url = '/api/workstatus/'
+        url = "/api/workstatus/"
         new_work_data = {
-            'work': self.work.pk,
-            'order': self.order.pk,
-            'status': WorkStatusChoice.in_progress,
-            'amount': 2,
-            'fix_price': 2500
+            "work": self.work.pk,
+            "order": self.order.pk,
+            "status": WorkStatusChoice.in_progress,
+            "amount": 2,
+            "fix_price": 2500,
         }
-        response = self.client.post(url, new_work_data, format='json')
+        response = self.client.post(url, new_work_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Workstatus.objects.count(), 2)
 
@@ -80,9 +75,9 @@ class WorkViewsTest(TestCase):
     #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_update_work_view_success(self):
-        url = f'/api/workstatus/{self.workstatus.pk}/'
-        update_data = {'status': WorkStatusChoice.done}
-        response = self.client.patch(url, update_data, format='json')
+        url = f"/api/workstatus/{self.workstatus.pk}/"
+        update_data = {"status": WorkStatusChoice.done}
+        response = self.client.patch(url, update_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.workstatus.refresh_from_db()
         self.assertEqual(self.workstatus.status, WorkStatusChoice.done)

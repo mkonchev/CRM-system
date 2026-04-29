@@ -4,8 +4,7 @@ from apps.order.tasks import send_workstatus_complete_email_task
 
 
 def auto_fill_owner_id(instance, sender, **kwargs):
-    if instance.car and (not instance.owner or instance.owner
-                         != instance.car.owner):
+    if instance.car and (not instance.owner or instance.owner != instance.car.owner):
         instance.owner = instance.car.owner
 
 
@@ -13,9 +12,7 @@ def send_email_if_is_complete(instance, sender, **kwargs):
     if instance.owner and instance.owner.email:
         if instance.is_completed:
             send_workstatus_complete_email_task.delay(
-                instance.owner.email,
-                str(instance.car),
-                str(instance.total_price())
+                instance.owner.email, str(instance.car), str(instance.total_price())
             )
 
 

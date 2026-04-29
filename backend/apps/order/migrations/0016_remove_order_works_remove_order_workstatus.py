@@ -4,18 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('order', '0015_rename_workstatuses_order_workstatus'),
+        ("order", "0015_rename_workstatuses_order_workstatus"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='order',
-            name='works',
+            model_name="order",
+            name="works",
         ),
         migrations.RemoveField(
-            model_name='order',
-            name='workstatus',
+            model_name="order",
+            name="workstatus",
         ),
     ]

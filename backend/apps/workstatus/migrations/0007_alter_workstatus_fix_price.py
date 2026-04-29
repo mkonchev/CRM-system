@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('workstatus', '0006_workstatus_amount_workstatus_fix_price_and_more'),
+        ("workstatus", "0006_workstatus_amount_workstatus_fix_price_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='workstatus',
-            name='fix_price',
-            field=models.PositiveIntegerField(verbose_name='Цена'),
+            model_name="workstatus",
+            name="fix_price",
+            field=models.PositiveIntegerField(verbose_name="Цена"),
         ),
     ]

@@ -4,19 +4,17 @@ from apps.core.models.UserModel import User
 
 class UserSerializer(serializers.ModelSerializer):
     """User Serializer"""
+
     password = serializers.CharField(write_only=True, required=True)
     password_confirm = serializers.CharField(write_only=True, required=True)
 
     def create(self, validated_data):
-        password = validated_data.pop('password')
-        validated_data.pop('password_confirm', None)
-        return User.objects.create_user(
-            **validated_data,
-            password=password
-        )
+        password = validated_data.pop("password")
+        validated_data.pop("password_confirm", None)
+        return User.objects.create_user(**validated_data, password=password)
 
     def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
+        password = validated_data.pop("password", None)
 
         if password:
             instance.set_password(password)
@@ -26,12 +24,20 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'username', 'phone_number', 'tg_login', 'email', 'role',
-            'first_name', 'last_name', 'password', 'password_confirm'
+            "id",
+            "username",
+            "phone_number",
+            "tg_login",
+            "email",
+            "role",
+            "first_name",
+            "last_name",
+            "password",
+            "password_confirm",
         ]
 
-        read_only_fields = ['id']
+        read_only_fields = ["id"]
         extra_kwargs = {
-            'password': {'write_only': True},
-            'password_confirm': {'write_only': True},
+            "password": {"write_only": True},
+            "password_confirm": {"write_only": True},
         }

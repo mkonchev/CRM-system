@@ -5,7 +5,7 @@ from apps.workstatus.models.WorkstatusModel import Workstatus
 class WorkstatusInline(admin.TabularInline):
     model = Workstatus
     extra = 1
-    readonly_fields = ('fix_price',)
+    readonly_fields = ("fix_price",)
 
 
 class OrderModelAdmin(admin.ModelAdmin):
