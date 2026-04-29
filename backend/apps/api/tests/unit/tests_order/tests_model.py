@@ -71,3 +71,47 @@ class OrderModelTestCase(TestCase):
         with self.assertRaises(ValidationError):
             order = Order(car=self.car, worker=non_worker)
             order.full_clean()
+
+    def test_total_price(self):
+        order = Order.objects.create(**self.order_data)
+
+        from apps.workstatus.models.WorkstatusModel import Workstatus
+        from apps.work.models import Work
+
+        work = Work.objects.create(name="Замена масла", price=1000)
+
+        Workstatus.objects.create(
+            order=order,
+            work=work,
+            amount=2,
+            fix_price=1500
+        )
+
+        Workstatus.objects.create(
+            order=order,
+            work=work,
+            amount=1,
+            fix_price=2000
+        )
+
+        self.assertEqual(order.total_price(), 5000)
+
+    def test_get_status(self):
+        order = Order.objects.create(**self.order_data)
+
+        from apps.workstatus.models import Workstatus
+        from apps.work.models import Work
+
+        work = Work.objects.create(name="Замена масла", price=1000)
+
+        ws = Workstatus.objects.create( # noqa
+            order=order,
+            work=work,
+            status=1,
+            amount=1,
+            fix_price=1000
+        )
+
+        result = order.get_status()
+
+        self.assertIn("Замена масла", result)

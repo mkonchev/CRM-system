@@ -100,3 +100,30 @@ class OrderViewsTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Order.objects.count(), 0)
+
+    def test_order_list_unauthorized(self):
+        self.client.force_authenticate(user=None)
+
+        response = self.client.get('/api/orders/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['count'], 0)
+
+    def test_user_cannot_see_others_orders(self):
+        other_user = User.objects.create_user(email='other@test.com')
+
+        self.client.force_authenticate(user=other_user)
+
+        response = self.client.get('/api/orders/')
+
+        self.assertEqual(response.data['count'], 0)
+
+    def test_worker_sees_all_orders(self):
+        self.worker.role = 1
+        self.worker.save()
+
+        self.client.force_authenticate(user=self.worker)
+
+        response = self.client.get('/api/orders/')
+
+        self.assertEqual(response.data['count'], 1)
